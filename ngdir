@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+( ( args ) => {
+    "use strict";
+
+    const NG = require( "./jsNG" );
+
+    for ( let f of args ) {
+
+        ( new NG( f ) ).open( ( ng ) => {
+            if ( ng.isNG() ) {
+                console.log( f + "\n\t" + ng.title() );
+            }
+        } );
+    }
+
+} )( process.argv.slice( 2 ) );
