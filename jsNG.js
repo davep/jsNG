@@ -14,6 +14,7 @@ function NortonGuide( path ) {
     // Handy constants.
     const MAGIC_EH = "EH";
     const MAGIC_NG = "NG";
+    const ENCODING = "ascii";
 
     // Helps us keep track of the sizes of the parts of the header. More of a
     // useful nod back to the old C structure than anything else.
@@ -60,7 +61,7 @@ function NortonGuide( path ) {
                 str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
             }
         }
-        return str.toString( "utf-8" );
+        return str.toString( ENCODING );
     }
 
     // Header values.
@@ -79,7 +80,7 @@ function NortonGuide( path ) {
                         callback( self, err );
                     } else {
                         // Pull out the bits of header we need.
-                        hMagic     = buffer.toString( "utf-8", 0, 2 );
+                        hMagic     = buffer.toString( ENCODING, 0, 2 );
                         hMenuCount = readWord( buffer, 6, false );
                         hTitle     = readString( buffer, 8, 40, false );
                         hCredits   = [ readString( buffer,  48, 66, false ) ];
