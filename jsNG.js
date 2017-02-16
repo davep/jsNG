@@ -73,8 +73,10 @@ module.exports = function NortonGuide( path ) {
     const self = this;
 
     // Handy constants.
-    const MAGIC_EH = "EH";
-    const MAGIC_NG = "NG";
+    const MAGIC = {
+        EH: "EH",
+        NG: "NG"
+    }
 
     // Given a "structure" (in other words an object with key/value pairs
     // that are the size of the structures found inside an NG file) return
@@ -144,13 +146,13 @@ module.exports = function NortonGuide( path ) {
     };
 
     this.isNG = function isNG() {
-        return ( hMagic === MAGIC_NG ) || ( hMagic === MAGIC_EH );
+        return ( hMagic === MAGIC.NG ) || ( hMagic === MAGIC.EH );
     };
 
     this.type = function type() {
-        if ( hMagic === MAGIC_NG ) {
+        if ( hMagic === MAGIC.NG ) {
             return "Norton Guide";
-        } else if ( hMagic === MAGIC_EH ) {
+        } else if ( hMagic === MAGIC.EH ) {
             return "Expert Help";
         }
         return "Unknown";
