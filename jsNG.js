@@ -86,11 +86,11 @@ function NortonGuide( path ) {
                         // Pull out the bits of header we need.
                         hMagic     = buffer.toString( ENCODING, 0, 2 );
                         hMenuCount = readWord( buffer, 6, false );
-                        hTitle     = readString( buffer, 8, 40, false );
-                        hCredits   = [ readString( buffer,  48, 66, false ) ];
-                        hCredits.push( readString( buffer, 114, 66, false ) );
-                        hCredits.push( readString( buffer, 180, 66, false ) );
-                        hCredits.push( readString( buffer, 246, 66, false ) );
+                        hTitle     = readString( buffer, 8, headerStruct.szTitle, false );
+                        hCredits   = [ readString( buffer,  48, headerStruct.szCredits0, false ) ];
+                        hCredits.push( readString( buffer, 114, headerStruct.szCredits1, false ) );
+                        hCredits.push( readString( buffer, 180, headerStruct.szCredits2, false ) );
+                        hCredits.push( readString( buffer, 246, headerStruct.szCredits3, false ) );
                         callback( self );
                     }
                 } );
