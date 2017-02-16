@@ -91,6 +91,7 @@ function NortonGuide( path ) {
                         hCredits.push( readString( buffer, 114, headerStruct.szCredits1, false ) );
                         hCredits.push( readString( buffer, 180, headerStruct.szCredits2, false ) );
                         hCredits.push( readString( buffer, 246, headerStruct.szCredits3, false ) );
+                        hCredits.push( readString( buffer, 312, headerStruct.szCredits4, false ) );
                         callback( self );
                     }
                 } );
