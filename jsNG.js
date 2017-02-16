@@ -16,17 +16,6 @@ function NortonGuide( path ) {
     const MAGIC_NG = "NG";
     const ENCODING = "ascii";
 
-    // Helps us keep track of the sizes of the parts of the header. More of a
-    // useful nod back to the old C structure than anything else.
-    var headerStruct = {
-        usMagic     : 2,
-        sUnknown    : 2,
-        sUnknown2   : 2,
-        usMenuCount : 2,
-        szTitle     : 40,
-        szCredits   : 5 * 66
-    };
-
     // Given a "structure" (in other words an object with key/value pairs
     // that are the size of the structures found inside an NG file) return
     // the total size of it.
@@ -63,6 +52,17 @@ function NortonGuide( path ) {
         }
         return str.toString( ENCODING );
     }
+
+    // Helps us keep track of the sizes of the parts of the header. More of a
+    // useful nod back to the old C structure than anything else.
+    var headerStruct = {
+        usMagic     : 2,
+        sUnknown    : 2,
+        sUnknown2   : 2,
+        usMenuCount : 2,
+        szTitle     : 40,
+        szCredits   : 5 * 66
+    };
 
     // Header values.
     let hMagic;
