@@ -61,7 +61,11 @@ function NortonGuide( path ) {
         sUnknown2   : 2,
         usMenuCount : 2,
         szTitle     : 40,
-        szCredits   : 5 * 66
+        szCredits0  : 66,
+        szCredits1  : 66,
+        szCredits2  : 66,
+        szCredits3  : 66,
+        szCredits4  : 66
     };
 
     // Header values.
