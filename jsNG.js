@@ -127,4 +127,4 @@ module.exports = function NortonGuide( path ) {
     this.credits = function credits() {
         return hCredits;
     }
-}
+};
