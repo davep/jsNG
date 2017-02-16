@@ -6,10 +6,10 @@ function NortonGuide( path ) {
     "use strict";
 
     // Use filesystem functions.
-    var fs = require( "fs" );
+    const fs = require( "fs" );
 
     // Remember who we are.
-    var self = this;
+    const self = this;
 
     // Helps us keep track of the sizes of the parts of the header. More of a
     // useful nod back to the old C structure than anything else.
