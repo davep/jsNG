@@ -9,6 +9,15 @@ function NGBuffer( buffer ) {
         return byte ^ 0x1A;
     }
 
+    // Trim any nuls off the end of a buffer.
+    function nulTrim( s ) {
+        const n = s.indexOf( 0, ENCODING );
+        if ( n != -1 ) {
+            return s.slice( 0, n );
+        }
+        return s;
+    }
+
     // Track the offset that we're working at in the buffer.
     let offset = 0;
 
@@ -46,7 +55,7 @@ function NGBuffer( buffer ) {
                 }
             }
             self.skip( length );
-            return str.toString( ENCODING );
+            return nulTrim( str ).toString( ENCODING );
         }
 
     };
