@@ -22,12 +22,6 @@ function NortonGuide( path ) {
         szCredits   : 5 * 66
     };
 
-    // Header values.
-    let hMagic;
-    let hMenuCount;
-    let hTitle;
-    let hCredits;
-
     // Given a "structure" (in other words an object with key/value pairs
     // that are the size of the structures found inside an NG file) return
     // the total size of it.
@@ -64,6 +58,12 @@ function NortonGuide( path ) {
         }
         return str.toString( "utf-8" );
     }
+
+    // Header values.
+    let hMagic;
+    let hMenuCount;
+    let hTitle;
+    let hCredits;
 
     function readHeader( callback ) {
         fs.open( path, "r", ( err, fd ) => {
