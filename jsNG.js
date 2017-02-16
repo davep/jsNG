@@ -1,3 +1,59 @@
+function NGBuffer( buffer ) {
+    "use strict";
+
+    // Encoding to use when reading the buffer.
+    const ENCODING = "ascii";
+
+    // NG decryption.
+    function decryptByte( byte ) {
+        return byte ^ 0x1A;
+    }
+
+    // Track the offset that we're working at in the buffer.
+    let offset = 0;
+
+    // Main body of functions that work on the buffer.
+    let self = {
+
+        // Skip bytes in the buffer.
+        skip: ( n ) => {
+            offset += ( n || 1 );
+        },
+
+        // Read a single byte.
+        readByte: ( decrypt ) => {
+            const byte = buffer[ offset ];
+            if ( decrypt ) {
+                return decryptByte( byte );
+            }
+            self.skip();
+            return byte;
+        },
+
+        // Read a (2 byte) word.
+        readWord: ( decrypt ) => {
+            const lo = self.readByte( decrypt );
+            const hi = self.readByte( decrypt );
+            return ( hi << 8 ) + lo;
+        },
+
+        // Read a string.
+        readString: ( length, decrypt ) => {
+            const str = buffer.slice( offset, offset + length );
+            if ( decrypt ) {
+                for ( const char of str.entries() ) {
+                    str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
+                }
+            }
+            self.skip( length );
+            return str.toString( ENCODING );
+        }
+
+    };
+
+    return self;
+}
+
 module.exports = function NortonGuide( path ) {
     "use strict";
 
@@ -10,7 +66,6 @@ module.exports = function NortonGuide( path ) {
     // Handy constants.
     const MAGIC_EH = "EH";
     const MAGIC_NG = "NG";
-    const ENCODING = "ascii";
 
     // Given a "structure" (in other words an object with key/value pairs
     // that are the size of the structures found inside an NG file) return
@@ -19,34 +74,6 @@ module.exports = function NortonGuide( path ) {
         return Object.keys( struct ).reduce( ( total, key ) => {
             return total + struct[ key ];
         }, 0 );
-    }
-
-    function decryptByte( byte ) {
-        return byte ^ 0x1A;
-    }
-
-    function readByte( buffer, offset, decrypt ) {
-        const byte = buffer[ offset ];
-        if ( decrypt ) {
-            return decryptByte( byte );
-        }
-        return byte;
-    }
-
-    function readWord( buffer, offset, decrypt ) {
-        const lo = readByte( buffer, offset,     decrypt );
-        const hi = readByte( buffer, offset + 1, decrypt );
-        return ( hi << 8 ) + lo;
-    }
-
-    function readString( buffer, offset, length, decrypt ) {
-        const str = buffer.slice( offset, offset + length );
-        if ( decrypt ) {
-            for ( const char of str.entries() ) {
-                str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
-            }
-        }
-        return str.toString( ENCODING );
     }
 
     // Helps us keep track of the sizes of the parts of the header. More of a
@@ -79,15 +106,19 @@ module.exports = function NortonGuide( path ) {
                     if ( err ) {
                         callback( self, err );
                     } else {
+                        // Wrap up the buffer in an NG buffer.
+                        buffer = NGBuffer( buffer );
                         // Pull out the bits of header we need.
-                        hMagic     = buffer.toString( ENCODING, 0, 2 );
-                        hMenuCount = readWord( buffer, 6, false );
-                        hTitle     = readString( buffer, 8, headerStruct.szTitle, false );
-                        hCredits   = [ readString( buffer,  48, headerStruct.szCredits0, false ) ];
-                        hCredits.push( readString( buffer, 114, headerStruct.szCredits1, false ) );
-                        hCredits.push( readString( buffer, 180, headerStruct.szCredits2, false ) );
-                        hCredits.push( readString( buffer, 246, headerStruct.szCredits3, false ) );
-                        hCredits.push( readString( buffer, 312, headerStruct.szCredits4, false ) );
+                        hMagic     = buffer.readString( 2, false );
+                        buffer.skip( 2 );
+                        buffer.skip( 2 );
+                        hMenuCount = buffer.readWord( false );
+                        hTitle     = buffer.readString( headerStruct.szTitle, false );
+                        hCredits   = [ buffer.readString( headerStruct.szCredits0, false ) ];
+                        hCredits.push( buffer.readString( headerStruct.szCredits1, false ) );
+                        hCredits.push( buffer.readString( headerStruct.szCredits2, false ) );
+                        hCredits.push( buffer.readString( headerStruct.szCredits3, false ) );
+                        hCredits.push( buffer.readString( headerStruct.szCredits4, false ) );
                         callback( self );
                     }
                 } );
