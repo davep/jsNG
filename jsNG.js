@@ -157,6 +157,10 @@ module.exports = function NortonGuide( path ) {
         return hMenuCount;
     }
 
+    this.hasMenus = function hasMenus() {
+        return self.menuCount() > 0;
+    }
+
     this.title = function title() {
         return hTitle;
     }
