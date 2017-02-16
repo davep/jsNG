@@ -23,10 +23,10 @@ function NortonGuide( path ) {
     };
 
     // Header values.
-    var hMagic;
-    var hMenuCount;
-    var hTitle;
-    var hCredits;
+    let hMagic;
+    let hMenuCount;
+    let hTitle;
+    let hCredits;
 
     // Given a "structure" (in other words an object with key/value pairs
     // that are the size of the structures found inside an NG file) return
