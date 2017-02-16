@@ -78,6 +78,10 @@ function NortonGuide( path ) {
                         hMagic     = buffer.toString( "utf-8", 0, 2 );
                         hMenuCount = readWord( buffer, 6, false );
                         hTitle     = readString( buffer, 8, 40, false );
+                        hCredits   = [ readString( buffer,  48, 66, false ) ];
+                        hCredits.push( readString( buffer, 114, 66, false ) );
+                        hCredits.push( readString( buffer, 180, 66, false ) );
+                        hCredits.push( readString( buffer, 246, 66, false ) );
                         callback( self );
                     }
                 } );
@@ -109,6 +113,10 @@ function NortonGuide( path ) {
     this.title = function title() {
         return hTitle;
     }
+
+    this.credits = function credits() {
+        return hCredits;
+    }
 }
 
 var ng = new NortonGuide( "/Users/davep/Google Drive/Norton Guides/cars.ng" );
@@ -119,6 +127,7 @@ ng.open( () => {
         DEBUG( "It was likely built with " + ng.type() );
         DEBUG( "Menu count: " + ng.menuCount() );
         DEBUG( "Title: " + ng.title() );
+        DEBUG( "Credits: " + ng.credits() );
     } else {
         DEBUG( "I don't think that's a Norton Guide" );
     }
