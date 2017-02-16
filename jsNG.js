@@ -74,8 +74,8 @@ module.exports = function NortonGuide( path ) {
 
     // Handy constants.
     const MAGIC = {
-        EH: "EH",
-        NG: "NG"
+        EH: "Expert Help",
+        NG: "Norton Guide"
     }
 
     // Given a "structure" (in other words an object with key/value pairs
@@ -150,12 +150,7 @@ module.exports = function NortonGuide( path ) {
     };
 
     this.type = function type() {
-        if ( hMagic === MAGIC.NG ) {
-            return "Norton Guide";
-        } else if ( hMagic === MAGIC.EH ) {
-            return "Expert Help";
-        }
-        return "Unknown";
+        return MAGIC[ hMagic ] || "Unknown";
     }
 
     this.menuCount = function menuCount() {
