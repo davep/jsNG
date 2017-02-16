@@ -146,7 +146,7 @@ module.exports = function NortonGuide( path ) {
     };
 
     this.isNG = function isNG() {
-        return ( hMagic === MAGIC.NG ) || ( hMagic === MAGIC.EH );
+        return hMagic in MAGIC;
     };
 
     this.type = function type() {
