@@ -57,7 +57,11 @@ function NortonGuide( path ) {
 
     function readString( buffer, offset, length, decrypt ) {
         const str = buffer.slice( offset, offset + length );
-        // TODO: Decrypt.
+        if ( decrypt ) {
+            for ( const char of str.entries() ) {
+                str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
+            }
+        }
         return str.toString( "utf-8" );
     }
 
