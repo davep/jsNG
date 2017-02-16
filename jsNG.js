@@ -76,7 +76,7 @@ module.exports = function NortonGuide( path ) {
     const MAGIC = {
         EH: "Expert Help",
         NG: "Norton Guide"
-    }
+    };
 
     // Given a "structure" (in other words an object with key/value pairs
     // that are the size of the structures found inside an NG file) return
