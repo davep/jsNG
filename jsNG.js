@@ -55,7 +55,7 @@ function NortonGuide( path ) {
 
     // Helps us keep track of the sizes of the parts of the header. More of a
     // useful nod back to the old C structure than anything else.
-    var headerStruct = {
+    const headerStruct = {
         usMagic     : 2,
         sUnknown    : 2,
         sUnknown2   : 2,
