@@ -99,6 +99,10 @@ function NortonGuide( path ) {
         } );
     }
 
+    this.filename = function filename() {
+        return path;
+    }
+
     this.open = function open( callback ) {
         readHeader( callback );
     };
@@ -133,6 +137,7 @@ var ng = new NortonGuide( "/Users/davep/Google Drive/Norton Guides/cars.ng" );
 
 ng.open( () => {
     if ( ng.isNG() ) {
+        DEBUG( "Reading " + ng.filename() );
         DEBUG( "That looks like a Norton Guide" );
         DEBUG( "It was likely built with " + ng.type() );
         DEBUG( "Menu count: " + ng.menuCount() );
