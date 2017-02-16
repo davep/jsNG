@@ -42,7 +42,7 @@ function NortonGuide( path ) {
     }
 
     function readByte( buffer, offset, decrypt ) {
-        let byte = buffer[ offset ];
+        const byte = buffer[ offset ];
         if ( decrypt ) {
             return decryptByte( byte );
         }
@@ -50,13 +50,13 @@ function NortonGuide( path ) {
     }
 
     function readWord( buffer, offset, decrypt ) {
-        let lo = readByte( buffer, offset,     decrypt );
-        let hi = readByte( buffer, offset + 1, decrypt );
+        const lo = readByte( buffer, offset,     decrypt );
+        const hi = readByte( buffer, offset + 1, decrypt );
         return ( hi << 8 ) + lo;
     }
 
     function readString( buffer, offset, length, decrypt ) {
-        let str = buffer.slice( offset, offset + length );
+        const str = buffer.slice( offset, offset + length );
         // TODO: Decrypt.
         return str.toString( "utf-8" );
     }
