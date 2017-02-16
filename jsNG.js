@@ -89,6 +89,15 @@ function NortonGuide( path ) {
         return ( hMagic === "NG" ) || ( hMagic === "EH" );
     };
 
+    this.type = function type() {
+        if ( hMagic === "NG" ) {
+            return "Norton Guide";
+        } else if ( hMagic === "EH" ) {
+            return "Expert Help";
+        }
+        return "Unknown";
+    }
+
     this.menuCount = function menuCount() {
         return hMenuCount;
     }
@@ -103,6 +112,7 @@ var ng = new NortonGuide( "/Users/davep/Google Drive/Norton Guides/cars.ng" );
 ng.open( () => {
     if ( ng.isNG() ) {
         DEBUG( "That looks like a Norton Guide" );
+        DEBUG( "It was likely built with " + ng.type() );
         DEBUG( "Menu count: " + ng.menuCount() );
         DEBUG( "Title: " + ng.title() );
     } else {
