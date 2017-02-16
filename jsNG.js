@@ -11,6 +11,10 @@ function NortonGuide( path ) {
     // Remember who we are.
     const self = this;
 
+    // Handy constants.
+    const MAGIC_EH = "EH";
+    const MAGIC_NG = "NG";
+
     // Helps us keep track of the sizes of the parts of the header. More of a
     // useful nod back to the old C structure than anything else.
     var headerStruct = {
@@ -94,13 +98,13 @@ function NortonGuide( path ) {
     };
 
     this.isNG = function isNG() {
-        return ( hMagic === "NG" ) || ( hMagic === "EH" );
+        return ( hMagic === MAGIC_NG ) || ( hMagic === MAGIC_EH );
     };
 
     this.type = function type() {
-        if ( hMagic === "NG" ) {
+        if ( hMagic === MAGIC_NG ) {
             return "Norton Guide";
-        } else if ( hMagic === "EH" ) {
+        } else if ( hMagic === MAGIC_EH ) {
             return "Expert Help";
         }
         return "Unknown";
