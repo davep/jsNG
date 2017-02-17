@@ -24,6 +24,16 @@ function NGBuffer( buffer ) {
     // Main body of functions that work on the buffer.
     let self = {
 
+        // Return the current position.
+        pos: () => {
+            return offset;
+        },
+
+        // Go to a given position.
+        go: ( n ) => {
+            return offset = n;
+        },
+
         // Skip bytes in the buffer.
         skip: ( n ) => {
             offset += ( n || 1 );
@@ -43,21 +53,112 @@ function NGBuffer( buffer ) {
             return ( hi << 8 ) + lo;
         },
 
+        // Read a (4 byte) long.
+        readLong: ( decrypt ) => {
+            const lo = self.readWord( decrypt );
+            const hi = self.readWord( decrypt );
+            return ( hi << 16 ) + lo;
+        },
+
         // Read a string.
         readString: ( length, decrypt ) => {
-            const str = buffer.slice( offset, offset + length );
+
+            // Pull out the substring we want.
+            const substr = buffer.slice( offset, offset + length );
+
+            // Make a buffer to hold it.
+            const str = new Buffer( length );
+
+            // Copy it over (so we don't destroy the original).
+            substr.copy( str );
+
+            // If we're decrypting...
             if ( decrypt ) {
                 for ( const char of str.entries() ) {
                     str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
                 }
             }
+
+            // Skip past what we read.
             self.skip( length );
+
+            // Return what we got.
             return nulTrim( str ).toString( ENCODING );
+        },
+
+        // Read a nul-terminated string.
+        readStringZ: ( maxlen, decrypt ) => {
+
+            // Remember where we are.
+            const sav = self.pos();
+
+            // Read a string up to the max length.
+            const str = self.readString( maxlen, decrypt );
+
+            // Now skip to the legnth of it.
+            self.go( sav + str.length + 1 );
+
+            // Return the string.
+            return str;
+        },
+
+        // Un-RLE a string.
+        expand: ( str ) => {
+            // TODO
+            return str;
         }
 
     };
 
     return self;
+}
+
+function NGMenu( ng ) {
+    "use strict";
+
+    // Handy constants.
+    const MAX_PROMPT_LEN = 128;
+
+    // Remember who we are.
+    const self = this;
+
+    // Skip the byte size of the menu section.
+    ng.readWord();
+
+    // Read the number of prompts.
+    const promptCount = ng.readWord( true ) - 1;
+
+    console.log( "Prompt count: " + promptCount );
+
+    // Skip 20 bytes.
+    ng.skip( 20 );
+
+    // This will hold the prompts.
+    const prompts = [];
+
+    // Set up the array of prompts, while also loading the offsets.
+    for ( let i = 0; i < promptCount; i++ ) {
+        prompts.push( {
+            prompt: "",
+            offset: ng.readLong( true )
+        } );
+    }
+
+    // Skip a number of unknown values.
+    ng.skip( ( promptCount + 1 ) * 8 );
+
+    // Get the title of the menu.
+    const title = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
+    console.log( "Title: [" + title + "]" );
+
+    // Now load each of the prompts.
+    for ( let i = 0; i < promptCount; i++ ) {
+        prompts[ i ].prompt = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
+        console.log( "SubPrompt: [" + prompts[ i ].prompt + "]" );
+    }
+
+    // Skip an unknown byte. Can't remember what it's for.
+    ng.skip();
 }
 
 module.exports = function NortonGuide( path ) {
@@ -158,7 +259,7 @@ module.exports = function NortonGuide( path ) {
     function loadMenu() {
         // TODO:
         console.log( "Found a menu!" );
-        skipEntry();
+        new NGMenu( ng );
     }
 
     function readMenus() {
@@ -168,13 +269,19 @@ module.exports = function NortonGuide( path ) {
         do {
             switch ( ng.readWord( true ) ) {
                 case ENTRY.SHORT:
+                    console.log( "Skipping short" );
                 case ENTRY.LONG:
+                    console.log( "Skipping long" );
                     skipEntry();
                     break;
                 case ENTRY.MENU:
                     loadMenu();
                     ++i;
                     break;
+                default:
+                    // TODO: Oops.
+                    console.log( "Not a valid entry type. Crapping out." );
+                    return;
             }
         }
         while ( i < self.menuCount() );
