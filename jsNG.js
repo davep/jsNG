@@ -129,7 +129,7 @@ module.exports = function NortonGuide( path ) {
                     } else {
 
                         // Remember where we've read to.
-                        fpos += bytesRead;
+                        fpos += bytesRead + 1;
 
                         // Wrap up the buffer in an NG buffer.
                         buffer = NGBuffer( buffer );
@@ -153,8 +153,23 @@ module.exports = function NortonGuide( path ) {
     }
 
     this.loadMenus = function loadMenus( callback ) {
-        console.log( "I'd read the menus here" );
-        callback( self );
+
+        fs.open( path, "r", ( err, fd ) => {
+            if ( err ) {
+                callback( self, err );
+            } else {
+                fs.read( fd, new Buffer( 2 ), 0, 2, fpos, ( err, bytesRead, buffer ) => {
+                    fpos += 2 + 1;
+                    if ( err ) {
+                        callback( self, err );
+                    } else {
+                        const type = NGBuffer( buffer ).readWord( true );
+                        console.log( "Type found: " + type );
+                        callback( self );
+                    }
+                } );
+            }
+        } );
     }
 
     this.filename = function filename() {
