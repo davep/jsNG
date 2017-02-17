@@ -78,6 +78,13 @@ module.exports = function NortonGuide( path ) {
         NG: "Norton Guide"
     };
 
+    // Guide entry magic numbers.
+    const ENTRY = {
+        SHORT: 0,
+        LONG:  1,
+        MENU:  2
+    };
+
     // Given a "structure" (in other words an object with key/value pairs
     // that are the size of the structures found inside an NG file) return
     // the total size of it.
