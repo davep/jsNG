@@ -72,7 +72,7 @@ module.exports = function NortonGuide( path ) {
     // Remember who we are.
     const self = this;
 
-    // Handy constants.
+    // Magic number constants.
     const MAGIC = {
         EH: "Expert Help",
         NG: "Norton Guide"
