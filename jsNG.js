@@ -151,8 +151,33 @@ module.exports = function NortonGuide( path ) {
         }
     }
 
+    function skipEntry() {
+        ng.skip( 22 + ng.readWord( true ) );
+    }
+
+    function loadMenu() {
+        // TODO:
+        console.log( "Found a menu!" );
+        skipEntry();
+    }
+
     function readMenus() {
-        console.log( "Type: " + ng.readWord( true ) );
+
+        let i = 0;
+
+        do {
+            switch ( ng.readWord( true ) ) {
+                case ENTRY.SHORT:
+                case ENTRY.LONG:
+                    skipEntry();
+                    break;
+                case ENTRY.MENU:
+                    loadMenu();
+                    ++i;
+                    break;
+            }
+        }
+        while ( i < self.menuCount() );
     }
 
     this.filename = function filename() {
