@@ -32,10 +32,10 @@ function NGBuffer( buffer ) {
         // Read a single byte.
         readByte: ( decrypt ) => {
             const byte = buffer[ offset ];
+            self.skip();
             if ( decrypt ) {
                 return decryptByte( byte );
             }
-            self.skip();
             return byte;
         },
 
