@@ -33,10 +33,7 @@ function NGBuffer( buffer ) {
         readByte: ( decrypt ) => {
             const byte = buffer[ offset ];
             self.skip();
-            if ( decrypt ) {
-                return decryptByte( byte );
-            }
-            return byte;
+            return decrypt ? decryptByte( byte ) : byte;
         },
 
         // Read a (2 byte) word.
