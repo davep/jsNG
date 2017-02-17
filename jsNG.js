@@ -154,24 +154,8 @@ module.exports = function NortonGuide( path ) {
         }
     }
 
-    this.loadMenus = function loadMenus( callback ) {
-
-        fs.open( path, "r", ( err, fd ) => {
-            if ( err ) {
-                callback( self, err );
-            } else {
-                fs.read( fd, new Buffer( 2 ), 0, 2, fpos, ( err, bytesRead, buffer ) => {
-                    fpos += 2 + 1;
-                    if ( err ) {
-                        callback( self, err );
-                    } else {
-                        const type = NGBuffer( buffer ).readWord( true );
-                        console.log( "Type found: " + type );
-                        callback( self );
-                    }
-                } );
-            }
-        } );
+    function readMenus() {
+        console.log( "Type: " + ng.readWord( true ) );
     }
 
     this.filename = function filename() {
@@ -205,6 +189,15 @@ module.exports = function NortonGuide( path ) {
 
                 // Now read the header.
                 readHeader();
+
+                // If it looks like we got a valid NG...
+                if ( self.isNG() ) {
+                    // If it looks like it has menus...
+                    if ( self.hasMenus() ) {
+                        // ...load them up.
+                        readMenus();
+                    }
+                }
 
             } else {
                 // TODO: Didn't read it all.
