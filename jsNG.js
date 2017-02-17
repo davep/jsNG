@@ -108,17 +108,25 @@ module.exports = function NortonGuide( path ) {
     let hTitle;
     let hCredits;
 
+    // Read location tracking.
+    let fpos = 0;
+
     function readHeader( callback ) {
         fs.open( path, "r", ( err, fd ) => {
             if ( err ) {
                 callback( self, err );
             } else {
-                fs.read( fd, new Buffer( sizeOf( headerStruct ) ), 0, sizeOf( headerStruct ), 0, ( err, bytesRead, buffer ) => {
+                fs.read( fd, new Buffer( sizeOf( headerStruct ) ), 0, sizeOf( headerStruct ), fpos, ( err, bytesRead, buffer ) => {
                     if ( err ) {
                         callback( self, err );
                     } else {
+
+                        // Remember where we've read to.
+                        fpos += bytesRead;
+
                         // Wrap up the buffer in an NG buffer.
                         buffer = NGBuffer( buffer );
+
                         // Pull out the bits of header we need.
                         hMagic     = buffer.readString( 2, false );
                         buffer.skip( 2 );
@@ -137,12 +145,31 @@ module.exports = function NortonGuide( path ) {
         } );
     }
 
+    this.loadMenus = function loadMenus( callback ) {
+        console.log( "I'd read the menus here" );
+        callback( self );
+    }
+
     this.filename = function filename() {
         return path;
     }
 
     this.open = function open( callback ) {
-        readHeader( callback );
+
+        readHeader( ( ng, err ) => {
+
+            if ( err ) {
+                callback( ng, err );
+            } else {
+                if ( self.hasMenus() ) {
+                    ng.loadMenus( callback );
+                } else {
+                    callback( ng );
+                }
+            }
+
+        } );
+
     };
 
     this.isNG = function isNG() {
