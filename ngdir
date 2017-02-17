@@ -5,28 +5,14 @@
 
     const NG = require( "./jsNG" );
 
-    let dir = ( a ) => {
+    for ( let file of args ) {
 
-        const file = a.next();
+        const ng = new NG( file ).open();
 
-        if ( !file.done ) {
-            ( new NG( file.value ) ).open( ( ng, error ) => {
-
-                if ( error ) {
-                    console.log( error );
-                } else {
-                    if ( ng.isNG() ) {
-                        console.log( file.value + "\n\t" + ng.title() );
-                    }
-                }
-
-                dir( a );
-
-            } );
+        if ( ng.isNG() ) {
+            console.log( file + "\n\t" + ng.title() );
         }
 
-    };
-
-    dir( args[ Symbol.iterator ]() );
+    }
 
 } )( process.argv.slice( 2 ) );

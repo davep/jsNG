@@ -109,47 +109,49 @@ module.exports = function NortonGuide( path ) {
         szCredits4  : 66
     };
 
+    // Holds the content of the guide.
+    let ng;
+
     // Header values.
     let hMagic;
     let hMenuCount;
     let hTitle;
     let hCredits;
 
-    // Read location tracking.
-    let fpos = 0;
+    function fsize( file ) {
+        try {
+            return fs.statSync( file ).size;
+        } catch ( err ) {
+            return -1;
+        }
+    }
 
-    function readHeader( callback ) {
-        fs.open( path, "r", ( err, fd ) => {
-            if ( err ) {
-                callback( self, err );
-            } else {
-                fs.read( fd, new Buffer( sizeOf( headerStruct ) ), 0, sizeOf( headerStruct ), fpos, ( err, bytesRead, buffer ) => {
-                    if ( err ) {
-                        callback( self, err );
-                    } else {
+    function readHeader() {
 
-                        // Remember where we've read to.
-                        fpos += bytesRead + 1;
+        // Load up the magic number.
+        hMagic = ng.readString( 2, false );
 
-                        // Wrap up the buffer in an NG buffer.
-                        buffer = NGBuffer( buffer );
+        // Check that it looks like a guide. Not much point in going on if
+        // it doesn't.
+        if ( self.isNG() ) {
 
-                        // Pull out the bits of header we need.
-                        hMagic     = buffer.readString( 2, false );
-                        buffer.skip( 2 );
-                        buffer.skip( 2 );
-                        hMenuCount = buffer.readWord( false );
-                        hTitle     = buffer.readString( headerStruct.szTitle, false );
-                        hCredits   = [ buffer.readString( headerStruct.szCredits0, false ) ];
-                        hCredits.push( buffer.readString( headerStruct.szCredits1, false ) );
-                        hCredits.push( buffer.readString( headerStruct.szCredits2, false ) );
-                        hCredits.push( buffer.readString( headerStruct.szCredits3, false ) );
-                        hCredits.push( buffer.readString( headerStruct.szCredits4, false ) );
-                        callback( self );
-                    }
-                } );
-            }
-        } );
+            // Skip a couple of unknown values.
+            ng.skip( 2 );
+            ng.skip( 2 );
+
+            // Get the count of menus.
+            hMenuCount = ng.readWord( false );
+
+            // Get the title of the guide.
+            hTitle = ng.readString( headerStruct.szTitle, false );
+
+            // Load up the credits.
+            hCredits   = [ ng.readString( headerStruct.szCredits0, false ) ];
+            hCredits.push( ng.readString( headerStruct.szCredits1, false ) );
+            hCredits.push( ng.readString( headerStruct.szCredits2, false ) );
+            hCredits.push( ng.readString( headerStruct.szCredits3, false ) );
+            hCredits.push( ng.readString( headerStruct.szCredits4, false ) );
+        }
     }
 
     this.loadMenus = function loadMenus( callback ) {
@@ -176,22 +178,43 @@ module.exports = function NortonGuide( path ) {
         return path;
     }
 
-    this.open = function open( callback ) {
+    this.open = function open() {
 
-        readHeader( ( ng, err ) => {
+        let f;
 
-            if ( err ) {
-                callback( ng, err );
+        try {
+            // Open the file.
+            f = fs.openSync( path, "r" );
+        } catch ( e ) {
+            console.log( e );
+        }
+
+        try {
+
+            // Get the size of the file.
+            const size = fsize( path );
+
+            // Make a buffer big enough to hold the content of the file.
+            ng = new Buffer( size );
+
+            // Fill the buffer with the content of the file.
+            if ( fs.readSync( f, ng, 0, size, 0 ) == size ) {
+
+                // Having got this far, turn it into a NG buffer.
+                ng = NGBuffer( ng );
+
+                // Now read the header.
+                readHeader();
+
             } else {
-                if ( self.hasMenus() ) {
-                    ng.loadMenus( callback );
-                } else {
-                    callback( ng );
-                }
+                // TODO: Didn't read it all.
             }
 
-        } );
+        } finally {
+            fs.closeSync( f );
+        }
 
+        return self;
     };
 
     this.isNG = function isNG() {
