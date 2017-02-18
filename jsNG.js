@@ -183,21 +183,6 @@ module.exports = function NortonGuide( path ) {
         MENU:  2
     };
 
-    // Helps us keep track of the sizes of the parts of the header. More of a
-    // useful nod back to the old C structure than anything else.
-    const headerStruct = {
-        usMagic     : 2,
-        sUnknown    : 2,
-        sUnknown2   : 2,
-        usMenuCount : 2,
-        szTitle     : 40,
-        szCredits0  : 66,
-        szCredits1  : 66,
-        szCredits2  : 66,
-        szCredits3  : 66,
-        szCredits4  : 66
-    };
-
     // Holds the content of the guide.
     let ng;
 
@@ -231,15 +216,19 @@ module.exports = function NortonGuide( path ) {
             // Get the count of menus.
             hMenuCount = ng.readWord( false );
 
+            // Size of the strings in the header.
+            const TITLE_LEN  = 40;
+            const CREDIT_LEN = 66;
+
             // Get the title of the guide.
-            hTitle = ng.readString( headerStruct.szTitle, false );
+            hTitle = ng.readString( TITLE_LEN, false );
 
             // Load up the credits.
-            hCredits   = [ ng.readString( headerStruct.szCredits0, false ) ];
-            hCredits.push( ng.readString( headerStruct.szCredits1, false ) );
-            hCredits.push( ng.readString( headerStruct.szCredits2, false ) );
-            hCredits.push( ng.readString( headerStruct.szCredits3, false ) );
-            hCredits.push( ng.readString( headerStruct.szCredits4, false ) );
+            hCredits   = [ ng.readString( CREDIT_LEN, false ) ];
+            hCredits.push( ng.readString( CREDIT_LEN, false ) );
+            hCredits.push( ng.readString( CREDIT_LEN, false ) );
+            hCredits.push( ng.readString( CREDIT_LEN, false ) );
+            hCredits.push( ng.readString( CREDIT_LEN, false ) );
         }
     }
 
