@@ -183,15 +183,6 @@ module.exports = function NortonGuide( path ) {
         MENU:  2
     };
 
-    // Given a "structure" (in other words an object with key/value pairs
-    // that are the size of the structures found inside an NG file) return
-    // the total size of it.
-    function sizeOf( struct ) {
-        return Object.keys( struct ).reduce( ( total, key ) => {
-            return total + struct[ key ];
-        }, 0 );
-    }
-
     // Helps us keep track of the sizes of the parts of the header. More of a
     // useful nod back to the old C structure than anything else.
     const headerStruct = {
