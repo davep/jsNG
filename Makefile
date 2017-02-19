@@ -1,5 +1,5 @@
 test:
-	node test.js
+	./guidetest
 
 dir:
 	./ngdir /Users/davep/Google\ Drive/Norton\ Guides/*.ng
