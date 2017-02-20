@@ -35,8 +35,7 @@
         ng.goFirst();
 
         while ( !ng.eof() ) {
-            const entry = ng.loadEntry();
-            entry.lines().forEach( DEBUG );
+            ng.loadEntry().lines().forEach( DEBUG );
             ng.nextEntry();
         }
 
