@@ -338,44 +338,44 @@ module.exports = function NortonGuide( path ) {
         return self;
     };
 
-    this.isNG = function isNG() {
+    this.isNG = () => {
         return hMagic in MAGIC;
     };
 
-    this.type = function type() {
+    this.type = () => {
         return MAGIC[ hMagic ] || "Unknown";
     };
 
-    this.menuCount = function menuCount() {
+    this.menuCount = () => {
         return hMenuCount;
     };
 
-    this.hasMenus = function hasMenus() {
+    this.hasMenus = () => {
         return self.menuCount() > 0;
     };
 
-    this.menu = function menu( i ) {
+    this.menu = ( i ) => {
         return menus[ i ];
     };
 
-    this.title = function title() {
+    this.title = () => {
         return hTitle;
     };
 
-    this.credits = function credits() {
+    this.credits = () => {
         return hCredits;
     };
 
-    this.firstEntry = function firstEntry() {
+    this.firstEntry = () => {
         return firstEntry;
     };
 
-    this.goFirst = function goFirst() {
+    this.goFirst = () => {
         ng.go( self.firstEntry() );
         return self;
     };
 
-    this.gotoEntry = function gotoEntry( i ) {
+    this.gotoEntry = ( i ) => {
         ng.go( i );
         return self;
     };
