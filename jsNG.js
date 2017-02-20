@@ -344,29 +344,29 @@ module.exports = function NortonGuide( path ) {
 
     this.type = function type() {
         return MAGIC[ hMagic ] || "Unknown";
-    }
+    };
 
     this.menuCount = function menuCount() {
         return hMenuCount;
-    }
+    };
 
     this.hasMenus = function hasMenus() {
         return self.menuCount() > 0;
-    }
+    };
 
     this.menu = function menu( i ) {
         return menus[ i ];
-    }
+    };
 
     this.title = function title() {
         return hTitle;
-    }
+    };
 
     this.credits = function credits() {
         return hCredits;
-    }
+    };
 
     this.firstEntry = function firstEntry() {
         return firstEntry;
-    }
+    };
 };
