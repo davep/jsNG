@@ -234,11 +234,11 @@ function NGEntry( ng ) {
     const lineCount    = ng.readWord( true );
     const hasSeeAlso   = ng.readWord( true );
     const parentLine   = ng.readWord( true );
-    const parent       = ng.readWord( true );
+    const parent       = ng.readLong( true );
     const parentMenu   = ng.readWord( true );
     const parentPrompt = ng.readWord( true );
-    const previous     = ng.readWord( true );
-    const next         = ng.readWord( true );
+    const previous     = ng.readLong( true );
+    const next         = ng.readLong( true );
     const offsets      = new Array( lineCount );
     const lines        = new Array( lineCount );
 
