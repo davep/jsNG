@@ -369,4 +369,8 @@ module.exports = function NortonGuide( path ) {
     this.firstEntry = function firstEntry() {
         return firstEntry;
     };
+
+    this.goFirst = function goFirst() {
+        ng.go( self.firstEntry() );
+    };
 };
