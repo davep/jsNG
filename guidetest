@@ -35,7 +35,15 @@
         ng.goFirst();
 
         while ( !ng.eof() ) {
-            ng.loadEntry().lines().forEach( DEBUG );
+
+            const entry = ng.loadEntry();
+
+            entry.lines().forEach( DEBUG );
+
+            if ( entry.hasSeeAlso() ) {
+                console.log( "See also: " + entry.seeAlso().prompts().join( ", " ) );
+            }
+
             ng.nextEntry();
         }
 
