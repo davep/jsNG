@@ -35,8 +35,7 @@
 
         if ( first.isShort() ) {
             DEBUG( "First entry is a short" );
-            DEBUG( first.lines()[ 0 ] );
-            //first.lines().forEach( l => DEBUG( l ) );
+            first.lines().forEach( DEBUG );
         } else {
             DEBUG( "First entry is a long" );
         }
