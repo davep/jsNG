@@ -553,5 +553,18 @@ module.exports = function NortonGuide( path ) {
     this.lookingAtLong = () => self.currentEntryType() == ENTRY.LONG;
 
     // Does it look like we're at the EOF?
-    this.eof = () => ng.eof();
+    this.eof = () => {
+
+        // If the guide says we're at EOF...
+        if ( ng.eof() ) {
+            // ...we're at EOF.
+            return true;
+        }
+
+        // Otherwise, if we don't seem to be looking at a valid entry type,
+        // act as if we're at EOF so things don't go badly for a broken
+        // guide.
+        return !self.lookingAtShort() && !self.lookingAtLong();
+
+    };
 };
