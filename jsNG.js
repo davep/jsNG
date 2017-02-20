@@ -264,9 +264,7 @@ module.exports = function NortonGuide( path ) {
         do {
             switch ( ng.readWord( true ) ) {
                 case ENTRY.SHORT:
-                    console.log( "Skipping short" );
                 case ENTRY.LONG:
-                    console.log( "Skipping long" );
                     skipEntry();
                     break;
                 case ENTRY.MENU:
@@ -274,8 +272,8 @@ module.exports = function NortonGuide( path ) {
                     ++i;
                     break;
                 default:
-                    // TODO: Oops.
-                    console.log( "Not a valid entry type. Crapping out." );
+                    // Found something we don't understand. Probably a good
+                    // idea to give up at this point.
                     return;
             }
         }
