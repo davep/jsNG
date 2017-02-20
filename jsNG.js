@@ -538,6 +538,14 @@ module.exports = function NortonGuide( path ) {
         skipEntry();
     };
 
+    // Peek a the current type.
+    this.currentEntryType = () => {
+        const oldpos = ng.pos();
+        const type   = ng.readWord( true );
+        ng.go( oldpos );
+        return type;
+    };
+
     // Does it look like we're at the EOF?
     this.eof = () => ng.eof();
 };
