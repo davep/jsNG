@@ -9,7 +9,7 @@ function NGBuffer( buffer ) {
     "use strict";
 
     // Encoding to use when reading the buffer.
-    const ENCODING = "ascii";
+    const ENCODING = "binary";
 
     // NG decryption.
     function decryptByte( byte ) {
@@ -111,8 +111,43 @@ function NGBuffer( buffer ) {
 
         // Un-RLE a string.
         expand: ( str ) => {
-            // TODO
-            return str;
+
+            const len    = str.length;
+            let   result = "";
+            let   jump;
+            let   rle;
+
+            for ( let i = 0; i < len; i++ ) {
+
+                // If the current character is an RLE marker, and we're not
+                // at the end of the string.
+                if ( ( str.charCodeAt( i ) == 0xff ) && ( i < ( len - 1 ) ) ) {
+
+                    // We'll be jumping the next character.
+                    jump = true;
+                    // Because it's a count of characters to unroll.
+                    rle = str.charCodeAt( i + 1 );
+
+                    // If the RLE count is an RLE marker...
+                    if ( rle == 0xff ) {
+                        // ...just assume this needs to be a space. I'm not
+                        // sure if this is correct, but I've seen this crop
+                        // up in some guides and it seems to (visually) have
+                        // this effect.
+                        result += " ";
+                    } else {
+                        result += new Array( rle + 1 ).join( " " );
+                    }
+                } else if ( !jump ) {
+                    // Not jumping. Add to the result.
+                    result += str[ i ];
+                } else {
+                    // Jumping. Mark that we won't jump the next.
+                    jump = false;
+                }
+            }
+
+            return result;
         }
 
     };
