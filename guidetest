@@ -34,7 +34,7 @@
         // Ensure we're on the first entry.
         ng.goFirst();
 
-        while ( true ) {
+        while ( !ng.eof() ) {
             const entry = ng.loadEntry();
             entry.lines().forEach( DEBUG );
             ng.nextEntry();
