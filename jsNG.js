@@ -210,6 +210,9 @@ module.exports = function NortonGuide( path ) {
     let hTitle;
     let hCredits;
 
+    // General values for tracking what we're doing.
+    let firstEntry;
+
     function fsize( file ) {
         try {
             return fs.statSync( file ).size;
@@ -321,6 +324,9 @@ module.exports = function NortonGuide( path ) {
                     }
                 }
 
+                // At this point, we should be sat on the first entry.
+                firstEntry = ng.pos();
+
             } else {
                 // TODO: Didn't read it all.
             }
@@ -358,5 +364,9 @@ module.exports = function NortonGuide( path ) {
 
     this.credits = function credits() {
         return hCredits;
+    }
+
+    this.firstEntry = function firstEntry() {
+        return firstEntry;
     }
 };
