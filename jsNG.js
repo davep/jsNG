@@ -223,7 +223,7 @@ function NGEntry( ng ) {
     self.isLong       = () => type == ENTRY.LONG;
 
     // Read the text for the entry.
-    function ReadText() {
+    function readText() {
 
         const MAX_LINE_LENGTH = 1024;
 
@@ -232,7 +232,7 @@ function NGEntry( ng ) {
         }
     }
 
-    function LoadShort() {
+    function loadShort() {
 
         // For each of the lines we need to load...
         for ( let i = 0; i < self.lineCount(); i++ ) {
@@ -245,13 +245,13 @@ function NGEntry( ng ) {
         }
 
         // Now read the text.
-        ReadText( self, ng );
+        readText( self, ng );
     }
 
-    function LoadLong() {
+    function loadLong() {
 
         // Read the text of the entry.
-        ReadText( self, ng );
+        readText( self, ng );
 
         // If the entry has see-also entries...
         if ( self.hasSeeAlso() ) {
@@ -261,9 +261,9 @@ function NGEntry( ng ) {
     }
 
     if ( self.isShort() ) {
-        LoadShort();
+        loadShort();
     } else {
-        LoadLong();
+        loadLong();
     }
 
     return self;
