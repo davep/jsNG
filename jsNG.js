@@ -297,8 +297,10 @@ function NGEntry( ng ) {
 
     if ( self.isShort() ) {
         loadShort();
-    } else {
+    } else if ( self.isLong() ) {
         loadLong();
+    } else {
+        console.log( "TODO: Not sort or long. Throw an error" );
     }
 
     return self;
