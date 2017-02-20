@@ -34,7 +34,7 @@
         // Ensure we're on the first entry.
         ng.goFirst();
 
-        DEBUG( ng.currentEntryType() );
+        DEBUG( ng.lookingAtShort() );
 
         while ( !ng.eof() ) {
 
