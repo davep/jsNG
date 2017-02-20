@@ -1,3 +1,6 @@
+// Handy constants.
+const MAX_PROMPT_LEN = 128;
+
 // Guide entry magic numbers.
 const ENTRY = {
     SHORT: 0,
@@ -158,9 +161,6 @@ function NGBuffer( buffer ) {
 function NGMenu( ng ) {
     "use strict";
 
-    // Handy constants.
-    const MAX_PROMPT_LEN = 128;
-
     // Remember who we are.
     const self = this;
 
@@ -221,6 +221,45 @@ function NGMenu( ng ) {
     return self;
 }
 
+function NGSeeAlso( ng ) {
+    "use strict";
+
+    // Max numbe of see also items we'll handle. This is the limit published
+    // in the Expert Help Compiler manual and, while this limit isn't really
+    // needed in this code, it does help guard against corrupt guides.
+    const MAX_SEE_ALSO = 20;
+
+    // Remember who we are.
+    const self = this;
+
+    // Get the number of see also entries.
+    const seeAlsoCount = Math.min( ng.readWord( true ), MAX_SEE_ALSO );
+
+    // Holds the seealsos.
+    const seeAlsos = [];
+
+    // Read the offsets for each of the entries.
+    for ( let i = 0; i < seeAlsoCount; i++ ) {
+        seeAlsos.push( {
+            prompt: "",
+            offset: ng.readLong( true )
+        } );
+    }
+
+    // Now read the seealsos themselves.
+    for ( let i = 0; i < seeAlsoCount; i++ ) {
+        seeAlsos[ i ].prompt = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
+    }
+
+    // Access the see-also info.
+    self.seeAlsoCount = ()    => seeAlsoCount;
+    self.prompts      = ()    => seeAlsos.map( ( seeAlso ) => seeAlso.prompt );
+    self.seeAlso      = ( i ) => seeAlsos[ i ].prompt;
+    self.offset       = ( i ) => seeAlsos[ i ].offset;
+
+    return self;
+}
+
 function NGEntry( ng ) {
     "use strict";
 
@@ -241,12 +280,13 @@ function NGEntry( ng ) {
     const next         = ng.readLong( true );
     const offsets      = new Array( lineCount );
     const lines        = new Array( lineCount );
+    let   seeAlso;
 
     // Access to the simple values of the entry.
     self.offset       = () => offset;
     self.type         = () => type;
     self.lineCount    = () => lineCount;
-    self.hasSeeAlso   = () => hasSeeAlso;
+    self.hasSeeAlso   = () => hasSeeAlso > 0;
     self.parentLine   = () => parentLine;
     self.parent       = () => parent       == -1     ? 0  : parent;
     self.parentMenu   = () => parentMenu   == 0xffff ? -1 : parentMenu;
@@ -256,6 +296,7 @@ function NGEntry( ng ) {
     self.lines        = () => lines;
     self.isShort      = () => type == ENTRY.SHORT;
     self.isLong       = () => type == ENTRY.LONG;
+    self.seeAlso      = () => seeAlso;
 
     // Read the text for the entry.
     function readText() {
@@ -291,7 +332,7 @@ function NGEntry( ng ) {
         // If the entry has see-also entries...
         if ( self.hasSeeAlso() ) {
             // ...read those too.
-            console.log( "TODO: Read see also" );
+            seeAlso = new NGSeeAlso( ng );
         }
     }
 
