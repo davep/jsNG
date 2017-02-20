@@ -1,3 +1,10 @@
+// Guide entry magic numbers.
+const ENTRY = {
+    SHORT: 0,
+    LONG:  1,
+    MENU:  2
+};
+
 function NGBuffer( buffer ) {
     "use strict";
 
@@ -179,6 +186,89 @@ function NGMenu( ng ) {
     return self;
 }
 
+function NGEntry( ng ) {
+    "use strict";
+
+    // Remember who we are.
+    const self = this;
+
+    // Load up the main details of the entry.
+    const offset       = ng.pos();
+    const type         = ng.readWord( true );
+    const size         = ng.readWord( true );
+    const lineCount    = ng.readWord( true );
+    const hasSeeAlso   = ng.readWord( true );
+    const parentLine   = ng.readWord( true );
+    const parent       = ng.readWord( true );
+    const parentMenu   = ng.readWord( true );
+    const parentPrompt = ng.readWord( true );
+    const previous     = ng.readWord( true );
+    const next         = ng.readWord( true );
+    const offsets      = new Array( lineCount );
+    const lines        = new Array( lineCount );
+
+    // Access to the simple values of the entry.
+    self.offset       = () => offset;
+    self.type         = () => type;
+    self.lineCount    = () => lineCount;
+    self.hasSeeAlso   = () => hasSeeAlso;
+    self.parentLine   = () => parentLine;
+    self.parent       = () => parent       == -1     ? 0  : parent;
+    self.parentMenu   = () => parentMenu   == 0xffff ? -1 : parentMenu;
+    self.parentPrompt = () => parentPrompt == 0xffff ? -1 : parentPrompt;
+    self.previous     = () => previous     == -1     ? 0  : previous;
+    self.next         = () => next         == -1     ? 0  : next;
+    self.lines        = () => lines;
+    self.isShort      = () => type == ENTRY.SHORT;
+    self.isLong       = () => type == ENTRY.LONG;
+
+    // Read the text for the entry.
+    function ReadText() {
+
+        const MAX_LINE_LENGTH = 1024;
+
+        for ( let i = 0; i < self.lineCount(); i++ ) {
+            lines[ i ] = ng.readStringZ( MAX_LINE_LENGTH, true );
+        }
+    }
+
+    function LoadShort() {
+
+        // For each of the lines we need to load...
+        for ( let i = 0; i < self.lineCount(); i++ ) {
+
+            // Skip a word.
+            ng.readWord();
+
+            // Load the offset of the line.
+            offsets[ i ] = ng.readLong( true );
+        }
+
+        // Now read the text.
+        ReadText( self, ng );
+    }
+
+    function LoadLong() {
+
+        // Read the text of the entry.
+        ReadText( self, ng );
+
+        // If the entry has see-also entries...
+        if ( self.hasSeeAlso() ) {
+            // ...read those too.
+            console.log( "TODO: Read see also" );
+        }
+    }
+
+    if ( self.isShort() ) {
+        LoadShort();
+    } else {
+        LoadLong();
+    }
+
+    return self;
+}
+
 module.exports = function NortonGuide( path ) {
     "use strict";
 
@@ -192,13 +282,6 @@ module.exports = function NortonGuide( path ) {
     const MAGIC = {
         EH: "Expert Help",
         NG: "Norton Guide"
-    };
-
-    // Guide entry magic numbers.
-    const ENTRY = {
-        SHORT: 0,
-        LONG:  1,
-        MENU:  2
     };
 
     // Holds the content of the guide.
@@ -378,5 +461,14 @@ module.exports = function NortonGuide( path ) {
     this.gotoEntry = ( i ) => {
         ng.go( i );
         return self;
+    };
+
+    this.loadEntry = ( pos ) => {
+
+        if ( pos ) {
+            self.gotoEntry( pos );
+        }
+
+        return new NGEntry( ng );
     };
 };
