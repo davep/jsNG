@@ -31,23 +31,19 @@ function NGBuffer( buffer ) {
     // Main body of functions that work on the buffer.
     let self = {
 
-        eof: () => {
-            return offset >= buffer.length;
-        },
-
-        // Return the current position.
-        pos: () => {
-            return offset;
-        },
+        eof: () => offset >= buffer.length, // At or past EOF?
+        pos: () => offset,                  // Current location.
 
         // Go to a given position.
         go: ( n ) => {
-            return offset = n;
+            offset = n;
+            return self;
         },
 
         // Skip bytes in the buffer.
         skip: ( n ) => {
             offset += ( n || 1 );
+            return self;
         },
 
         // Read a single byte.
