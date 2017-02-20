@@ -128,8 +128,6 @@ function NGMenu( ng ) {
     // Read the number of prompts.
     const promptCount = ng.readWord( true ) - 1;
 
-    console.log( "Prompt count: " + promptCount );
-
     // Skip 20 bytes.
     ng.skip( 20 );
 
@@ -149,16 +147,36 @@ function NGMenu( ng ) {
 
     // Get the title of the menu.
     const title = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
-    console.log( "Title: [" + title + "]" );
 
     // Now load each of the prompts.
     for ( let i = 0; i < promptCount; i++ ) {
         prompts[ i ].prompt = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
-        console.log( "SubPrompt: [" + prompts[ i ].prompt + "]" );
     }
 
     // Skip an unknown byte. Can't remember what it's for.
     ng.skip();
+
+    // Access to the menu's title.
+    self.title = () => {
+        return title;
+    };
+
+    // Access to the menu's prompt count.
+    self.promptCount = () => {
+        return promptCount;
+    };
+
+    // Access to the menu prompt titles.
+    self.prompt = ( i ) => {
+        return prompts[ i ].prompt;
+    };
+
+    // Access to the menu prompt offsets.
+    self.offset = ( i ) => {
+        return prompts[ i ].offset;
+    };
+
+    return self;
 }
 
 module.exports = function NortonGuide( path ) {
@@ -236,11 +254,8 @@ module.exports = function NortonGuide( path ) {
         ng.skip( 22 + ng.readWord( true ) );
     }
 
-    function loadMenu() {
-        // TODO:
-        console.log( "Found a menu!" );
-        new NGMenu( ng );
-    }
+    // Holds the menus.
+    const menus = [];
 
     function readMenus() {
 
@@ -255,7 +270,7 @@ module.exports = function NortonGuide( path ) {
                     skipEntry();
                     break;
                 case ENTRY.MENU:
-                    loadMenu();
+                    menus.push( new NGMenu( ng ) );
                     ++i;
                     break;
                 default:
@@ -333,6 +348,10 @@ module.exports = function NortonGuide( path ) {
 
     this.hasMenus = function hasMenus() {
         return self.menuCount() > 0;
+    }
+
+    this.menu = function menu( i ) {
+        return menus[ i ];
     }
 
     this.title = function title() {
