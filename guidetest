@@ -23,8 +23,7 @@
         DEBUG( "Credits: " + ng.credits() );
 
         DEBUG( "Menus: " );
-        var i;
-        for ( i = 0; i < ng.menuCount(); i++ ) {
+        for ( let i = 0; i < ng.menuCount(); i++ ) {
             DEBUG( ng.menu( i ).title() );
         }
     } else {
