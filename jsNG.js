@@ -198,25 +198,11 @@ function NGMenu( ng ) {
     // Skip an unknown byte. Can't remember what it's for.
     ng.skip();
 
-    // Access to the menu's title.
-    self.title = () => {
-        return title;
-    };
-
-    // Access to the menu's prompt count.
-    self.promptCount = () => {
-        return promptCount;
-    };
-
-    // Access to the menu prompt titles.
-    self.prompt = ( i ) => {
-        return prompts[ i ].prompt;
-    };
-
-    // Access to the menu prompt offsets.
-    self.offset = ( i ) => {
-        return prompts[ i ].offset;
-    };
+    // Access to the menu's details.
+    self.title       = ()    => title;
+    self.promptCount = ()    => promptCount;
+    self.prompt      = ( i ) => prompts[ i ].prompt;
+    self.offset      = ( i ) => prompts[ i ].offset;
 
     return self;
 }
