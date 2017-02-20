@@ -31,6 +31,10 @@ function NGBuffer( buffer ) {
     // Main body of functions that work on the buffer.
     let self = {
 
+        eof: () => {
+            return offset >= buffer.length;
+        },
+
         // Return the current position.
         pos: () => {
             return offset;
@@ -509,5 +513,10 @@ module.exports = function NortonGuide( path ) {
         ng.skip( 2 );
         // Then skip the entry.
         skipEntry();
+    };
+
+    // Does it look like we're at the EOF?
+    this.eof = () => {
+        return ng.eof();
     };
 };
