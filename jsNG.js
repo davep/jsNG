@@ -375,7 +375,7 @@ module.exports = function NortonGuide( path ) {
         return self;
     };
 
-    this.gotoEntry = functino gotoEntry( i ) {
+    this.gotoEntry = function gotoEntry( i ) {
         ng.go( i );
         return self;
     };
