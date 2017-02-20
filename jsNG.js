@@ -421,48 +421,29 @@ module.exports = function NortonGuide( path ) {
         return self;
     };
 
-    this.isNG = () => {
-        return hMagic in MAGIC;
-    };
+    // Access to information about the guide.
+    this.isNG       = ()    => hMagic in MAGIC;
+    this.type       = ()    => MAGIC[ hMagic ] || "Unknown";
+    this.menuCount  = ()    => hMenuCount;
+    this.hasMenus   = ()    => self.menuCount() > 0;
+    this.menu       = ( i ) => menus[ i ];
+    this.title      = ()    => hTitle;
+    this.credits    = ()    => hCredits;
+    this.firstEntry = ()    => firstEntry;
 
-    this.type = () => {
-        return MAGIC[ hMagic ] || "Unknown";
-    };
-
-    this.menuCount = () => {
-        return hMenuCount;
-    };
-
-    this.hasMenus = () => {
-        return self.menuCount() > 0;
-    };
-
-    this.menu = ( i ) => {
-        return menus[ i ];
-    };
-
-    this.title = () => {
-        return hTitle;
-    };
-
-    this.credits = () => {
-        return hCredits;
-    };
-
-    this.firstEntry = () => {
-        return firstEntry;
-    };
-
+    // Go to the first entry.
     this.goFirst = () => {
         ng.go( self.firstEntry() );
         return self;
     };
 
+    // Go to a given entry.
     this.gotoEntry = ( i ) => {
         ng.go( i );
         return self;
     };
 
+    // Load an entry.
     this.loadEntry = ( pos ) => {
 
         if ( pos ) {
