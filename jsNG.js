@@ -549,6 +549,9 @@ module.exports = function NortonGuide( path ) {
     // Are we currently looking at a short?
     this.lookingAtShort = () => self.currentEntryType() == ENTRY.SHORT;
 
+    // Are we currentEntryType looking at a long?
+    this.lookingAtLong = () => self.currentEntryType() == ENTRY.LONG;
+
     // Does it look like we're at the EOF?
     this.eof = () => ng.eof();
 };
