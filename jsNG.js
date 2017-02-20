@@ -483,10 +483,23 @@ module.exports = function NortonGuide( path ) {
     // Load an entry.
     this.loadEntry = ( pos ) => {
 
+        // Remember where we're at.
+        const oldpos = ng.pos();
+
+        // If we've been given a position to load from...
         if ( pos ) {
+            // ...go to that position.
             self.gotoEntry( pos );
         }
 
-        return new NGEntry( ng );
+        // Load the entry at the current postion.
+        const entry = new NGEntry( ng );
+
+        // Return to the saved position.
+        ng.go( oldpos );
+
+        // Return the loaded entry.
+        return entry;
+
     };
 };
