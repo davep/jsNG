@@ -539,7 +539,5 @@ module.exports = function NortonGuide( path ) {
     };
 
     // Does it look like we're at the EOF?
-    this.eof = () => {
-        return ng.eof();
-    };
+    this.eof = () => ng.eof();
 };
