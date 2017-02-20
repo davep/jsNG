@@ -509,5 +509,5 @@ module.exports = function NortonGuide( path ) {
         ng.skip( 2 );
         // Then skip the entry.
         skipEntry();
-    }
+    };
 };
