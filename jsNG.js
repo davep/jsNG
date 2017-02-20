@@ -228,7 +228,7 @@ function NGEntry( ng ) {
         const MAX_LINE_LENGTH = 1024;
 
         for ( let i = 0; i < self.lineCount(); i++ ) {
-            lines[ i ] = ng.readStringZ( MAX_LINE_LENGTH, true );
+            lines[ i ] = ng.expand( ng.readStringZ( MAX_LINE_LENGTH, true ) );
         }
     }
 
