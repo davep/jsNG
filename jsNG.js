@@ -502,4 +502,12 @@ module.exports = function NortonGuide( path ) {
         return entry;
 
     };
+
+    // Skip to the next entry.
+    this.nextEntry = () => {
+        // Eat the ID byte.
+        ng.skip( 2 );
+        // Then skip the entry.
+        skipEntry();
+    }
 };

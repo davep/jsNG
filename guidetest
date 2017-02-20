@@ -31,13 +31,13 @@
             }
         }
 
-        const first = ng.goFirst().loadEntry();
+        // Ensure we're on the first entry.
+        ng.goFirst();
 
-        if ( first.isShort() ) {
-            DEBUG( "First entry is a short" );
-            first.lines().forEach( DEBUG );
-        } else {
-            DEBUG( "First entry is a long" );
+        while ( true ) {
+            const entry = ng.loadEntry();
+            entry.lines().forEach( DEBUG );
+            ng.nextEntry();
         }
 
     } else {
