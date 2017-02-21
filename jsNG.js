@@ -28,6 +28,10 @@ function NGBuffer( buffer ) {
         return s;
     }
 
+    function decryptdefault( d ) {
+        return d === undefined ? true : d;
+    }
+
     // Track the offset that we're working at in the buffer.
     let offset = 0;
 
@@ -53,7 +57,7 @@ function NGBuffer( buffer ) {
         readByte: ( decrypt ) => {
             const byte = buffer[ offset ];
             self.skip();
-            return decrypt ? decryptByte( byte ) : byte;
+            return decryptdefault( decrypt ) ? decryptByte( byte ) : byte;
         },
 
         // Read a (2 byte) word.
@@ -83,7 +87,7 @@ function NGBuffer( buffer ) {
             substr.copy( str );
 
             // If we're decrypting...
-            if ( decrypt ) {
+            if ( decryptdefault( decrypt ) ) {
                 for ( const char of str.entries() ) {
                     str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
                 }
@@ -168,7 +172,7 @@ function NGMenu( ng ) {
     ng.readWord();
 
     // Read the number of prompts.
-    const promptCount = ng.readWord( true ) - 1;
+    const promptCount = ng.readWord() - 1;
 
     // Skip 20 bytes.
     ng.skip( 20 );
@@ -180,7 +184,7 @@ function NGMenu( ng ) {
     for ( let i = 0; i < promptCount; i++ ) {
         prompts.push( {
             prompt: "",
-            offset: ng.readLong( true )
+            offset: ng.readLong()
         } );
     }
 
@@ -188,11 +192,11 @@ function NGMenu( ng ) {
     ng.skip( ( promptCount + 1 ) * 8 );
 
     // Get the title of the menu.
-    const title = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
+    const title = ng.expand( ng.readStringZ( MAX_PROMPT_LEN ) );
 
     // Now load each of the prompts.
     for ( let i = 0; i < promptCount; i++ ) {
-        prompts[ i ].prompt = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
+        prompts[ i ].prompt = ng.expand( ng.readStringZ( MAX_PROMPT_LEN ) );
     }
 
     // Skip an unknown byte. Can't remember what it's for.
@@ -220,7 +224,7 @@ function NGSeeAlso( ng ) {
     const self = this;
 
     // Get the number of see also entries.
-    const seeAlsoCount = Math.min( ng.readWord( true ), MAX_SEE_ALSO );
+    const seeAlsoCount = Math.min( ng.readWord(), MAX_SEE_ALSO );
 
     // Holds the seealsos.
     const seeAlsos = [];
@@ -229,13 +233,13 @@ function NGSeeAlso( ng ) {
     for ( let i = 0; i < seeAlsoCount; i++ ) {
         seeAlsos.push( {
             prompt: "",
-            offset: ng.readLong( true )
+            offset: ng.readLong()
         } );
     }
 
     // Now read the seealsos themselves.
     for ( let i = 0; i < seeAlsoCount; i++ ) {
-        seeAlsos[ i ].prompt = ng.expand( ng.readStringZ( MAX_PROMPT_LEN, true ) );
+        seeAlsos[ i ].prompt = ng.expand( ng.readStringZ( MAX_PROMPT_LEN ) );
     }
 
     // Access the see-also info.
@@ -255,16 +259,16 @@ function NGEntry( ng ) {
 
     // Load up the main details of the entry.
     const offset       = ng.pos();
-    const type         = ng.readWord( true );
-    const size         = ng.readWord( true );
-    const lineCount    = ng.readWord( true );
-    const hasSeeAlso   = ng.readWord( true );
-    const parentLine   = ng.readWord( true );
-    const parent       = ng.readLong( true );
-    const parentMenu   = ng.readWord( true );
-    const parentPrompt = ng.readWord( true );
-    const previous     = ng.readLong( true );
-    const next         = ng.readLong( true );
+    const type         = ng.readWord();
+    const size         = ng.readWord();
+    const lineCount    = ng.readWord();
+    const hasSeeAlso   = ng.readWord();
+    const parentLine   = ng.readWord();
+    const parent       = ng.readLong();
+    const parentMenu   = ng.readWord();
+    const parentPrompt = ng.readWord();
+    const previous     = ng.readLong();
+    const next         = ng.readLong();
     const offsets      = new Array( lineCount );
     const lines        = new Array( lineCount );
     let   seeAlso;
@@ -291,7 +295,7 @@ function NGEntry( ng ) {
         const MAX_LINE_LENGTH = 1024;
 
         for ( let i = 0; i < self.lineCount(); i++ ) {
-            lines[ i ] = ng.expand( ng.readStringZ( MAX_LINE_LENGTH, true ) );
+            lines[ i ] = ng.expand( ng.readStringZ( MAX_LINE_LENGTH ) );
         }
     }
 
@@ -304,7 +308,7 @@ function NGEntry( ng ) {
             ng.readWord();
 
             // Load the offset of the line.
-            offsets[ i ] = ng.readLong( true );
+            offsets[ i ] = ng.readLong();
         }
 
         // Now read the text.
@@ -402,7 +406,7 @@ module.exports = function NortonGuide( path ) {
     }
 
     function skipEntry() {
-        ng.skip( 22 + ng.readWord( true ) );
+        ng.skip( 22 + ng.readWord() );
     }
 
     // Holds the menus.
@@ -413,7 +417,7 @@ module.exports = function NortonGuide( path ) {
         let i = 0;
 
         do {
-            switch ( ng.readWord( true ) ) {
+            switch ( ng.readWord() ) {
                 case ENTRY.SHORT:
                 case ENTRY.LONG:
                     skipEntry();
@@ -540,7 +544,7 @@ module.exports = function NortonGuide( path ) {
 
     // Peek a the current type.
     this.currentEntryType = () => {
-        return unmoved( () => ng.readWord( true ) );
+        return unmoved( () => ng.readWord() );
     };
 
     // Are we currently looking at a short?
