@@ -210,9 +210,10 @@ function NGMenu( ng ) {
 function NGSeeAlso( ng ) {
     "use strict";
 
-    // Max numbe of see also items we'll handle. This is the limit published
-    // in the Expert Help Compiler manual and, while this limit isn't really
-    // needed in this code, it does help guard against corrupt guides.
+    // Max number of see also items we'll handle. This is the limit
+    // published in the Expert Help Compiler manual and, while this limit
+    // isn't really needed in this code, it does help guard against corrupt
+    // guides.
     const MAX_SEE_ALSO = 20;
 
     // Remember who we are.
