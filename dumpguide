@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+( ( args ) => {
+    "use strict";
+
+    const NG = require( "./jsNG" );
+
+    if ( args[ 0 ] ) {
+
+        const ng = new NG( args[ 0 ] );
+
+        ng.open();
+
+        if ( ng.isNG() ) {
+
+            ng.goFirst();
+
+            while ( !ng.eof() ) {
+
+                const entry = ng.loadEntry();
+
+                entry.lines().forEach( ( l ) => console.log( l ) );
+
+                if ( entry.hasSeeAlso() ) {
+                    console.log( "See Also: " + entry.seeAlso().prompts().join( ", " ) );
+                }
+
+                ng.nextEntry();
+            }
+        }
+    } else {
+        console.log( "dumpguide <file>" );
+    }
+
+} )( process.argv.slice( 2 ) );
