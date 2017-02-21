@@ -435,10 +435,6 @@ module.exports = function NortonGuide( path ) {
         while ( i < self.menuCount() );
     }
 
-    this.filename = function filename() {
-        return path;
-    }
-
     this.open = function open() {
 
         let f;
@@ -498,6 +494,7 @@ module.exports = function NortonGuide( path ) {
     this.hasMenus   = ()    => self.menuCount() > 0;
     this.menu       = ( i ) => menus[ i ];
     this.title      = ()    => hTitle;
+    this.filename   = ()    => path;
     this.credits    = ()    => hCredits;
     this.firstEntry = ()    => firstEntry;
 
