@@ -327,7 +327,7 @@ function NGEntry( ng ) {
     } else if ( self.isLong() ) {
         loadLong();
     } else {
-        console.log( "TODO: Not sort or long. Throw an error" );
+        throw new Error( "Unknown entry type" );
     }
 
     return self;
