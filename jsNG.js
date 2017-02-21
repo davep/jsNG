@@ -495,6 +495,14 @@ module.exports = function NortonGuide( path ) {
     this.credits    = ()    => hCredits;
     this.firstEntry = ()    => firstEntry;
 
+    // Perform a function while not changing position.
+    function unmoved( f ) {
+        const pos    = ng.pos();
+        const result = f();
+        ng.go( pos );
+        return result;
+    }
+
     // Go to the first entry.
     this.goFirst = () => {
         ng.go( self.firstEntry() );
@@ -509,25 +517,15 @@ module.exports = function NortonGuide( path ) {
 
     // Load an entry.
     this.loadEntry = ( pos ) => {
-
-        // Remember where we're at.
-        const oldpos = ng.pos();
-
-        // If we've been given a position to load from...
-        if ( pos ) {
-            // ...go to that position.
-            self.gotoEntry( pos );
-        }
-
-        // Load the entry at the current postion.
-        const entry = new NGEntry( ng );
-
-        // Return to the saved position.
-        ng.go( oldpos );
-
-        // Return the loaded entry.
-        return entry;
-
+        return unmoved( () => {
+            // If we've been given a position to load from...
+            if ( pos ) {
+                // ...go to that position.
+                self.gotoEntry( pos );
+            }
+            // Load the entry at the current postion.
+            return new NGEntry( ng );
+        } );
     };
 
     // Skip to the next entry.
@@ -540,10 +538,7 @@ module.exports = function NortonGuide( path ) {
 
     // Peek a the current type.
     this.currentEntryType = () => {
-        const oldpos = ng.pos();
-        const type   = ng.readWord( true );
-        ng.go( oldpos );
-        return type;
+        return unmoved( () => ng.readWord( true ) );
     };
 
     // Are we currently looking at a short?
