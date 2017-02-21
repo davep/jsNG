@@ -442,7 +442,8 @@ module.exports = function NortonGuide( path ) {
             // Open the file.
             f = fs.openSync( path, "r" );
         } catch ( e ) {
-            console.log( e );
+            // For now, re-throw the error.
+            throw e;
         }
 
         try {
