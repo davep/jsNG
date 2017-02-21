@@ -540,9 +540,7 @@ module.exports = function NortonGuide( path ) {
     };
 
     // Peek a the current type.
-    this.currentEntryType = () => {
-        return unmoved( () => ng.readWord() );
-    };
+    this.currentEntryType = () => unmoved( () => ng.readWord() );
 
     // Are we currently looking at a short?
     this.lookingAtShort = () => self.currentEntryType() == ENTRY.SHORT;
