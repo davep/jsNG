@@ -7,9 +7,7 @@
 
     if ( args[ 0 ] ) {
 
-        const ng = new NG( args[ 0 ] );
-
-        ng.open();
+        const ng = new NG( args[ 0 ] ).open();
 
         if ( ng.isNG() ) {
 
