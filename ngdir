@@ -5,12 +5,15 @@
 
     const NG = require( "./jsNG" );
 
+    const basename = ( s )      => s.split( "/" ).pop();
+    const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );
+
     for ( let file of args ) {
 
         const ng = new NG( file ).open();
 
         if ( ng.isNG() ) {
-            console.log( file + "\n\t" + ng.title() );
+            console.log( padr( basename( file ), 15 ) + "\t" + ng.type() + "\t" + ng.title() );
         }
 
     }
