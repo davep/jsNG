@@ -368,7 +368,7 @@ module.exports = function NortonGuide( path ) {
     let title;
     let credits;
 
-    // General values for tracking what we're doing.
+    // Holds location of the first entry in the guide.
     let firstEntry;
 
     // Get the size of the given file.
