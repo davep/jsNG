@@ -1,5 +1,7 @@
 # jsNG
 
+[![npm](https://img.shields.io/npm/v/jsng.svg?style=flat-square)](https://www.npmjs.com/package/jsng)
+
 Small JavaScript library for reading Norton Guide database files.
 
 This is still a bit of a work-in-progress. It is, in part, my "Hello, World"
