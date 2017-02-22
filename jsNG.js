@@ -8,6 +8,8 @@ const ENTRY = {
     MENU:  2
 };
 
+// Wraps a buffer so we can track where we're at in it, move around it, read
+// from it and decrypt the content.
 function NGBuffer( buffer ) {
     "use strict";
 
@@ -162,6 +164,7 @@ function NGBuffer( buffer ) {
     return self;
 }
 
+// Loads a menu from the given NGBuffer.
 function NGMenu( ng ) {
     "use strict";
 
@@ -211,6 +214,7 @@ function NGMenu( ng ) {
     return self;
 }
 
+// Loads a see-also from the given NGBuffer.
 function NGSeeAlso( ng ) {
     "use strict";
 
@@ -251,6 +255,7 @@ function NGSeeAlso( ng ) {
     return self;
 }
 
+// Loads a short or long entry from the given NGBuffer.
 function NGEntry( ng ) {
     "use strict";
 
@@ -338,6 +343,7 @@ function NGEntry( ng ) {
     return self;
 }
 
+// Main Norton Guide object.
 module.exports = function NortonGuide( path ) {
     "use strict";
 
@@ -365,6 +371,7 @@ module.exports = function NortonGuide( path ) {
     // General values for tracking what we're doing.
     let firstEntry;
 
+    // Get the size of the given file.
     function fsize( file ) {
         try {
             return fs.statSync( file ).size;
@@ -373,6 +380,7 @@ module.exports = function NortonGuide( path ) {
         }
     }
 
+    // Read the header information from the buffer.
     function readHeader() {
 
         // Load up the magic number.
@@ -405,6 +413,7 @@ module.exports = function NortonGuide( path ) {
         }
     }
 
+    // Skip a guide entry.
     function skipEntry() {
         ng.skip( 22 + ng.readWord() );
     }
@@ -412,6 +421,7 @@ module.exports = function NortonGuide( path ) {
     // Holds the menus.
     const menus = [];
 
+    // Read the menus from a guide.
     function readMenus() {
 
         let i = 0;
@@ -435,6 +445,7 @@ module.exports = function NortonGuide( path ) {
         while ( i < self.menuCount() );
     }
 
+    // Open the guide for reading.
     this.open = function open() {
 
         let f;
