@@ -3,3 +3,6 @@ test:
 
 dir:
 	./ngdir /Users/davep/Google\ Drive/Norton\ Guides/*.{NG,ng}
+
+clean:
+	rm -f *~
