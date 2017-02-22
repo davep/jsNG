@@ -1,26 +1,26 @@
 {
-  "name": "jsng",
-  "version": "0.0.1",
-  "description": "Library and tools for working with Norton Guide database files",
-  "main": "lib/jsNG.js",
-  "scripts": {
-    "test": "make"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/davep/jsNG.git"
-  },
-  "keywords": [
-    "norton",
-    "guide",
-    "clipper",
-    "help",
-    "documentation"
-  ],
-  "author": "Dave Pearson",
-  "license": "GPL-2.0",
-  "bugs": {
-    "url": "https://github.com/davep/jsNG/issues"
-  },
-  "homepage": "https://github.com/davep/jsNG#readme"
+    "name": "jsng",
+    "version": "0.0.1",
+    "description": "Library and tools for working with Norton Guide database files",
+    "main": "lib/jsNG.js",
+    "scripts": {
+        "test": "make"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/davep/jsNG.git"
+    },
+    "keywords": [
+        "norton",
+        "guide",
+        "clipper",
+        "help",
+        "documentation"
+    ],
+    "author": "Dave Pearson",
+    "license": "GPL-2.0",
+    "bugs": {
+        "url": "https://github.com/davep/jsNG/issues"
+    },
+    "homepage": "https://github.com/davep/jsNG#readme"
 }
