@@ -488,7 +488,7 @@ module.exports = function NortonGuide( path ) {
                 firstEntry = ng.pos();
 
             } else {
-                // TODO: Didn't read it all.
+                throw new Error( "Could not read the whole file." );
             }
 
         } finally {
