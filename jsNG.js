@@ -1,5 +1,12 @@
 // Handy constants.
 const MAX_PROMPT_LEN = 128;
+const MAX_LINE_LEN   = 1024;
+
+// Magic number constants.
+const MAGIC = {
+    EH: "Expert Help",
+    NG: "Norton Guide"
+};
 
 // Guide entry magic numbers.
 const ENTRY = {
@@ -297,10 +304,8 @@ function NGEntry( ng ) {
     // Read the text for the entry.
     function readText() {
 
-        const MAX_LINE_LENGTH = 1024;
-
         for ( let i = 0; i < self.lineCount(); i++ ) {
-            lines[ i ] = ng.expand( ng.readStringZ( MAX_LINE_LENGTH ) );
+            lines[ i ] = ng.expand( ng.readStringZ( MAX_LINE_LEN ) );
         }
     }
 
@@ -352,12 +357,6 @@ module.exports = function NortonGuide( path ) {
 
     // Remember who we are.
     const self = this;
-
-    // Magic number constants.
-    const MAGIC = {
-        EH: "Expert Help",
-        NG: "Norton Guide"
-    };
 
     // Holds the content of the guide.
     let ng;
