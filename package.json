@@ -17,6 +17,10 @@
         "help",
         "documentation"
     ],
+    "bin": [
+        "ngdir": "bin/ngdir",
+        "ngdump": "bin/ngdump"
+    ],
     "author": "Dave Pearson",
     "license": "GPL-2.0",
     "bugs": {
