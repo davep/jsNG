@@ -20,13 +20,60 @@ const ENTRY = {
 function NGBuffer( buffer ) {
     "use strict";
 
+    // Remember who we are.
+    const self = this;
+
     // Encoding to use when reading the buffer.
     const ENCODING = "binary";
+
+    // Default value wrapper for the decrypt flag.
+    function decryptdefault( d ) {
+        return d === undefined ? true : d;
+    }
+
+    // Track the offset that we're working at in the buffer.
+    let offset = 0;
+
+    self.eof = () => offset >= buffer.length; // At or past EOF?
+    self.pos = () => offset;                  // Current location.
+
+    // Go to a given position.
+    self.go = ( n ) => {
+        offset = n;
+        return self;
+    };
+
+    // Skip bytes in the buffer.
+    self.skip = ( n ) => {
+        offset += ( n || 1 );
+        return self;
+    };
 
     // NG decryption.
     function decryptByte( byte ) {
         return byte ^ 0x1A;
     }
+
+    // Read a single byte.
+    self.readByte = ( decrypt ) => {
+        const byte = buffer[ offset ];
+        self.skip();
+        return decryptdefault( decrypt ) ? decryptByte( byte ) : byte;
+    };
+
+    // Read a (2 byte) word.
+    self.readWord = ( decrypt ) => {
+        const lo = self.readByte( decrypt );
+        const hi = self.readByte( decrypt );
+        return ( hi << 8 ) + lo;
+    };
+
+    // Read a (4 byte) long.
+    self.readLong = ( decrypt ) => {
+        const lo = self.readWord( decrypt );
+        const hi = self.readWord( decrypt );
+        return ( hi << 16 ) + lo;
+    };
 
     // Trim any nuls off the end of a buffer.
     function nulTrim( s ) {
@@ -37,136 +84,88 @@ function NGBuffer( buffer ) {
         return s;
     }
 
-    function decryptdefault( d ) {
-        return d === undefined ? true : d;
-    }
+    // Read a string.
+    self.readString = ( length, decrypt ) => {
 
-    // Track the offset that we're working at in the buffer.
-    let offset = 0;
+        // Pull out the substring we want.
+        const substr = buffer.slice( offset, offset + length );
 
-    // Main body of functions that work on the buffer.
-    let self = {
+        // Make a buffer to hold it.
+        const str = new Buffer( length );
 
-        eof: () => offset >= buffer.length, // At or past EOF?
-        pos: () => offset,                  // Current location.
+        // Copy it over (so we don't destroy the original).
+        substr.copy( str );
 
-        // Go to a given position.
-        go: ( n ) => {
-            offset = n;
-            return self;
-        },
-
-        // Skip bytes in the buffer.
-        skip: ( n ) => {
-            offset += ( n || 1 );
-            return self;
-        },
-
-        // Read a single byte.
-        readByte: ( decrypt ) => {
-            const byte = buffer[ offset ];
-            self.skip();
-            return decryptdefault( decrypt ) ? decryptByte( byte ) : byte;
-        },
-
-        // Read a (2 byte) word.
-        readWord: ( decrypt ) => {
-            const lo = self.readByte( decrypt );
-            const hi = self.readByte( decrypt );
-            return ( hi << 8 ) + lo;
-        },
-
-        // Read a (4 byte) long.
-        readLong: ( decrypt ) => {
-            const lo = self.readWord( decrypt );
-            const hi = self.readWord( decrypt );
-            return ( hi << 16 ) + lo;
-        },
-
-        // Read a string.
-        readString: ( length, decrypt ) => {
-
-            // Pull out the substring we want.
-            const substr = buffer.slice( offset, offset + length );
-
-            // Make a buffer to hold it.
-            const str = new Buffer( length );
-
-            // Copy it over (so we don't destroy the original).
-            substr.copy( str );
-
-            // If we're decrypting...
-            if ( decryptdefault( decrypt ) ) {
-                for ( const char of str.entries() ) {
-                    str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
-                }
+        // If we're decrypting...
+        if ( decryptdefault( decrypt ) ) {
+            for ( const char of str.entries() ) {
+                str[ char[ 0 ] ] = decryptByte( char[ 1 ] );
             }
-
-            // Skip past what we read.
-            self.skip( length );
-
-            // Return what we got.
-            return nulTrim( str ).toString( ENCODING );
-        },
-
-        // Read a nul-terminated string.
-        readStringZ: ( maxlen, decrypt ) => {
-
-            // Remember where we are.
-            const sav = self.pos();
-
-            // Read a string up to the max length.
-            const str = self.readString( maxlen, decrypt );
-
-            // Now skip to the legnth of it.
-            self.go( sav + str.length + 1 );
-
-            // Return the string.
-            return str;
-        },
-
-        // Un-RLE a string.
-        expand: ( str ) => {
-
-            const len    = str.length;
-            let   result = "";
-            let   jump;
-            let   rle;
-
-            for ( let i = 0; i < len; i++ ) {
-
-                // If the current character is an RLE marker, and we're not
-                // at the end of the string.
-                if ( ( str.charCodeAt( i ) == 0xff ) && ( i < ( len - 1 ) ) ) {
-
-                    // We'll be jumping the next character.
-                    jump = true;
-                    // Because it's a count of characters to unroll.
-                    rle = str.charCodeAt( i + 1 );
-
-                    // If the RLE count is an RLE marker...
-                    if ( rle == 0xff ) {
-                        // ...just assume this needs to be a space. I'm not
-                        // sure if this is correct, but I've seen this crop
-                        // up in some guides and it seems to (visually) have
-                        // this effect.
-                        result += " ";
-                    } else {
-                        result += new Array( rle + 1 ).join( " " );
-                    }
-                } else if ( !jump ) {
-                    // Not jumping. Add to the result.
-                    result += str[ i ];
-                } else {
-                    // Jumping. Mark that we won't jump the next.
-                    jump = false;
-                }
-            }
-
-            return result;
         }
 
+        // Skip past what we read.
+        self.skip( length );
+
+        // Return what we got.
+        return nulTrim( str ).toString( ENCODING );
     };
+
+    // Read a nul-terminated string.
+    self.readStringZ = ( maxlen, decrypt ) => {
+
+        // Remember where we are.
+        const sav = self.pos();
+
+        // Read a string up to the max length.
+        const str = self.readString( maxlen, decrypt );
+
+        // Now skip to the legnth of it.
+        self.go( sav + str.length + 1 );
+
+        // Return the string.
+        return str;
+    };
+
+        // Un-RLE a string.
+    self.expand = ( str ) => {
+
+        const len    = str.length;
+        let   result = "";
+        let   jump;
+        let   rle;
+
+        for ( let i = 0; i < len; i++ ) {
+
+            // If the current character is an RLE marker, and we're not
+            // at the end of the string.
+            if ( ( str.charCodeAt( i ) == 0xff ) && ( i < ( len - 1 ) ) ) {
+
+                // We'll be jumping the next character.
+                jump = true;
+                // Because it's a count of characters to unroll.
+                rle = str.charCodeAt( i + 1 );
+
+                // If the RLE count is an RLE marker...
+                if ( rle == 0xff ) {
+                    // ...just assume this needs to be a space. I'm not
+                    // sure if this is correct, but I've seen this crop
+                    // up in some guides and it seems to (visually) have
+                    // this effect.
+                    result += " ";
+                } else {
+                    result += new Array( rle + 1 ).join( " " );
+                }
+            } else if ( !jump ) {
+                // Not jumping. Add to the result.
+                result += str[ i ];
+            } else {
+                // Jumping. Mark that we won't jump the next.
+                jump = false;
+            }
+        }
+
+        return result;
+    }
 
     return self;
 }
@@ -469,7 +468,7 @@ module.exports = function NortonGuide( path ) {
             if ( fs.readSync( f, ng, 0, size, 0 ) == size ) {
 
                 // Having got this far, turn it into a NG buffer.
-                ng = NGBuffer( ng );
+                ng = new NGBuffer( ng );
 
                 // Now read the header.
                 readHeader();
