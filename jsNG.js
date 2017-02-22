@@ -363,10 +363,10 @@ module.exports = function NortonGuide( path ) {
     let ng;
 
     // Header values.
-    let hMagic;
-    let hMenuCount;
-    let hTitle;
-    let hCredits;
+    let magic;
+    let menuCount;
+    let title;
+    let credits;
 
     // General values for tracking what we're doing.
     let firstEntry;
@@ -384,7 +384,7 @@ module.exports = function NortonGuide( path ) {
     function readHeader() {
 
         // Load up the magic number.
-        hMagic = ng.readString( 2, false );
+        magic = ng.readString( 2, false );
 
         // Check that it looks like a guide. Not much point in going on if
         // it doesn't.
@@ -395,21 +395,21 @@ module.exports = function NortonGuide( path ) {
             ng.skip( 2 );
 
             // Get the count of menus.
-            hMenuCount = ng.readWord( false );
+            menuCount = ng.readWord( false );
 
             // Size of the strings in the header.
             const TITLE_LEN  = 40;
             const CREDIT_LEN = 66;
 
             // Get the title of the guide.
-            hTitle = ng.readString( TITLE_LEN, false );
+            title = ng.readString( TITLE_LEN, false );
 
             // Load up the credits.
-            hCredits   = [ ng.readString( CREDIT_LEN, false ) ];
-            hCredits.push( ng.readString( CREDIT_LEN, false ) );
-            hCredits.push( ng.readString( CREDIT_LEN, false ) );
-            hCredits.push( ng.readString( CREDIT_LEN, false ) );
-            hCredits.push( ng.readString( CREDIT_LEN, false ) );
+            credits   = [ ng.readString( CREDIT_LEN, false ) ];
+            credits.push( ng.readString( CREDIT_LEN, false ) );
+            credits.push( ng.readString( CREDIT_LEN, false ) );
+            credits.push( ng.readString( CREDIT_LEN, false ) );
+            credits.push( ng.readString( CREDIT_LEN, false ) );
         }
     }
 
@@ -499,14 +499,14 @@ module.exports = function NortonGuide( path ) {
     };
 
     // Access to information about the guide.
-    this.isNG       = ()    => hMagic in MAGIC;
-    this.type       = ()    => MAGIC[ hMagic ] || "Unknown";
-    this.menuCount  = ()    => hMenuCount;
+    this.isNG       = ()    => magic in MAGIC;
+    this.type       = ()    => MAGIC[ magic ] || "Unknown";
+    this.menuCount  = ()    => menuCount;
     this.hasMenus   = ()    => self.menuCount() > 0;
     this.menu       = ( i ) => menus[ i ];
-    this.title      = ()    => hTitle;
+    this.title      = ()    => title;
     this.filename   = ()    => path;
-    this.credits    = ()    => hCredits;
+    this.credits    = ()    => credits;
     this.firstEntry = ()    => firstEntry;
 
     // Perform a function while not changing position.
