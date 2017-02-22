@@ -1,4 +1,6 @@
 // Handy constants.
+const TITLE_LEN      = 40;
+const CREDIT_LEN     = 66;
 const MAX_PROMPT_LEN = 128;
 const MAX_LINE_LEN   = 1024;
 
@@ -394,10 +396,6 @@ module.exports = function NortonGuide( path ) {
 
             // Get the count of menus.
             menuCount = ng.readWord( false );
-
-            // Size of the strings in the header.
-            const TITLE_LEN  = 40;
-            const CREDIT_LEN = 66;
 
             // Get the title of the guide.
             title = ng.readString( TITLE_LEN, false );
