@@ -2,7 +2,7 @@
   "name": "jsng",
   "version": "0.0.1",
   "description": "Library and tools for working with Norton Guide database files",
-  "main": "jsNG.js",
+  "main": "lib/jsNG.js",
   "scripts": {
     "test": "make"
   },
