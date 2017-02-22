@@ -12,10 +12,13 @@
 
         const ng = new NG( file ).open();
 
-        if ( ng.isNG() ) {
-            console.log( padr( basename( file ), 15 ) + "\t" + ng.type() + "\t" + ng.title() );
-        }
-
+        console.log( "Foo" + padr( basename( file ), 15 ) + "\t" +
+                     (
+                         ng.isNG()
+                             ? ng.type() + "\t" + ng.title()
+                             : "Not a NG"
+                     )
+                   );
     }
 
 } )( process.argv.slice( 2 ) );
