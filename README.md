@@ -1,8 +1,5 @@
 # jsNG
 
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-
 Small JavaScript library for reading Norton Guide database files.
 
 This is still a bit of a work-in-progress. It is, in part, my "Hello, World"
