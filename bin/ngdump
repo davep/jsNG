@@ -3,7 +3,10 @@
 ( ( args ) => {
     "use strict";
 
-    const NG = require( "./jsNG" );
+    const fs   = require( "fs" );
+    const path = require( "path" );
+    const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
+    const NG   = require( lib + "/jsNG" );
 
     if ( args[ 0 ] ) {
 

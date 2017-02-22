@@ -3,7 +3,10 @@
 ( ( args ) => {
     "use strict";
 
-    const NG = require( "./jsNG" );
+    const fs   = require( "fs" );
+    const path = require( "path" );
+    const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
+    const NG   = require( lib + "/jsNG" );
 
     const basename = ( s )      => s.split( "/" ).pop();
     const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );

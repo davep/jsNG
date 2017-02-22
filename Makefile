@@ -1,8 +1,9 @@
 test:
-	./ngdump /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
+	bin/ngdump /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
 
 dir:
-	./ngdir /Users/davep/Google\ Drive/Norton\ Guides/*.{NG,ng}
+	bin/ngdir /Users/davep/Google\ Drive/Norton\ Guides/*.{NG,ng}
 
 clean:
-	rm -f *~
+	rm -f *~ lib/*~ bin/*~
+
