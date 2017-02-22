@@ -499,7 +499,8 @@ module.exports = function NortonGuide( path ) {
 
     // Access to information about the guide.
     this.isNG       = ()    => magic in MAGIC;
-    this.type       = ()    => MAGIC[ magic ] || "Unknown";
+    this.type       = ()    => MAGIC[ magic ] ? magic : "??";
+    this.typeDesc   = ()    => MAGIC[ magic ] || "Unknown";
     this.menuCount  = ()    => menuCount;
     this.hasMenus   = ()    => self.menuCount() > 0;
     this.menu       = ( i ) => menus[ i ];
