@@ -12,7 +12,7 @@
 
         const ng = new NG( file ).open();
 
-        console.log( "Foo" + padr( basename( file ), 15 ) + "\t" +
+        console.log( padr( basename( file ), 15 ) + "\t" +
                      (
                          ng.isNG()
                              ? ng.type() + "\t" + ng.title()
