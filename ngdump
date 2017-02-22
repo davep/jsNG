@@ -27,7 +27,7 @@
             }
         }
     } else {
-        console.log( "dumpguide <file>" );
+        console.log( "ngdump <file>" );
     }
 
 } )( process.argv.slice( 2 ) );

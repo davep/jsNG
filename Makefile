@@ -1,5 +1,5 @@
 test:
-	./dumpguide /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
+	./ngdump /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
 
 dir:
 	./ngdir /Users/davep/Google\ Drive/Norton\ Guides/*.ng
