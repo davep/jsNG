@@ -27,5 +27,8 @@
     "bugs": {
         "url": "https://github.com/davep/jsNG/issues"
     },
-    "homepage": "https://github.com/davep/jsNG#readme"
+    "homepage": "https://github.com/davep/jsNG#readme",
+    "dependencies": {
+        "commander": "*"
+    }
 }
