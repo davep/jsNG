@@ -19,7 +19,8 @@
     ],
     "bin": {
         "ngdir": "bin/ngdir",
-        "ngdump": "bin/ngdump"
+        "ngdump": "bin/ngdump",
+        "ngabout": "bin/ngabout"
     },
     "author": "Dave Pearson",
     "license": "GPL-2.0",
