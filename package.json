@@ -29,6 +29,6 @@
     },
     "homepage": "https://github.com/davep/jsNG#readme",
     "dependencies": {
-        "commander": "*"
+        "commander": "2.9.0"
     }
 }
