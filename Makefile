@@ -5,5 +5,5 @@ dir:
 	bin/ngdir /Users/davep/Google\ Drive/Norton\ Guides/*.{NG,ng}
 
 clean:
-	rm -f *~ lib/*~ bin/*~
+	rm -f *~ lib/*~ bin/*~ npm-debug.log
 
