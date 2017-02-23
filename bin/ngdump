@@ -1,36 +1,39 @@
 #!/usr/bin/env node
 
-( ( args ) => {
-    "use strict";
+var ngdump = require( "commander" );
 
-    const fs   = require( "fs" );
-    const path = require( "path" );
-    const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
-    const NG   = require( lib + "/jsNG" );
+ngdump
+    .usage( "<file>")
+    .version( "0.0.2" )
+    .description( "Dump the contents of the given Norton Guide file" )
+    .parse( process.argv );
 
-    if ( args[ 0 ] ) {
+const fs   = require( "fs" );
+const path = require( "path" );
+const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
+const NG   = require( lib + "/jsNG" );
 
-        const ng = new NG( args[ 0 ] ).open();
+if ( ngdump.args[ 0 ] ) {
 
-        if ( ng.isNG() ) {
+    const ng = new NG( ngdump.args[ 0 ] ).open();
 
-            ng.goFirst();
+    if ( ng.isNG() ) {
 
-            while ( !ng.eof() ) {
+        ng.goFirst();
 
-                const entry = ng.loadEntry();
+        while ( !ng.eof() ) {
 
-                entry.lines().forEach( l => console.log( l ) );
+            const entry = ng.loadEntry();
 
-                if ( entry.hasSeeAlso() ) {
-                    console.log( "See Also: " + entry.seeAlso().prompts().join( ", " ) );
-                }
+            entry.lines().forEach( l => console.log( l ) );
 
-                ng.nextEntry();
+            if ( entry.hasSeeAlso() ) {
+                console.log( "See Also: " + entry.seeAlso().prompts().join( ", " ) );
             }
-        }
-    } else {
-        console.log( "ngdump <file>" );
-    }
 
-} )( process.argv.slice( 2 ) );
+            ng.nextEntry();
+        }
+    }
+} else {
+    ngdump.help();
+}
