@@ -1,28 +1,31 @@
 #!/usr/bin/env node
 
-( ( args ) => {
-    "use strict";
+var ngabout = require( "commander" );
 
-    const fs   = require( "fs" );
-    const path = require( "path" );
-    const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
-    const NG   = require( lib + "/jsNG" );
+ngabout
+    .usage( "<file>")
+    .version( "0.0.2" )
+    .description( "Get informaton about the content of a Norton Guide" )
+    .parse( process.argv );
 
-    if ( args[ 0 ] ) {
+const fs   = require( "fs" );
+const path = require( "path" );
+const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
+const NG   = require( lib + "/jsNG" );
 
-        const ng = new NG( args[ 0 ] ).open();
+if ( ngabout.args[ 0 ] ) {
 
-        console.log( "Name\t: "    + ng.filename()     );
-        console.log( "Title\t: "   + ng.title()        );
-        console.log( "Type\t: "    + ng.typeDesc()     );
-        console.log( "Credits\t: " + ng.credits()[ 0 ] );
-        console.log( "\t: "        + ng.credits()[ 1 ] );
-        console.log( "\t: "        + ng.credits()[ 2 ] );
-        console.log( "\t: "        + ng.credits()[ 3 ] );
-        console.log( "\t: "        + ng.credits()[ 4 ] );
+    const ng = new NG( ngabout.args[ 0 ] ).open();
 
-    } else {
-        console.log( "ngabout <file>" );
-    }
+    console.log( "Name\t: "    + ng.filename()     );
+    console.log( "Title\t: "   + ng.title()        );
+    console.log( "Type\t: "    + ng.typeDesc()     );
+    console.log( "Credits\t: " + ng.credits()[ 0 ] );
+    console.log( "\t: "        + ng.credits()[ 1 ] );
+    console.log( "\t: "        + ng.credits()[ 2 ] );
+    console.log( "\t: "        + ng.credits()[ 3 ] );
+    console.log( "\t: "        + ng.credits()[ 4 ] );
 
-} )( process.argv.slice( 2 ) );
+} else {
+    ngabout.help();
+}
