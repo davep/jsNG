@@ -13,18 +13,30 @@ const path = require( "path" );
 const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
 const NG   = require( lib + "/jsNG" );
 
-if ( ngabout.args[ 0 ] ) {
+if ( ngabout.args.length > 0 ) {
 
-    const ng = new NG( ngabout.args[ 0 ] ).open();
+    try {
+        for ( let file of ngabout.args ) {
 
-    console.log( "Name\t: "    + ng.filename()     );
-    console.log( "Title\t: "   + ng.title()        );
-    console.log( "Type\t: "    + ng.typeDesc()     );
-    console.log( "Credits\t: " + ng.credits()[ 0 ] );
-    console.log( "\t: "        + ng.credits()[ 1 ] );
-    console.log( "\t: "        + ng.credits()[ 2 ] );
-    console.log( "\t: "        + ng.credits()[ 3 ] );
-    console.log( "\t: "        + ng.credits()[ 4 ] );
+            const ng = new NG( file ).open();
+
+            if ( ng.isNG() ) {
+                console.log( "Name\t: "    + ng.filename()     );
+                console.log( "Title\t: "   + ng.title()        );
+                console.log( "Type\t: "    + ng.typeDesc()     );
+                console.log( "Credits\t: " + ng.credits()[ 0 ] );
+                console.log( "\t: "        + ng.credits()[ 1 ] );
+                console.log( "\t: "        + ng.credits()[ 2 ] );
+                console.log( "\t: "        + ng.credits()[ 3 ] );
+                console.log( "\t: "        + ng.credits()[ 4 ] );
+            } else {
+                console.log( "Name\t: " + ng.filename() );
+                console.log( "Type\t: Not an NG" );
+            }
+        }
+    } catch ( e ) {
+        console.log( e.message );
+    }
 
 } else {
     ngabout.help();
