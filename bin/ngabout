@@ -3,7 +3,7 @@
 var ngabout = require( "commander" );
 
 ngabout
-    .usage( "<file>")
+    .usage( "<file ...>")
     .version( "0.0.2" )
     .description( "Get informaton about the content of a Norton Guide" )
     .parse( process.argv );
