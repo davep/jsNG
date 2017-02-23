@@ -1,27 +1,30 @@
 #!/usr/bin/env node
 
-( ( args ) => {
-    "use strict";
+var ngdir = require( "commander" );
 
-    const fs   = require( "fs" );
-    const path = require( "path" );
-    const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
-    const NG   = require( lib + "/jsNG" );
+ngdir
+    .usage( "<file ...>")
+    .version( "0.0.2" )
+    .description( "List details of given Norton Guide files" )
+    .parse( process.argv );
 
-    const basename = ( s )      => s.split( "/" ).pop();
-    const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );
+const fs   = require( "fs" );
+const path = require( "path" );
+const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
+const NG   = require( lib + "/jsNG" );
 
-    for ( let file of args ) {
+const basename = ( s )      => s.split( "/" ).pop();
+const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );
 
-        const ng = new NG( file ).open();
+for ( let file of ngdir.args ) {
 
-        console.log( padr( basename( file ), 15 ) + "\t" +
-                     (
-                         ng.isNG()
-                             ? ng.type() + "\t" + ng.title()
-                             : "Not a NG"
-                     )
-                   );
-    }
+    const ng = new NG( file ).open();
 
-} )( process.argv.slice( 2 ) );
+    console.log( padr( basename( file ), 15 ) + "\t" +
+                 (
+                     ng.isNG()
+                         ? ng.type() + "\t" + ng.title()
+                         : "Not a NG"
+                 )
+               );
+}
