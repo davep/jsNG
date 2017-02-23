@@ -20,7 +20,7 @@
 
                 const entry = ng.loadEntry();
 
-                entry.lines().forEach( ( l ) => console.log( l ) );
+                entry.lines().forEach( l => console.log( l ) );
 
                 if ( entry.hasSeeAlso() ) {
                     console.log( "See Also: " + entry.seeAlso().prompts().join( ", " ) );
