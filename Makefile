@@ -1,4 +1,6 @@
-test:
+test: dump
+
+dump:
 	bin/ngdump /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
 
 dir:
