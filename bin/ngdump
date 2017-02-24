@@ -8,10 +8,7 @@ ngdump
     .description( "Dump the contents of the given Norton Guide files" )
     .parse( process.argv );
 
-const fs   = require( "fs" );
-const path = require( "path" );
-const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
-const NG   = require( lib + "/jsNG" );
+const NG = require( __dirname + "/../lib/jsNG" );
 
 if ( ngdump.args.length > 0 ) {
 

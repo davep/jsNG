@@ -8,10 +8,7 @@ ngdir
     .description( "List details of given Norton Guide files" )
     .parse( process.argv );
 
-const fs   = require( "fs" );
-const path = require( "path" );
-const lib  = path.join( path.dirname( fs.realpathSync( __filename ) ), "../lib" );
-const NG   = require( lib + "/jsNG" );
+const NG = require( __dirname + "/../lib/jsNG" );
 
 const basename = ( s )      => s.split( "/" ).pop();
 const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );
