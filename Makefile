@@ -9,6 +9,8 @@ dir:
 about:
 	bin/ngabout /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
 
+tests: dump dir about
+
 clean:
 	rm -f *~ lib/*~ bin/*~ npm-debug.log
 
