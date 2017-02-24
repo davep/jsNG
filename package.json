@@ -28,6 +28,9 @@
         "url": "https://github.com/davep/jsNG/issues"
     },
     "homepage": "https://github.com/davep/jsNG#readme",
+    "engines": {
+        "node": ">=6.4.0"
+    },
     "dependencies": {
         "commander": "2.9.0"
     }
