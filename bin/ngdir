@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var ngdir = require( "commander" );
+const ngdir = require( "commander" );
 
 ngdir
     .usage( "<file ...>")

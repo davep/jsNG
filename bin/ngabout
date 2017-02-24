@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var ngabout = require( "commander" );
+const ngabout = require( "commander" );
 
 ngabout
     .usage( "<file ...>")

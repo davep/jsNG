@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var ngdump = require( "commander" );
+const ngdump = require( "commander" );
 
 ngdump
     .usage( "<file ...>")
