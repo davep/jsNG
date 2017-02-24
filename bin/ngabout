@@ -8,7 +8,7 @@ ngabout
     .description( "Get informaton about the content of a Norton Guide" )
     .parse( process.argv );
 
-const NG = require( __dirname + "/../lib/jsNG" );
+const NG = require( "../lib/jsNG" );
 
 if ( ngabout.args.length > 0 ) {
 
