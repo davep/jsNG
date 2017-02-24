@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const NG      = require( "../lib/jsNG" );
 const ngabout = require( "commander" );
 
 ngabout
@@ -7,8 +8,6 @@ ngabout
     .version( "0.0.2" )
     .description( "Get informaton about the content of a Norton Guide" )
     .parse( process.argv );
-
-const NG = require( "../lib/jsNG" );
 
 if ( ngabout.args.length > 0 ) {
 

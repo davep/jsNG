@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const NG    = require( "../lib/jsNG" );
 const ngdir = require( "commander" );
 
 ngdir
@@ -7,8 +8,6 @@ ngdir
     .version( "0.0.2" )
     .description( "List details of given Norton Guide files" )
     .parse( process.argv );
-
-const NG = require( "../lib/jsNG" );
 
 const basename = ( s )      => s.split( "/" ).pop();
 const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );
