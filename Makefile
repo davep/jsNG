@@ -14,3 +14,5 @@ tests: dump dir about
 clean:
 	rm -f *~ lib/*~ bin/*~ npm-debug.log
 
+publish:
+	npm publish
