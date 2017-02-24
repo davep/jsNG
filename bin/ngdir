@@ -7,20 +7,20 @@ ngdir
     .usage( "<file ...>")
     .version( "0.0.2" )
     .description( "List details of given Norton Guide files" )
+    .option( "-i, --ignore-non-ng", "Don't include non-NG files in the list." )
     .parse( process.argv );
 
 const basename = ( s )      => s.split( "/" ).pop();
 const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );
+const list     = ( file, type, desc ) => console.log( padr( basename( file ), 15 ) + "\t" + type + "\t" + desc );
 
 for ( let file of ngdir.args ) {
 
     const ng = new NG( file ).open();
 
-    console.log( padr( basename( file ), 15 ) + "\t" +
-                 (
-                     ng.isNG()
-                         ? ng.type() + "\t" + ng.title()
-                         : "Not a NG"
-                 )
-               );
+    if ( ng.isNG() ) {
+        list( file, ng.type(), ng.title() );
+    } else if ( !ngdir.ignoreNonNg ) {
+        list( file, "Not an NG", "" );
+    }
 }
