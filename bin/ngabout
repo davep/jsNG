@@ -7,6 +7,7 @@ ngabout
     .usage( "<file ...>")
     .version( "0.0.2" )
     .description( "Get informaton about the content of a Norton Guide" )
+    .option( "-i, --ignore-non-ng", "Don't include non-NG files in the list." )
     .parse( process.argv );
 
 if ( ngabout.args.length > 0 ) {
@@ -25,7 +26,7 @@ if ( ngabout.args.length > 0 ) {
                 console.log( "\t: "        + ng.credits()[ 2 ] );
                 console.log( "\t: "        + ng.credits()[ 3 ] );
                 console.log( "\t: "        + ng.credits()[ 4 ] );
-            } else {
+            } else if ( !ngabout.ignoreNonNg ) {
                 console.log( "Name\t: " + ng.filename() );
                 console.log( "Type\t: Not an NG" );
             }
