@@ -53,6 +53,8 @@ describe( "NG", () => {
             () => assert.ok( guide.hasMenus() ) );
         it( "Should have the correct menu",
             () => assert.strictEqual( guide.menus()[ 0 ].title(), "Expert Guide" ) );
+        it( "Should have a correct menu prompt under the first menu",
+            () => assert.strictEqual( guide.menus()[ 0 ].prompt( 0 ), "Welcome To EG" ) );
         it( "Should return the filename",
             () => assert.ok( guide.filename() ) );
         it( "Should return the return the first entry location",
