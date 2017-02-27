@@ -68,11 +68,9 @@ describe( "NG", () => {
 
     describe( "Entries", () => {
 
-        const guide = new NG.Guide( TEST_GUIDE ).open();
-
         describe( "First entry", () => {
 
-            guide.goFirst();
+            const guide = new NG.Guide( TEST_GUIDE ).open().goFirst();
 
             it( "Should be a short entry type.",
                 () => assert.ok( guide.lookingAtShort() ) );
@@ -105,6 +103,18 @@ describe( "NG", () => {
                 () => assert.ok( entry.seeAlso() === undefined ) );
             it( "Should have read the text of the first line correctly.",
                 () => assert.strictEqual( entry.lines()[ 0 ], "Welcome to Expert Guide." ) );
+        } );
+
+        describe( "Next entry", () => {
+
+            const guide = new NG.Guide( TEST_GUIDE ).open().goFirst().nextEntry();
+
+            it( "Should show as being at EOF",
+                () => assert.ok( guide.eof() ) );
+            it( "Should not be reporting as being a short",
+                () => assert.ok( !guide.lookingAtShort() ) );
+            it( "Should not be reporting as being a long",
+                () => assert.ok( !guide.lookingAtLong() ) );
         } );
     } );
 } );
