@@ -18,7 +18,7 @@ try {
 
     for ( let file of ngdir.args ) {
 
-        const ng = new NG.Guide( file ).open();
+        const ng = new NG.Guide( file ).open( false );
 
         if ( ng.isNG() ) {
             list( file, ng.type(), ng.title() );
