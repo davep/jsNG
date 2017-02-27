@@ -51,6 +51,8 @@ describe( "NG", () => {
             () => assert.strictEqual( guide.menuCount(), 1 ) );
         it( "Should believe it has menus",
             () => assert.ok( guide.hasMenus() ) );
+        it( "Should have the correct menu",
+            () => assert.strictEqual( guide.menus()[ 0 ].title(), "Expert Guide" ) );
         it( "Should return the filename",
             () => assert.ok( guide.filename() ) );
         it( "Should return the return the first entry location",
