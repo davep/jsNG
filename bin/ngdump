@@ -5,7 +5,7 @@ const ngdump = require( "commander" );
 
 ngdump
     .usage( "<file ...>")
-    .version( "0.0.3" )
+    .version( NG.version )
     .description( "Dump the contents of the given Norton Guide files" )
     .parse( process.argv );
 
