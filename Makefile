@@ -2,13 +2,13 @@ tests:
 	npm test
 
 dump:
-	bin/ngdump /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
+	bin/ngdump test/guides/rbint.ng
 
 dir:
-	bin/ngdir /Users/davep/Google\ Drive/Norton\ Guides/*.{NG,ng}
+	bin/ngdir test/guides/*.ng
 
 about:
-	bin/ngabout /Users/davep/Google\ Drive/Norton\ Guides/ACEBASE.ng
+	bin/ngabout test/guides/gt_libng.ng
 
 clean:
 	rm -f *~ lib/*~ bin/*~ npm-debug.log
