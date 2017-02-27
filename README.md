@@ -1,6 +1,7 @@
 # jsNG
 
 [![npm](https://img.shields.io/npm/v/jsng.svg?style=flat-square)](https://www.npmjs.com/package/jsng)
+[![Build Status](https://travis-ci.org/davep/jsNG.svg?branch=master)](https://travis-ci.org/davep/jsNG)
 
 Small JavaScript library for reading Norton Guide database files.
 
