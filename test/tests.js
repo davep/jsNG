@@ -45,7 +45,7 @@ describe( "NG", () => {
         it( "Should have the correct title",
             () => assert.strictEqual( guide.title(), "Expert Guide" ) );
         it( "Should be of the correct type",
-            () => assert.strictEqual( guide.type(), "NG" ) );
+            () => assert.strictEqual( guide.type(), NG.Constants.MAGIC.NG.Code ) );
         it( "Should have the correct menu count",
             () => assert.strictEqual( guide.menuCount(), 1 ) );
         it( "Should believe it has menus",
