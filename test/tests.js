@@ -3,6 +3,7 @@ const TEST_GUIDE     = TEST_GUIDE_DIR + "eg.ng";
 const NON_GUIDE      = TEST_GUIDE_DIR + "not-an.ng";
 
 assert = require( "assert" );
+fs     = require( "fs" );
 
 describe( "NG", () => {
 
@@ -64,6 +65,8 @@ describe( "NG", () => {
             () => assert.strictEqual( guide.credits()[ 3 ], "email: davep@davep.org" ) );
         it( "Should return the correct fifth credit line",
             () => assert.strictEqual( guide.credits()[ 4 ], "  web: http://www.davep.org/" ) );
+        it( "Should have the correct size",
+            () => assert.strictEqual( guide.size(), fs.statSync( guide.filename() ).size ) );
     } );
 
     describe( "Entries", () => {
