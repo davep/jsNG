@@ -18,19 +18,11 @@ if ( ngdump.args.length > 0 ) {
 
             if ( ng.isNG() ) {
 
-                ng.goFirst();
-
-                while ( !ng.eof() ) {
-
-                    const entry = ng.loadEntry();
-
+                for ( let entry of ng ) {
                     entry.lines().forEach( l => console.log( l ) );
-
                     if ( entry.hasSeeAlso() ) {
                         console.log( "See Also: " + entry.seeAlso().prompts().join( ", " ) );
                     }
-
-                    ng.nextEntry();
                 }
             }
         }
