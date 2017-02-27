@@ -35,7 +35,8 @@ if ( ngdump.args.length > 0 ) {
             }
         }
     } catch ( e ) {
-        console.log( e.message );
+        console.log( "Error: " + e.message );
+        process.exitCode = 1;
     }
 } else {
     ngdump.help();
