@@ -8,27 +8,27 @@ describe( "NG", () => {
 
     const NG = require( "../lib/jsNG" );
 
-    it( "Should have a verson number.", () => {
+    it( "Should have a verson number", () => {
         assert.ok( NG.version );
     } );
 
-    it( "Should create an instance.", () => {
+    it( "Should create an instance", () => {
         const guide = new NG.Guide( TEST_GUIDE );
     } );
 
     describe( "open", () => {
 
-        it( "Should open " + TEST_GUIDE + " without a problem.", () => {
+        it( "Should open " + TEST_GUIDE + " without a problem", () => {
             const guide = new NG.Guide( TEST_GUIDE ).open();
         } );
 
-        it( "Should throw an error when failing to open a non-existing guide.", () => {
+        it( "Should throw an error when failing to open a non-existing guide", () => {
             assert.throws( () => {
                 const guide = new NG.Guide( TEST_GUIDE + "-does-not-exist" ).open();
             } );
         } );
 
-        it( "Should throw an error when opening a non-NG file that exists.", () => {
+        it( "Should throw an error when opening a non-NG file that exists", () => {
             assert.throws( () => {
                 const guide = new NG.Guide( NON_GUIDE ).open();
             } );
@@ -40,29 +40,29 @@ describe( "NG", () => {
 
         const guide = new NG.Guide( TEST_GUIDE ).open();
 
-        it( "Should have a title.",
+        it( "Should have a title",
             () => assert.ok( guide.title() ) );
-        it( "Should have the correct title.",
+        it( "Should have the correct title",
             () => assert.strictEqual( guide.title(), "Expert Guide" ) );
-        it( "Should be of the correct type.",
+        it( "Should be of the correct type",
             () => assert.strictEqual( guide.type(), "NG" ) );
-        it( "Should have the correct menu count.",
+        it( "Should have the correct menu count",
             () => assert.strictEqual( guide.menuCount(), 1 ) );
-        it( "Should believe it has menus.",
+        it( "Should believe it has menus",
             () => assert.ok( guide.hasMenus() ) );
-        it( "Should return the filename.",
+        it( "Should return the filename",
             () => assert.ok( guide.filename() ) );
-        it( "Should return the return the first entry location.",
+        it( "Should return the return the first entry location",
             () => assert.strictEqual( guide.firstEntry(), 452 ) );
-        it( "Should return the correct first credit line.",
+        it( "Should return the correct first credit line",
             () => assert.strictEqual( guide.credits()[ 0 ], "Expert Guide" ) );
-        it( "Should return the correct second credit line.",
+        it( "Should return the correct second credit line",
             () => assert.strictEqual( guide.credits()[ 1 ], "Copyright (c) 1997-2015 David A. Pearson" ) );
-        it( "Should return the correct third credit line.",
+        it( "Should return the correct third credit line",
             () => assert.strictEqual( guide.credits()[ 2 ], "" ) );
-        it( "Should return the correct fourth credit line.",
+        it( "Should return the correct fourth credit line",
             () => assert.strictEqual( guide.credits()[ 3 ], "email: davep@davep.org" ) );
-        it( "Should return the correct fifth credit line.",
+        it( "Should return the correct fifth credit line",
             () => assert.strictEqual( guide.credits()[ 4 ], "  web: http://www.davep.org/" ) );
     } );
 
@@ -72,12 +72,12 @@ describe( "NG", () => {
 
             const guide = new NG.Guide( TEST_GUIDE ).open().goFirst();
 
-            it( "Should be a short entry type.",
+            it( "Should be a short entry type",
                 () => assert.ok( guide.lookingAtShort() ) );
 
             const entry = guide.loadEntry();
 
-            it( "Should read in okay.",
+            it( "Should read in okay",
                 () => assert.ok( entry ) );
             it( "Should have the correct number of lines",
                 () => assert.strictEqual( entry.lineCount(), 13 ) );
@@ -89,19 +89,19 @@ describe( "NG", () => {
                 () => assert.strictEqual( entry.parentMenu(), 0 ) );
             it( "Should have a parent menu prompt",
                 () => assert.strictEqual( entry.parentPrompt(), 0 ) );
-            it( "Should not have a previous entry.",
+            it( "Should not have a previous entry",
                 () => assert.strictEqual( entry.previous(), 0 ) );
-            it( "Should not have a next entry.",
+            it( "Should not have a next entry",
                 () => assert.strictEqual( entry.next(), 0 ) );
-            it( "Should have a lines array of the correct length.",
+            it( "Should have a lines array of the correct length",
                 () => assert.strictEqual( entry.lines().length, entry.lineCount() ) );
-            it( "Should self-identify as a short entry.",
+            it( "Should self-identify as a short entry",
                 () => assert.ok( entry.isShort() ) );
-            it( "Should not self-identify as a long entry.",
+            it( "Should not self-identify as a long entry",
                 () => assert.ok( !entry.isLong() ) );
-            it( "Should not have a see-also menu.",
+            it( "Should not have a see-also menu",
                 () => assert.ok( entry.seeAlso() === undefined ) );
-            it( "Should have read the text of the first line correctly.",
+            it( "Should have read the text of the first line correctly",
                 () => assert.strictEqual( entry.lines()[ 0 ], "Welcome to Expert Guide." ) );
         } );
 
