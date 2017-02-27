@@ -65,4 +65,46 @@ describe( "NG", () => {
         it( "Should return the correct fifth credit line.",
             () => assert.strictEqual( guide.credits()[ 4 ], "  web: http://www.davep.org/" ) );
     } );
+
+    describe( "Entries", () => {
+
+        const guide = new NG.Guide( TEST_GUIDE ).open();
+
+        describe( "First entry", () => {
+
+            guide.goFirst();
+
+            it( "Should be a short entry type.",
+                () => assert.ok( guide.lookingAtShort() ) );
+
+            const entry = guide.loadEntry();
+
+            it( "Should read in okay.",
+                () => assert.ok( entry ) );
+            it( "Should have the correct number of lines",
+                () => assert.strictEqual( entry.lineCount(), 13 ) );
+            it( "Should have no see-alsos",
+                () => assert.ok( !entry.hasSeeAlso() ) );
+            it( "Should have no parent line",
+                () => assert.strictEqual( entry.parentLine(), -1 ) );
+            it( "Should have a parent menu",
+                () => assert.strictEqual( entry.parentMenu(), 0 ) );
+            it( "Should have a parent menu prompt",
+                () => assert.strictEqual( entry.parentPrompt(), 0 ) );
+            it( "Should not have a previous entry.",
+                () => assert.strictEqual( entry.previous(), 0 ) );
+            it( "Should not have a next entry.",
+                () => assert.strictEqual( entry.next(), 0 ) );
+            it( "Should have a lines array of the correct length.",
+                () => assert.strictEqual( entry.lines().length, entry.lineCount() ) );
+            it( "Should self-identify as a short entry.",
+                () => assert.ok( entry.isShort() ) );
+            it( "Should not self-identify as a long entry.",
+                () => assert.ok( !entry.isLong() ) );
+            it( "Should not have a see-also menu.",
+                () => assert.ok( entry.seeAlso() === undefined ) );
+            it( "Should have read the text of the first line correctly.",
+                () => assert.strictEqual( entry.lines()[ 0 ], "Welcome to Expert Guide." ) );
+        } );
+    } );
 } );
