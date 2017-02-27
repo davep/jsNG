@@ -14,7 +14,7 @@ if ( ngdump.args.length > 0 ) {
     try {
         for ( file of ngdump.args ) {
 
-            const ng = new NG( file ).open();
+            const ng = new NG.Guide( file ).open();
 
             if ( ng.isNG() ) {
 

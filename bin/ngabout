@@ -15,7 +15,7 @@ if ( ngabout.args.length > 0 ) {
     try {
         for ( let file of ngabout.args ) {
 
-            const ng = new NG( file ).open();
+            const ng = new NG.Guide( file ).open();
 
             if ( ng.isNG() ) {
                 console.log( "Name\t: "    + ng.filename()     );
