@@ -2,7 +2,7 @@ tests:
 	npm test
 
 dump:
-	bin/ngdump test/guides/rbint.ng
+	bin/ngdump test/guides/gt_libng.ng
 
 dir:
 	bin/ngdir test/guides/*.ng
