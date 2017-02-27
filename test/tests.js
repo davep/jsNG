@@ -51,6 +51,8 @@ describe( "NG", () => {
             () => assert.strictEqual( guide.menuCount(), 1 ) );
         it( "Should believe it has menus",
             () => assert.ok( guide.hasMenus() ) );
+        it( "Should have the correct number of menus loaded",
+            () => assert.strictEqual( guide.menus().length, guide.menuCount() ) );
         it( "Should have the correct menu",
             () => assert.strictEqual( guide.menus()[ 0 ].title(), "Expert Guide" ) );
         it( "Should have a correct menu prompt under the first menu",
