@@ -4,7 +4,7 @@ const NG    = require( "../lib/jsNG" );
 const ngdir = require( "commander" );
 
 ngdir
-    .usage( "<file ...>")
+    .usage( "[options] <file ...>")
     .version( NG.version )
     .description( "List details of given Norton Guide files" )
     .option( "-i, --ignore-non-ng", "Don't include non-NG files in the list." )
