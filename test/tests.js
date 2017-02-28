@@ -83,6 +83,8 @@ describe( "NG", () => {
 
             it( "Should be a short entry type",
                 () => assert.ok( guide.lookingAtShort() ) );
+            it( "Should be located at the first entry location",
+                () => assert.strictEqual( guide.pos(), guide.firstEntry() ) );
 
             const entry = guide.loadEntry();
 
