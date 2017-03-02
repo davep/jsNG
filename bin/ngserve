@@ -187,7 +187,7 @@ function dumpEntry( res, guide, pos ) {
 
         res.write( "<section>\n" );
         dumpMenu( res, guide );
-        res.write( "<article>\n" );
+        res.write( "<article>" );
         for ( let i = 0; i < entry.lineCount(); i++ ) {
             if ( entry.isShort() ) {
                 res.write( `<a href="../${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
