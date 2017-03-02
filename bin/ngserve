@@ -172,13 +172,19 @@ function dumpEntryNav( res, guide, entry ) {
 
     res.write( "<header>\n<nav>\n<ul>\n" );
 
-    res.write( "<li>\n" );
-    if ( entry.hasParent() ) {
-        res.write( `<a href="../${entry.parent()}">Up</a>\n`)
-    } else {
-        res.write( "Up" );
-    }
-    res.write( "</li>\n" );
+    const addJump = ( name, has, pos ) => {
+        res.write( "<li>\n" );
+        if ( has ) {
+            res.write( `<a href="../${pos}">${name}</a>\n`)
+        } else {
+            res.write( name );
+        }
+        res.write( "</li>\n" );
+    };
+
+    addJump( "Previous", entry.hasPrevious(), entry.previous() );
+    addJump( "Up",       entry.hasParent(),   entry.parent()   );
+    addJump( "Next",     entry.hasNext(),     entry.next()     );
 
     res.write( "</ul>\n</nav>\n</header>\n" );
 }
