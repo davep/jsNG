@@ -105,11 +105,17 @@ section nav {
   border: solid 1px lightgrey;
   padding-right: 1ex;
   margin-right: 1ex;
+  background: navy;
+  color: silver;
 }
 
 section nav ul {
   list-style: none;
   padding-left: 1ex;
+}
+
+section nav > ul > li {
+  color: white;
 }
 
 section article {
