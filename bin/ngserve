@@ -39,6 +39,40 @@ function dumpFooter( res, guide ) {
     res.write( "</html>\n" );
 }
 
+function colourOptions() {
+    const COLOURS = [
+        "black",
+        "navy",
+        "green",
+        "teal",
+        "maroon",
+        "purple",
+        "olive",
+        "silver",
+        "gray",
+        "blue",
+        "lime",
+        "aqua",
+        "red",
+        "fuchsia",
+        "yellow",
+        "white"
+    ];
+    let s = "";
+
+    for ( let bg = 0; bg < COLOURS.length; bg++ ) {
+        for ( let fg = 0; fg < COLOURS.length; fg++ ) {
+            s += `
+span.ngFG${fg}BG${bg} {
+  color: ${COLOURS[ fg ]};
+  background: ${COLOURS[ bg ]};
+}`;
+        }
+    }
+
+    return s;
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // Dump the stylesheet for the guide.
 function dumpCSS( res ) {
@@ -96,6 +130,8 @@ section article span.ngb {
 section article span.ngu {
   text-decoration: underline;
 }
+
+${colourOptions()}
 
 section article a {
   width: 100%;
@@ -166,6 +202,11 @@ function toHTML( line ) {
     ( new NG.Line.Parser( {
 
         text: t => s += unHTML( t ),
+
+        colour: c => {
+            s += `<span class="ngFG${ c & 0xF }BG${ c >> 4 }">`;
+            stack.push( "</span>" );
+        },
 
         normal: t => {
             s += stack.reverse().join();
