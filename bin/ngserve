@@ -89,7 +89,7 @@ section article {
   color: white;
 }
 
-section article strong {
+section article span.ngb {
   font-weight: bold;
 }
 
@@ -169,12 +169,12 @@ function toHTML( line ) {
         },
 
         bold: () => {
-            s += "<strong>";
-            stack.push( "</strong>" );
+            s += '<span class="ngb">';
+            stack.push( "</span>" );
         },
 
         unbold: () => {
-            s += "</strong>";
+            s += "</span>";
             stack.pop();
         }
 
