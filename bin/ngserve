@@ -1,0 +1,185 @@
+#!/usr/bin/env node
+
+const HTTP    = require( "http" );
+const NG      = require( "../lib/jsNG" );
+const ngserve = require( "commander" );
+
+ngserve
+    .usage( "[options] <file>" )
+    .version( NG.version )
+    .description( "Simple HTTP server for serving a Norton Guide file" )
+    .option( "-p, --port <n>", "Port to serve on", parseInt, 8080 )
+    .parse( process.argv )
+
+////////////////////////////////////////////////////////////////////////////
+// Log something.
+function log( s ) {
+    console.log( s );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Emit the standad header.
+function dumpHeader( res, guide ) {
+    res.setHeader( 'Content-Type', 'text/html' );
+    res.write( "<!DOCTYPE html>\n" );
+    res.write( "<html>" );
+    res.write( "<head>" );
+    res.write( '<meta name="viewport" content="width=device-width, initial-scale=1">' );
+    res.write( '<meta charset="utf-8">' );
+    res.write( `<title>${guide.title()}</title>` );
+    res.write( '<link rel="stylesheet" type="text/css" href="/css" />' );
+    res.write( "</head>" );
+    res.write( "<body>" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Emit the standad footer.
+function dumpFooter( res, guide ) {
+    res.write( "</body>" );
+    res.write( "</html>" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump the stylesheet for the guide.
+function dumpCSS( res ) {
+    res.setHeader( 'Content-Type', 'text/css' );
+    res.end( `
+article a, nav a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header nav {
+  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
+  border: solid 1px lightgrey;
+  padding: 0;
+  margin-bottom: 1ex;
+}
+
+header nav ul li {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+section {
+}
+
+section nav {
+  float: left;
+  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
+  border: solid 1px lightgrey;
+  padding-right: 1ex;
+}
+
+section nav ul {
+  list-style: none;
+  padding-left: 1ex;
+}
+
+section article {
+  float: left;
+  margin-left: 1ex;
+  padding: 1ex;
+  font-family: monospace;
+  white-space: pre;
+  border: solid 1px lightgrey;
+  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
+}
+`)
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump a menu to the browser.
+function dumpMenu( res, guide ) {
+
+    res.write( "<nav><ul>" );
+
+    for ( let menu of guide.menus() ) {
+
+        res.write( `<li>${menu.title()}</li>` );
+        res.write( "<ul>" );
+
+        for ( let option of menu.options() ) {
+            res.write( `<li><a href="/${option.offset}">${option.prompt}</a></li>` );
+        }
+        res.write( "</ul>" );
+    }
+
+    res.write( "</ul></nav>" );
+
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump an the entry navigation section.
+function dumpEntryNav( res, guide, entry ) {
+
+    res.write( "<header><nav><ul>" );
+
+    res.write( "<li>" );
+    if ( entry.hasParent() ) {
+        res.write( `<a href="../${entry.parent()}">Up</a>`)
+    } else {
+        res.write( "Up" );
+    }
+    res.write( "</li>" );
+
+    res.write( "</ul></nav></header>" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump an entry to the browser.
+function dumpEntry( res, guide, pos ) {
+
+    try {
+
+        dumpHeader( res, guide );
+
+        const entry = guide.loadEntry( parseInt( pos ) );
+
+        dumpEntryNav( res, guide, entry );
+
+        res.write( "<section> " );
+        dumpMenu( res, guide );
+        res.write( "<article>" );
+        for ( let i = 0; i < entry.lineCount(); i++ ) {
+            if ( entry.isShort() ) {
+                res.write( `<a href="../${entry.offsets()[ i ]}">${entry.lines()[ i ]}</a><br />`)
+            } else {
+                res.write( `${entry.lines()[ i ]}<br />`)
+            }
+        }
+        res.write( "</article>" );
+        res.write( "</section> " );
+
+    } finally {
+        dumpFooter( res, guide );
+        res.end();
+    }
+}
+
+if ( ngserve.args.length > 0 ) {
+
+    const ng = new NG.Guide( ngserve.args[ 0 ] ).open( true );
+
+    HTTP.createServer( ( req, res ) => {
+
+        // Log the request.
+        log( `${req.method}\t${req.url}` );
+
+        // See what we're being asked for.
+        const path = req.url.split( "/" )[ 1 ];
+
+        res.statusCode = 200;
+
+        // Asking for the CSS?
+        if ( path === "css" ) {
+            dumpCSS( res );
+        } else {
+            dumpEntry( res, ng, path === "" ? ng.firstEntry() : path );
+        }
+
+    } ).listen( ngserve.port, () => {
+        log( `Listening on http://localhost:${ngserve.port}` );
+    } );
+
+}
