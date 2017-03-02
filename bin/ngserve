@@ -22,21 +22,21 @@ function log( s ) {
 function dumpHeader( res, guide ) {
     res.setHeader( 'Content-Type', 'text/html' );
     res.write( "<!DOCTYPE html>\n" );
-    res.write( "<html>" );
-    res.write( "<head>" );
-    res.write( '<meta name="viewport" content="width=device-width, initial-scale=1">' );
-    res.write( '<meta charset="utf-8">' );
-    res.write( `<title>${guide.title()}</title>` );
-    res.write( '<link rel="stylesheet" type="text/css" href="/css" />' );
-    res.write( "</head>" );
-    res.write( "<body>" );
+    res.write( "<html>\n" );
+    res.write( "<head>\n" );
+    res.write( '<meta name="viewport" content="width=device-width, initial-scale=1">\n' );
+    res.write( '<meta charset="utf-8">\n' );
+    res.write( `<title>${guide.title()}</title>\n` );
+    res.write( '<link rel="stylesheet" type="text/css" href="/css" />\n' );
+    res.write( "</head>\n" );
+    res.write( "<body>\n" );
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad footer.
 function dumpFooter( res, guide ) {
-    res.write( "</body>" );
-    res.write( "</html>" );
+    res.write( "</body>\n" );
+    res.write( "</html>\n" );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -109,20 +109,20 @@ section article a:hover {
 // Dump a menu to the browser.
 function dumpMenu( res, guide ) {
 
-    res.write( "<nav><ul>" );
+    res.write( "<nav>\n<ul>\n" );
 
     for ( let menu of guide.menus() ) {
 
-        res.write( `<li>${menu.title()}</li>` );
-        res.write( "<ul>" );
+        res.write( `<li>${menu.title()}</li>\n` );
+        res.write( "<ul>\n" );
 
         for ( let option of menu.options() ) {
-            res.write( `<li><a href="/${option.offset}">${option.prompt}</a></li>` );
+            res.write( `<li><a href="/${option.offset}">${option.prompt}</a></li>\n` );
         }
-        res.write( "</ul>" );
+        res.write( "</ul>\n" );
     }
 
-    res.write( "</ul></nav>" );
+    res.write( "</ul>\n</nav>\n" );
 
 }
 
@@ -130,17 +130,17 @@ function dumpMenu( res, guide ) {
 // Dump an the entry navigation section.
 function dumpEntryNav( res, guide, entry ) {
 
-    res.write( "<header><nav><ul>" );
+    res.write( "<header>\n<nav>\n<ul>\n" );
 
-    res.write( "<li>" );
+    res.write( "<li>\n" );
     if ( entry.hasParent() ) {
-        res.write( `<a href="../${entry.parent()}">Up</a>`)
+        res.write( `<a href="../${entry.parent()}">Up</a>\n`)
     } else {
         res.write( "Up" );
     }
-    res.write( "</li>" );
+    res.write( "</li>\n" );
 
-    res.write( "</ul></nav></header>" );
+    res.write( "</ul>\n</nav>\n</header>\n" );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -185,18 +185,18 @@ function dumpEntry( res, guide, pos ) {
 
         dumpEntryNav( res, guide, entry );
 
-        res.write( "<section> " );
+        res.write( "<section>\n" );
         dumpMenu( res, guide );
-        res.write( "<article>" );
+        res.write( "<article>\n" );
         for ( let i = 0; i < entry.lineCount(); i++ ) {
             if ( entry.isShort() ) {
-                res.write( `<a href="../${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a><br />`)
+                res.write( `<a href="../${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
             } else {
-                res.write( `${toHTML( entry.lines()[ i ] )}<br />`)
+                res.write( `${toHTML( entry.lines()[ i ] )}\n`);
             }
         }
-        res.write( "</article>" );
-        res.write( "</section> " );
+        res.write( "</article>\n" );
+        res.write( "</section>\n" );
 
     } finally {
         dumpFooter( res, guide );
