@@ -93,6 +93,10 @@ section article span.ngb {
   font-weight: bold;
 }
 
+section article span.ngu {
+  text-decoration: underline;
+}
+
 section article a {
   width: 100%;
   display: inline-block;
@@ -185,6 +189,16 @@ function toHTML( line ) {
 
         unreverse: () => {
             s += "</span>";
+            stack.pop();
+        },
+
+        underline: () => {
+            s += '<span class="ngu">';
+            stack.push( "</span>" );
+        },
+
+        ununderline: () => {
+            s += "</span>",
             stack.pop();
         }
 
