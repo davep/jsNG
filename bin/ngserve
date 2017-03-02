@@ -283,7 +283,9 @@ function dumpEntry( res, guide, pos ) {
         dumpEntryNav( res, guide, entry );
 
         res.write( "<section>\n" );
+
         dumpMenu( res, guide );
+
         res.write( "<article>" );
         for ( let i = 0; i < entry.lineCount(); i++ ) {
             if ( entry.isShort() ) {
@@ -293,6 +295,17 @@ function dumpEntry( res, guide, pos ) {
             }
         }
         res.write( "</article>\n" );
+
+        if ( entry.hasSeeAlso() ) {
+            res.write( "<article>\n" );
+            res.write( "<strong>See Also:</strong>\n<ul>\n" );
+            for ( let seeAlso of entry.seeAlso().options() ) {
+                res.write( `<li><a href="../${seeAlso.offset}">${seeAlso.prompt}</a></li>\n` );
+            }
+            res.write( "</ul>\n" );
+            res.write( "</article>\n" );
+        }
+
         res.write( "</section>\n" );
 
     } finally {
