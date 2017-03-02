@@ -160,15 +160,24 @@ function toHTML( line ) {
     const stack = [];
     let   s     = "";
     ( new NG.Line.Parser( {
-        text:        t  => s += unHTML( t ),
-        bold:        () => {
+
+        text: t => s += unHTML( t ),
+
+        normal: t => {
+            s += stack.reverse().join();
+            stack.length = 0;
+        },
+
+        bold: () => {
             s += "<strong>";
             stack.push( "</strong>" );
         },
-        unbold:      () => {
+
+        unbold: () => {
             s += "</strong>";
             stack.pop();
         }
+
     } ) ).parse( line );
     return s + stack.reverse().join();
 }
