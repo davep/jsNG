@@ -176,6 +176,16 @@ function toHTML( line ) {
         unbold: () => {
             s += "</span>";
             stack.pop();
+        },
+
+        reverse: () => {
+            s += '<span class="ngr">';
+            stack.push( "</span>" );
+        },
+
+        unreverse: () => {
+            s += "</span>";
+            stack.pop();
         }
 
     } ) ).parse( line );
