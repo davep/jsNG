@@ -200,7 +200,9 @@ function toHTML( line ) {
         ununderline: () => {
             s += "</span>",
             stack.pop();
-        }
+        },
+
+        charVal: c => s += unHTML( String.fromCharCode( c ) )
 
     } ) ).parse( line );
     return s + stack.reverse().join();
