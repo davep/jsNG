@@ -44,6 +44,10 @@ function dumpFooter( res, guide ) {
 function dumpCSS( res ) {
     res.setHeader( 'Content-Type', 'text/css' );
     res.end( `
+body {
+  font-family: sans-serif;
+}
+
 article a, nav a {
   text-decoration: none;
   color: inherit;
