@@ -89,6 +89,10 @@ section article {
   color: white;
 }
 
+section article strong {
+  font-weight: bold;
+}
+
 section article a {
   width: 100%;
   display: inline-block;
@@ -140,6 +144,36 @@ function dumpEntryNav( res, guide, entry ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Escape problematic HTML characters.
+function unHTML( s) {
+    return s
+        .replace( /&/g, "&amp;"  )
+        .replace( /</g, "&lt;"   )
+        .replace( />/g, "&gt;"   )
+        .replace( /"/g, "&quot;" )
+        .replace( /'/g, "&#039;" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Convert an NG line to HTML.
+function toHTML( line ) {
+    const stack = [];
+    let   s     = "";
+    ( new NG.Line.Parser( {
+        text:        t  => s += unHTML( t ),
+        bold:        () => {
+            s += "<strong>";
+            stack.push( "</strong>" );
+        },
+        unbold:      () => {
+            s += "</strong>";
+            stack.pop();
+        }
+    } ) ).parse( line );
+    return s + stack.reverse().join();
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Dump an entry to the browser.
 function dumpEntry( res, guide, pos ) {
 
@@ -147,7 +181,7 @@ function dumpEntry( res, guide, pos ) {
 
         dumpHeader( res, guide );
 
-        const entry = guide.loadEntry( parseInt( pos ) );
+        const entry  = guide.loadEntry( parseInt( pos ) );
 
         dumpEntryNav( res, guide, entry );
 
@@ -156,9 +190,9 @@ function dumpEntry( res, guide, pos ) {
         res.write( "<article>" );
         for ( let i = 0; i < entry.lineCount(); i++ ) {
             if ( entry.isShort() ) {
-                res.write( `<a href="../${entry.offsets()[ i ]}">${entry.lines()[ i ]}</a><br />`)
+                res.write( `<a href="../${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a><br />`)
             } else {
-                res.write( `${entry.lines()[ i ]}<br />`)
+                res.write( `${toHTML( entry.lines()[ i ] )}<br />`)
             }
         }
         res.write( "</article>" );
