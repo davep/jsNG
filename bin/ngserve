@@ -118,6 +118,15 @@ section nav > ul > li {
   color: white;
 }
 
+section nav a {
+  display: block;
+}
+
+section nav a:hover {
+  background: red;
+  color: white;
+}
+
 section article {
   overflow: hidden;
   font-family: monospace;
