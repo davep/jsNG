@@ -84,6 +84,18 @@ section article {
   white-space: pre;
   border: solid 1px lightgrey;
   box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
+  background: blue;
+  color: white;
+}
+
+section article a {
+  width: 100%;
+  display: inline-block;
+}
+
+section article a:hover {
+  background: red;
+  color: white;
 }
 `)
 }
