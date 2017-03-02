@@ -119,8 +119,8 @@ section article {
   white-space: pre;
   border: solid 1px lightgrey;
   box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
-  background: blue;
-  color: white;
+  background: navy;
+  color: silver;
 }
 
 section article span.ngb {
