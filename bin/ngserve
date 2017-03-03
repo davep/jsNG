@@ -327,7 +327,7 @@ function dumpEntry( res, guide, pos ) {
             res.write( "<article>\n" );
             res.write( "<strong>See Also:</strong>\n<ul>\n" );
             for ( let seeAlso of entry.seeAlso().options() ) {
-                res.write( `<li><a href="../${seeAlso.offset}">${seeAlso.prompt}</a></li>\n` );
+                res.write( `<li><a href="../${seeAlso.offset}">${toHTML( seeAlso.prompt )}</a></li>\n` );
             }
             res.write( "</ul>\n" );
             res.write( "</article>\n" );
