@@ -176,7 +176,7 @@ section article a {
   display: inline-block;
 }
 
-section article a:hover {
+section article a:hover, section article a:hover * {
   background: red;
   color: white;
 }
