@@ -265,7 +265,7 @@ function toHTML( line ) {
     let   s     = "";
     ( new NG.Line.Parser( {
 
-        text: t => s += unHTML( t ),
+        text: t => s += unHTML( NG.Tool.unDOSify( t ) ),
 
         colour: c => {
             s += `<span class="fg${ c & 0xF } bg${ c >> 4 }">`;
