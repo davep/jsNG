@@ -80,11 +80,12 @@ function dumpCSS( res ) {
     res.end( `
 body {
   font-family: sans-serif;
+  background: midnightblue;
 }
 
 .box {
   border: solid 1px lightgrey;
-  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
+  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.2 );
   background: navy;
   color: silver;
 }
