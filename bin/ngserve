@@ -240,9 +240,9 @@ function dumper( res, guide, f ) {
 // Dump the "About" of the guide.
 function dumpAbout( res, guide ) {
     dumper( res, guide, () => {
-        res.write( `<h1>About "${unHTML( NG.Tool.unDOSify( guide.title() ) )}".</h1><hr />\n` );
+        res.write( `<h1>About "${unHTML( NG.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
         for ( let line of guide.credits() ) {
-            res.write( unHTML( NG.Tool.unDOSify( line ) ) + "\n" );
+            res.write( unHTML( NG.Tool.makeDOSish( line ) ) + "\n" );
         }
     } );
 }
@@ -308,7 +308,7 @@ function toHTML( line ) {
     let   s     = "";
     ( new NG.Line.Parser( {
 
-        text: t => s += unHTML( NG.Tool.unDOSify( t ) ),
+        text: t => s += unHTML( NG.Tool.makeDOSish( t ) ),
 
         colour: c => {
             s += `<span class="fg${ c & 0xF } bg${ c >> 4 }">`;
@@ -350,7 +350,7 @@ function toHTML( line ) {
             stack.pop();
         },
 
-        charVal: c => s += unHTML( NG.Tool.unDOSify( String.fromCharCode( c ) ) )
+        charVal: c => s += unHTML( NG.Tool.makeDOSish( String.fromCharCode( c ) ) )
 
     } ) ).parse( line );
     return s + stack.reverse().join( "" );
