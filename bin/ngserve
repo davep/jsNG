@@ -236,7 +236,7 @@ function dumpAbout( res, guide ) {
     dumper( res, guide, () => {
         res.write( "<h1>About this guide</h1>\n<hr />\n" );
         for ( let line of guide.credits() ) {
-            res.write( unHTML( line ) + "\n" );
+            res.write( unHTML( NG.Tool.unDOSify( line ) ) + "\n" );
         }
     } );
 }
