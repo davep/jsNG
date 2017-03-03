@@ -125,6 +125,11 @@ header nav {
 header nav ul li {
   display: inline-block;
   margin-right: 1em;
+  color: dimgray;
+}
+
+header nav a {
+  color: white;
 }
 
 section nav.menu {
