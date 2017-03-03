@@ -223,6 +223,12 @@ function unHTML( s ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Convert text from DOS to DOS-a-like.
+function unDOSify( s ) {
+    return NG.Tool.makeDOSish( s );
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Wrap a function call in the general head/foot code.
 function dumper( res, guide, f ) {
     dumpHeader( res, guide );
@@ -242,7 +248,7 @@ function dumpAbout( res, guide ) {
     dumper( res, guide, () => {
         res.write( `<h1>About "${unHTML( NG.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
         for ( let line of guide.credits() ) {
-            res.write( unHTML( NG.Tool.makeDOSish( line ) ) + "\n" );
+            res.write( unHTML( unDOSify( line ) ) + "\n" );
         }
     } );
 }
@@ -308,7 +314,7 @@ function toHTML( line ) {
     let   s     = "";
     ( new NG.Line.Parser( {
 
-        text: t => s += unHTML( NG.Tool.makeDOSish( t ) ),
+        text: t => s += unHTML( unDOSify( t ) ),
 
         colour: c => {
             s += `<span class="fg${ c & 0xF } bg${ c >> 4 }">`;
@@ -350,7 +356,7 @@ function toHTML( line ) {
             stack.pop();
         },
 
-        charVal: c => s += unHTML( NG.Tool.makeDOSish( String.fromCharCode( c ) ) )
+        charVal: c => s += unHTML( unDOSify( String.fromCharCode( c ) ) )
 
     } ) ).parse( line );
     return s + stack.reverse().join( "" );
