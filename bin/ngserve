@@ -214,25 +214,15 @@ function unHTML( s) {
 ////////////////////////////////////////////////////////////////////////////
 // Wrap a function call in the general head/foot code.
 function dumper( res, guide, f ) {
-    try {
-
-        dumpHeader( res, guide );
-        dumpTopNav( res, guide );
-
-        res.write( "<section>\n" );
-
-        dumpMenu( res, guide );
-
-        res.write( '<article class="box">' );
-        f( res, guide );
-        res.write( "</article>\n" );
-
-        res.write( "</section>\n" );
-
-    } finally {
-        dumpFooter( res, guide );
-        res.end();
-    }
+    dumpHeader( res, guide );
+    dumpTopNav( res, guide );
+    res.write( "<section>\n" );
+    dumpMenu( res, guide );
+    res.write( '<article class="box">' );
+    f( res, guide );
+    res.write( "</article>\n" );
+    res.write( "</section>\n" );
+    dumpFooter( res, guide );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -359,44 +349,40 @@ function toHTML( line ) {
 // Dump an entry to the browser.
 function dumpEntry( res, guide, pos ) {
 
-    try {
+    dumpHeader( res, guide );
 
-        dumpHeader( res, guide );
+    const entry  = guide.loadEntry( parseInt( pos ) );
 
-        const entry  = guide.loadEntry( parseInt( pos ) );
+    dumpTopNav( res, guide, entry );
 
-        dumpTopNav( res, guide, entry );
+    res.write( "<section>\n" );
 
-        res.write( "<section>\n" );
+    dumpMenu( res, guide );
 
-        dumpMenu( res, guide );
-
-        res.write( '<article class="box">' );
-        for ( let i = 0; i < entry.lineCount(); i++ ) {
-            if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
-                res.write( `<a href="${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
-            } else {
-                res.write( `${toHTML( entry.lines()[ i ] )}\n`);
-            }
+    res.write( '<article class="box">' );
+    for ( let i = 0; i < entry.lineCount(); i++ ) {
+        if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
+            res.write( `<a href="${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
+        } else {
+            res.write( `${toHTML( entry.lines()[ i ] )}\n`);
         }
-
-        if ( entry.hasSeeAlso() ) {
-            res.write( '<nav class="seeAlso">\n' );
-            res.write( "<ul>\n<li>See Also:</li>\n" );
-            for ( let seeAlso of entry.seeAlso().options() ) {
-                res.write( `<li><a href="${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
-            }
-            res.write( "</ul>\n" );
-            res.write( "</nav>\n" );
-        }
-
-        res.write( "</article>\n" );
-        res.write( "</section>\n" );
-
-    } finally {
-        dumpFooter( res, guide );
-        res.end();
     }
+
+    if ( entry.hasSeeAlso() ) {
+        res.write( '<nav class="seeAlso">\n' );
+        res.write( "<ul>\n<li>See Also:</li>\n" );
+        for ( let seeAlso of entry.seeAlso().options() ) {
+            res.write( `<li><a href="${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
+        }
+        res.write( "</ul>\n" );
+        res.write( "</nav>\n" );
+    }
+
+    res.write( "</article>\n" );
+    res.write( "</section>\n" );
+
+    dumpFooter( res, guide );
+
 }
 
 if ( ngserve.args.length > 0 ) {
@@ -409,42 +395,46 @@ if ( ngserve.args.length > 0 ) {
     HTTP.createServer( ( req, res ) => {
 
         try {
+            try {
 
-            // Log the request.
-            log( `${req.method}\t${req.url}` );
+                // Log the request.
+                log( `${req.method}\t${req.url}` );
 
-            // See what we're being asked for.
-            let path = req.url.split( "/" )[ 1 ];
+                // See what we're being asked for.
+                let path = req.url.split( "/" )[ 1 ];
 
-            // If what we're being asked for is empty, assume it's the first
-            // entry that we're after.
-            path = ( path === "" ? ng.firstEntry() : path );
+                // If what we're being asked for is empty, assume it's the first
+                // entry that we're after.
+                path = ( path === "" ? ng.firstEntry() : path );
 
-            // Assume we're going to handle things.
-            res.statusCode = 200;
+                // Assume we're going to handle things.
+                res.statusCode = 200;
 
-            // Set some default headers.
-            res.setHeader( "Server", `ngserve/jsNG/${NG.version}` );
+                // Set some default headers.
+                res.setHeader( "Server", `ngserve/jsNG/${NG.version}` );
 
-            // Asking for the CSS?
-            if ( path === "css" ) {
-                dumpCSS( res );
-            } else if ( path === "about" ) {
-                // Asking for the about section.
-                dumpAbout( res, ng );
-            } else if ( ng.isEntryAt( parseInt( path ) ) ) {
-                // Asking for an entry.
-                dumpEntry( res, ng, path );
-            } else {
-                // Don't have it!
-                res.statusCode = 404;
-                dumpError( res, ng, "Not found" );
+                // Asking for the CSS?
+                if ( path === "css" ) {
+                    dumpCSS( res );
+                } else if ( path === "about" ) {
+                    // Asking for the about section.
+                    dumpAbout( res, ng );
+                } else if ( ng.isEntryAt( parseInt( path ) ) ) {
+                    // Asking for an entry.
+                    dumpEntry( res, ng, path );
+                } else {
+                    // Don't have it!
+                    res.statusCode = 404;
+                    dumpError( res, ng, "Not found" );
+                }
+
+            } catch ( e ) {
+                res.statusCode = 500;
+                log( "Internal error:\n\n" + e.message );
+                dumpError( res, ng, "Internal error:\n\n" + unHTML( e.message ) );
             }
-
-        } catch ( e ) {
-            res.statusCode = 500;
-            log( "Internal error:\n\n" + e.message );
-            dumpError( res, ng, "Internal error:\n\n" + unHTML( e.message ) );
+        } finally {
+            res.end();
         }
 
     } ).listen( ngserve.port, () => {
