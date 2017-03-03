@@ -21,7 +21,7 @@ function log( s ) {
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad header.
 function dumpHeader( res, guide ) {
-    res.setHeader( 'Content-Type', 'text/html' );
+    res.setHeader( "Content-Type", "text/html" );
     res.write( "<!DOCTYPE html>\n" );
     res.write( "<html>\n" );
     res.write( "<head>\n" );
@@ -86,7 +86,7 @@ span.fg${i} {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the stylesheet for the guide.
 function dumpCSS( res ) {
-    res.setHeader( 'Content-Type', 'text/css' );
+    res.setHeader( "Content-Type", "text/css" );
     res.end( `
 body {
   font-family: sans-serif;
