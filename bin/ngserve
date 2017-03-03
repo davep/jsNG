@@ -84,7 +84,7 @@ body {
 }
 
 .box {
-  border: solid 1px lightgrey;
+  border: solid 1px silver;
   box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.2 );
   background: navy;
   color: silver;
@@ -129,21 +129,24 @@ section nav.menu a {
   display: block;
 }
 
-section nav.seeAlso {
-  overflow: hidden;
-  font-family: monospace;
-  padding: 0.5em;
+nav.seeAlso {
+  border-top: solid 1px silver;
+  white-space: normal;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
-section nav.seeAlso ul {
+nav.seeAlso ul {
   padding-left: 0.5em;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
-section nav.seeAlso ul li:first-child {
+nav.seeAlso ul li:first-child {
   color: white;
 }
 
-section nav.seeAlso ul li {
+nav.seeAlso ul li {
   display: inline-block;
   margin-right: 1em;
 }
@@ -334,10 +337,9 @@ function dumpEntry( res, guide, pos ) {
                 res.write( `${toHTML( entry.lines()[ i ] )}\n`);
             }
         }
-        res.write( "</article>\n" );
 
         if ( entry.hasSeeAlso() ) {
-            res.write( '<nav class="seeAlso box">\n' );
+            res.write( '<nav class="seeAlso">\n' );
             res.write( "<ul>\n<li>See Also:</li>\n" );
             for ( let seeAlso of entry.seeAlso().options() ) {
                 res.write( `<li><a href="../${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
@@ -346,6 +348,7 @@ function dumpEntry( res, guide, pos ) {
             res.write( "</nav>\n" );
         }
 
+        res.write( "</article>\n" );
         res.write( "</section>\n" );
 
     } finally {
