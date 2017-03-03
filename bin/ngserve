@@ -212,6 +212,7 @@ function dumpAbout( res, guide ) {
     try {
 
         dumpHeader( res, guide );
+        dumpTopNav( res, guide );
 
         res.write( "<section>\n" );
 
@@ -254,8 +255,8 @@ function dumpMenu( res, guide ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// Dump an the entry navigation section.
-function dumpEntryNav( res, guide, entry ) {
+// Dump the top navigation section.
+function dumpTopNav( res, guide, entry = false ) {
 
     res.write( '<header>\n<nav class="box">\n<ul>\n' );
 
@@ -269,10 +270,13 @@ function dumpEntryNav( res, guide, entry ) {
         res.write( "</li>\n" );
     };
 
-    addJump( "About",    true,                "about" );
-    addJump( "Previous", entry.hasPrevious(), entry.previous() );
-    addJump( "Up",       entry.hasParent(),   entry.parent()   );
-    addJump( "Next",     entry.hasNext(),     entry.next()     );
+    addJump( "About", true, "about" );
+
+    if ( entry ) {
+        addJump( "Previous", entry.hasPrevious(), entry.previous() );
+        addJump( "Up",       entry.hasParent(),   entry.parent()   );
+        addJump( "Next",     entry.hasNext(),     entry.next()     );
+    }
 
     res.write( "</ul>\n</nav>\n</header>\n" );
 }
@@ -342,7 +346,7 @@ function dumpEntry( res, guide, pos ) {
 
         const entry  = guide.loadEntry( parseInt( pos ) );
 
-        dumpEntryNav( res, guide, entry );
+        dumpTopNav( res, guide, entry );
 
         res.write( "<section>\n" );
 
