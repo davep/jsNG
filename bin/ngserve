@@ -94,6 +94,11 @@ article a, nav a {
   color: inherit;
 }
 
+nav a:hover, nav a:hover *, article a:hover, article a:hover * {
+  background: red;
+  color: white;
+}
+
 header nav {
   padding: 0;
   margin-bottom: 1ex;
@@ -142,11 +147,6 @@ section nav.seeAlso ul li {
   margin-right: 1em;
 }
 
-section nav a:hover {
-  background: red;
-  color: white;
-}
-
 section article {
   overflow: hidden;
   font-family: monospace;
@@ -169,10 +169,6 @@ section article a {
   display: inline-block;
 }
 
-section article a:hover, section article a:hover * {
-  background: red;
-  color: white;
-}
 `)
 }
 
