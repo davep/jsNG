@@ -8,9 +8,9 @@ ngserve
     .usage( "[options] <file>" )
     .version( NG.version )
     .description( "Simple HTTP server for serving a Norton Guide file" )
-    .option( "-a, --no-advert", "Don't show the ngserve/jsNG advert" )
-    .option( "-t, --plain-text", "Output very plain text" )
-    .option( "-p, --port <n>", "Port to serve on", parseInt )
+    .option( "-a, --no-advert",  "Don't show the ngserve/jsNG advert" )
+    .option( "-g, --graph-text", "Preserve \"graphical\" characters in the output" )
+    .option( "-p, --port <n>",   "Port to serve on", parseInt )
     .parse( process.argv )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -226,7 +226,7 @@ function unHTML( s ) {
 ////////////////////////////////////////////////////////////////////////////
 // Convert text from DOS to DOS-a-like.
 function unDOSify( s ) {
-    return ( ngserve.plainText ? NG.Tool.makePlain : NG.Tool.makeDOSish )( s );
+    return ( ngserve.graphText ? NG.Tool.makeDOSish : NG.Tool.makePlain )( s );
 }
 
 ////////////////////////////////////////////////////////////////////////////
