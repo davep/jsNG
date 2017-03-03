@@ -177,6 +177,15 @@ section article {
   white-space: pre;
 }
 
+section article h1 {
+  color: white;
+  margin-bottom: 0;
+}
+
+section article hr {
+  margin-top: 0;
+}
+
 section article span.ngb {
   color: white;
 }
