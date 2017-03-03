@@ -161,6 +161,32 @@ section article a:hover {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Dump the "About" of the guide.
+function dumpAbout( res, guide ) {
+    try {
+
+        dumpHeader( res, guide );
+
+        res.write( "<section>\n" );
+
+        dumpMenu( res, guide );
+
+        res.write( "<article>" );
+        res.write( "<h1>About this guide</h1>\n<hr />\n" );
+        for ( let line of guide.credits() ) {
+            res.write( toHTML( line ) + "\n" );
+        }
+        res.write( "</article>\n" );
+
+        res.write( "</section>\n" );
+
+    } finally {
+        dumpFooter( res, guide );
+        res.end();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Dump a menu to the browser.
 function dumpMenu( res, guide ) {
 
@@ -200,6 +226,7 @@ function dumpEntryNav( res, guide, entry ) {
     addJump( "Previous", entry.hasPrevious(), entry.previous() );
     addJump( "Up",       entry.hasParent(),   entry.parent()   );
     addJump( "Next",     entry.hasNext(),     entry.next()     );
+    addJump( "About",    true,                "about" );
 
     res.write( "</ul>\n</nav>\n</header>\n" );
 }
@@ -331,7 +358,11 @@ if ( ngserve.args.length > 0 ) {
         // Asking for the CSS?
         if ( path === "css" ) {
             dumpCSS( res );
+        } else if ( path === "about" ) {
+            // Asking for the about section.
+            dumpAbout( res, ng );
         } else {
+            // Asking for an entry.
             dumpEntry( res, ng, path === "" ? ng.firstEntry() : path );
         }
 
