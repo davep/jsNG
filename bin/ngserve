@@ -82,14 +82,19 @@ body {
   font-family: sans-serif;
 }
 
+.box {
+  border: solid 1px lightgrey;
+  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
+  background: navy;
+  color: silver;
+}
+
 article a, nav a {
   text-decoration: none;
   color: inherit;
 }
 
 header nav {
-  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
-  border: solid 1px lightgrey;
   padding: 0;
   margin-bottom: 1ex;
 }
@@ -101,12 +106,8 @@ header nav ul li {
 
 section nav.menu {
   float: left;
-  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
-  border: solid 1px lightgrey;
   padding-right: 1ex;
   margin-right: 1ex;
-  background: navy;
-  color: silver;
 }
 
 section nav.menu ul {
@@ -126,10 +127,6 @@ section nav.seeAlso {
   overflow: hidden;
   font-family: monospace;
   padding: 0.5em;
-  border: solid 1px lightgrey;
-  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
-  background: navy;
-  color: silver;
 }
 
 section nav.seeAlso ul {
@@ -155,10 +152,6 @@ section article {
   font-family: monospace;
   padding: 0.5em;
   white-space: pre;
-  border: solid 1px lightgrey;
-  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
-  background: navy;
-  color: silver;
 }
 
 section article span.ngb {
@@ -205,7 +198,7 @@ function dumpAbout( res, guide ) {
 
         dumpMenu( res, guide );
 
-        res.write( "<article>" );
+        res.write( '<article class="box">' );
         res.write( "<h1>About this guide</h1>\n<hr />\n" );
         for ( let line of guide.credits() ) {
             res.write( unHTML( line ) + "\n" );
@@ -224,7 +217,7 @@ function dumpAbout( res, guide ) {
 // Dump a menu to the browser.
 function dumpMenu( res, guide ) {
 
-    res.write( '<nav class="menu""">\n<ul>\n' );
+    res.write( '<nav class="menu box">\n<ul>\n' );
 
     for ( let menu of guide.menus() ) {
 
@@ -336,7 +329,7 @@ function dumpEntry( res, guide, pos ) {
 
         dumpMenu( res, guide );
 
-        res.write( "<article>" );
+        res.write( '<article class="box">' );
         for ( let i = 0; i < entry.lineCount(); i++ ) {
             if ( entry.isShort() ) {
                 res.write( `<a href="../${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
@@ -347,7 +340,7 @@ function dumpEntry( res, guide, pos ) {
         res.write( "</article>\n" );
 
         if ( entry.hasSeeAlso() ) {
-            res.write( '<nav class="seeAlso""">\n' );
+            res.write( '<nav class="seeAlso box">\n' );
             res.write( "<ul>\n<li>See Also:</li>\n" );
             for ( let seeAlso of entry.seeAlso().options() ) {
                 res.write( `<li><a href="../${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
