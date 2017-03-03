@@ -398,7 +398,7 @@ if ( ngserve.args.length > 0 ) {
             try {
 
                 // Log the request.
-                log( `${req.method}\t${req.url}` );
+                log( `${req.connection.remoteAddress} ${req.method} ${req.url}` );
 
                 // See what we're being asked for.
                 let path = req.url.split( "/" )[ 1 ];
