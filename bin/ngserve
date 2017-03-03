@@ -351,7 +351,11 @@ if ( ngserve.args.length > 0 ) {
         log( `${req.method}\t${req.url}` );
 
         // See what we're being asked for.
-        const path = req.url.split( "/" )[ 1 ];
+        let path = req.url.split( "/" )[ 1 ];
+
+        // If what we're being asked for is empty, assume it's the first
+        // entry that we're after.
+        path = ( path === "" ? ng.firstEntry() : path );
 
         res.statusCode = 200;
 
@@ -361,9 +365,13 @@ if ( ngserve.args.length > 0 ) {
         } else if ( path === "about" ) {
             // Asking for the about section.
             dumpAbout( res, ng );
-        } else {
+        } else if ( ng.isEntryAt( parseInt( path ) ) ) {
             // Asking for an entry.
-            dumpEntry( res, ng, path === "" ? ng.firstEntry() : path );
+            dumpEntry( res, ng, path );
+        } else {
+            // Don't have it!
+            res.statusCode = 404;
+            res.end( "Not found" );
         }
 
     } ).listen( ngserve.port, () => {
