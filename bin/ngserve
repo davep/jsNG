@@ -8,6 +8,7 @@ ngserve
     .usage( "[options] <file>" )
     .version( NG.version )
     .description( "Simple HTTP server for serving a Norton Guide file" )
+    .option( "-a, --no-advert", "Don't show the ngserve/jsNG advert" )
     .option( "-p, --port <n>", "Port to serve on", parseInt, 8080 )
     .parse( process.argv )
 
@@ -35,9 +36,13 @@ function dumpHeader( res, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad footer.
 function dumpFooter( res, guide ) {
-    res.write( '<footer class="box">\n' );
-    res.write( `Served by <a href="https://github.com/davep/jsNG">jsNG/ngserve v${NG.version}</a>\n` );
-    res.write( "</footer>\n" );
+
+    if ( ngserve.advert ) {
+        res.write( '<footer class="box">\n' );
+        res.write( `Served by <a href="https://github.com/davep/jsNG">jsNG/ngserve v${NG.version}</a>\n` );
+        res.write( "</footer>\n" );
+    }
+
     res.write( "</body>\n" );
     res.write( "</html>\n" );
 }
