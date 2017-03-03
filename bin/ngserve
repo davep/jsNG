@@ -182,7 +182,7 @@ nav.seeAlso ul li {
 
 section article {
   overflow: hidden;
-  font-family: monospace;
+  font-family: 'Roboto Mono', monospace;
   padding: 0.5em;
   margin-bottom: 1ex;
   white-space: pre;
