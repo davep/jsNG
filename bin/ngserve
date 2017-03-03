@@ -122,6 +122,12 @@ header nav {
   margin-bottom: 1ex;
 }
 
+header nav ul {
+  padding-left: 1ex;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 header nav ul li {
   display: inline-block;
   margin-right: 1em;
