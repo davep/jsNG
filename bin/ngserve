@@ -269,10 +269,10 @@ function dumpEntryNav( res, guide, entry ) {
         res.write( "</li>\n" );
     };
 
+    addJump( "About",    true,                "about" );
     addJump( "Previous", entry.hasPrevious(), entry.previous() );
     addJump( "Up",       entry.hasParent(),   entry.parent()   );
     addJump( "Next",     entry.hasNext(),     entry.next()     );
-    addJump( "About",    true,                "about" );
 
     res.write( "</ul>\n</nav>\n</header>\n" );
 }
