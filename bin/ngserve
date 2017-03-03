@@ -161,6 +161,17 @@ section article a:hover {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Escape problematic HTML characters.
+function unHTML( s) {
+    return s
+        .replace( /&/g, "&amp;"  )
+        .replace( /</g, "&lt;"   )
+        .replace( />/g, "&gt;"   )
+        .replace( /"/g, "&quot;" )
+        .replace( /'/g, "&#039;" );
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Dump the "About" of the guide.
 function dumpAbout( res, guide ) {
     try {
@@ -174,7 +185,7 @@ function dumpAbout( res, guide ) {
         res.write( "<article>" );
         res.write( "<h1>About this guide</h1>\n<hr />\n" );
         for ( let line of guide.credits() ) {
-            res.write( toHTML( line ) + "\n" );
+            res.write( unHTML( line ) + "\n" );
         }
         res.write( "</article>\n" );
 
@@ -229,17 +240,6 @@ function dumpEntryNav( res, guide, entry ) {
     addJump( "About",    true,                "about" );
 
     res.write( "</ul>\n</nav>\n</header>\n" );
-}
-
-////////////////////////////////////////////////////////////////////////////
-// Escape problematic HTML characters.
-function unHTML( s) {
-    return s
-        .replace( /&/g, "&amp;"  )
-        .replace( /</g, "&lt;"   )
-        .replace( />/g, "&gt;"   )
-        .replace( /"/g, "&quot;" )
-        .replace( /'/g, "&#039;" );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -327,7 +327,7 @@ function dumpEntry( res, guide, pos ) {
             res.write( "<article>\n" );
             res.write( "<strong>See Also:</strong>\n<ul>\n" );
             for ( let seeAlso of entry.seeAlso().options() ) {
-                res.write( `<li><a href="../${seeAlso.offset}">${toHTML( seeAlso.prompt )}</a></li>\n` );
+                res.write( `<li><a href="../${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
             }
             res.write( "</ul>\n" );
             res.write( "</article>\n" );
