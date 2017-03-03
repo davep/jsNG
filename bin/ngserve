@@ -331,7 +331,7 @@ function dumpEntry( res, guide, pos ) {
 
         res.write( '<article class="box">' );
         for ( let i = 0; i < entry.lineCount(); i++ ) {
-            if ( entry.isShort() ) {
+            if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
                 res.write( `<a href="../${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
             } else {
                 res.write( `${toHTML( entry.lines()[ i ] )}\n`);
