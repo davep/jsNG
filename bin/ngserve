@@ -273,7 +273,7 @@ function toHTML( line ) {
         },
 
         normal: t => {
-            s += stack.reverse().join();
+            s += stack.reverse().join( "" );
             stack.length = 0;
         },
 
@@ -310,7 +310,7 @@ function toHTML( line ) {
         charVal: c => s += unHTML( String.fromCharCode( c ) )
 
     } ) ).parse( line );
-    return s + stack.reverse().join();
+    return s + stack.reverse().join( "" );
 }
 
 ////////////////////////////////////////////////////////////////////////////
