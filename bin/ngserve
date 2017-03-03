@@ -403,35 +403,43 @@ if ( ngserve.args.length > 0 ) {
 
     HTTP.createServer( ( req, res ) => {
 
-        // Log the request.
-        log( `${req.method}\t${req.url}` );
+        try {
 
-        // See what we're being asked for.
-        let path = req.url.split( "/" )[ 1 ];
+            // Log the request.
+            log( `${req.method}\t${req.url}` );
 
-        // If what we're being asked for is empty, assume it's the first
-        // entry that we're after.
-        path = ( path === "" ? ng.firstEntry() : path );
+            // See what we're being asked for.
+            let path = req.url.split( "/" )[ 1 ];
 
-        // Assume we're going to handle things.
-        res.statusCode = 200;
+            // If what we're being asked for is empty, assume it's the first
+            // entry that we're after.
+            path = ( path === "" ? ng.firstEntry() : path );
 
-        // Set some default headers.
-        res.setHeader( "Server", `ngserve/jsNG/${NG.version}` );
+            // Assume we're going to handle things.
+            res.statusCode = 200;
 
-        // Asking for the CSS?
-        if ( path === "css" ) {
-            dumpCSS( res );
-        } else if ( path === "about" ) {
-            // Asking for the about section.
-            dumpAbout( res, ng );
-        } else if ( ng.isEntryAt( parseInt( path ) ) ) {
-            // Asking for an entry.
-            dumpEntry( res, ng, path );
-        } else {
-            // Don't have it!
-            res.statusCode = 404;
-            dumpError( res, ng, "Not found" );
+            // Set some default headers.
+            res.setHeader( "Server", `ngserve/jsNG/${NG.version}` );
+
+            // Asking for the CSS?
+            if ( path === "css" ) {
+                dumpCSS( res );
+            } else if ( path === "about" ) {
+                // Asking for the about section.
+                dumpAbout( res, ng );
+            } else if ( ng.isEntryAt( parseInt( path ) ) ) {
+                // Asking for an entry.
+                dumpEntry( res, ng, path );
+            } else {
+                // Don't have it!
+                res.statusCode = 404;
+                dumpError( res, ng, "Not found" );
+            }
+
+        } catch ( e ) {
+            res.statusCode = 500;
+            log( "Internal error:\n\n" + e.message );
+            dumpError( res, ng, "Internal error:\n\n" + unHTML( e.message ) );
         }
 
     } ).listen( ngserve.port, () => {
