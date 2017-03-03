@@ -60,14 +60,14 @@ function colourOptions() {
     ];
     let s = "";
 
-    for ( let bg = 0; bg < COLOURS.length; bg++ ) {
-        for ( let fg = 0; fg < COLOURS.length; fg++ ) {
-            s += `
-span.ngFG${fg}BG${bg} {
-  color: ${COLOURS[ fg ]};
-  background: ${COLOURS[ bg ]};
-}`;
-        }
+    for ( let i = 0; i < COLOURS.length; i++ ) {
+        s += `
+span.bg${i} {
+  background: ${COLOURS[ i ]}
+}
+span.fg${i} {
+  color: ${COLOURS[ i ]}
+}`
     }
 
     return s;
@@ -268,7 +268,7 @@ function toHTML( line ) {
         text: t => s += unHTML( t ),
 
         colour: c => {
-            s += `<span class="ngFG${ c & 0xF }BG${ c >> 4 }">`;
+            s += `<span class="fg${ c & 0xF } bg${ c >> 4 }">`;
             stack.push( "</span>" );
         },
 
