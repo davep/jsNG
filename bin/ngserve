@@ -80,7 +80,7 @@ function dumpCSS( res ) {
     res.end( `
 body {
   font-family: sans-serif;
-  background: midnightblue;
+  background: dimgray;
 }
 
 .box {
