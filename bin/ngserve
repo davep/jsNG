@@ -375,6 +375,7 @@ if ( ngserve.args.length > 0 ) {
         // entry that we're after.
         path = ( path === "" ? ng.firstEntry() : path );
 
+        // Assume we're going to handle things.
         res.statusCode = 200;
 
         // Asking for the CSS?
@@ -394,6 +395,7 @@ if ( ngserve.args.length > 0 ) {
 
     } ).listen( ngserve.port, () => {
         log( `Listening on http://localhost:${ngserve.port}` );
+        log( `Serving ${ngserve.args[ 0 ]}` );
     } );
 
 }
