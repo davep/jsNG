@@ -238,7 +238,7 @@ function dumpMenu( res, guide ) {
 // Dump an the entry navigation section.
 function dumpEntryNav( res, guide, entry ) {
 
-    res.write( "<header>\n<nav>\n<ul>\n" );
+    res.write( '<header>\n<nav class="box">\n<ul>\n' );
 
     const addJump = ( name, has, pos ) => {
         res.write( "<li>\n" );
