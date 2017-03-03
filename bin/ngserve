@@ -207,8 +207,8 @@ function unHTML( s) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// Dump the "About" of the guide.
-function dumpAbout( res, guide ) {
+// Wrap a function call in the general head/foot code.
+function dumper( res, guide, f ) {
     try {
 
         dumpHeader( res, guide );
@@ -219,10 +219,7 @@ function dumpAbout( res, guide ) {
         dumpMenu( res, guide );
 
         res.write( '<article class="box">' );
-        res.write( "<h1>About this guide</h1>\n<hr />\n" );
-        for ( let line of guide.credits() ) {
-            res.write( unHTML( line ) + "\n" );
-        }
+        f( res, guide );
         res.write( "</article>\n" );
 
         res.write( "</section>\n" );
@@ -231,6 +228,17 @@ function dumpAbout( res, guide ) {
         dumpFooter( res, guide );
         res.end();
     }
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump the "About" of the guide.
+function dumpAbout( res, guide ) {
+    dumper( res, guide, () => {
+        res.write( "<h1>About this guide</h1>\n<hr />\n" );
+        for ( let line of guide.credits() ) {
+            res.write( unHTML( line ) + "\n" );
+        }
+    } );
 }
 
 ////////////////////////////////////////////////////////////////////////////
