@@ -162,7 +162,7 @@ section article {
 }
 
 section article span.ngb {
-  font-weight: bold;
+  color: white;
 }
 
 section article span.ngu {
