@@ -35,6 +35,9 @@ function dumpHeader( res, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad footer.
 function dumpFooter( res, guide ) {
+    res.write( '<footer class="box">\n' );
+    res.write( `Served by <a href="https://github.com/davep/jsNG">jsNG/ngserve v${NG.version}</a>\n` );
+    res.write( "</footer>\n" );
     res.write( "</body>\n" );
     res.write( "</html>\n" );
 }
@@ -85,6 +88,12 @@ body {
   background: dimgray;
 }
 
+footer {
+  clear: both;
+  font-size: 70%;
+  color: silver;
+}
+
 .box {
   border: solid 1px silver;
   box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.2 );
@@ -92,7 +101,7 @@ body {
   color: silver;
 }
 
-article a, nav a {
+a {
   text-decoration: none;
   color: inherit;
 }
@@ -116,6 +125,7 @@ section nav.menu {
   float: left;
   padding-right: 1ex;
   margin-right: 1ex;
+  margin-bottom: 1ex;
 }
 
 section nav.menu ul {
@@ -157,6 +167,7 @@ section article {
   overflow: hidden;
   font-family: monospace;
   padding: 0.5em;
+  margin-bottom: 1ex;
   white-space: pre;
 }
 
