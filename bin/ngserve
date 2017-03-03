@@ -307,7 +307,7 @@ function toHTML( line ) {
             stack.pop();
         },
 
-        charVal: c => s += unHTML( String.fromCharCode( c ) )
+        charVal: c => s += unHTML( NG.Tool.unDOSify( String.fromCharCode( c ) ) )
 
     } ) ).parse( line );
     return s + stack.reverse().join( "" );
