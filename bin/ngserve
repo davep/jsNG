@@ -242,6 +242,12 @@ function dumpAbout( res, guide ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Dump an error message.
+function dumpError( res, guide, error ) {
+    dumper( res, guide, () => res.write( error ) );
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Dump a menu to the browser.
 function dumpMenu( res, guide ) {
 
@@ -425,7 +431,7 @@ if ( ngserve.args.length > 0 ) {
         } else {
             // Don't have it!
             res.statusCode = 404;
-            res.end( "Not found" );
+            dumpError( res, ng, "Not found" );
         }
 
     } ).listen( ngserve.port, () => {
