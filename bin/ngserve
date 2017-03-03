@@ -9,7 +9,7 @@ ngserve
     .version( NG.version )
     .description( "Simple HTTP server for serving a Norton Guide file" )
     .option( "-a, --no-advert", "Don't show the ngserve/jsNG advert" )
-    .option( "-p, --port <n>", "Port to serve on", parseInt, 8080 )
+    .option( "-p, --port <n>", "Port to serve on", parseInt )
     .parse( process.argv )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -376,6 +376,9 @@ function dumpEntry( res, guide, pos ) {
 }
 
 if ( ngserve.args.length > 0 ) {
+
+    // Default the port.
+    ngserve.port = ngserve.port || 8080;
 
     const ng = new NG.Guide( ngserve.args[ 0 ] ).open( true );
 
