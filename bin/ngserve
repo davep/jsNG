@@ -39,6 +39,8 @@ function dumpFooter( res, guide ) {
     res.write( "</html>\n" );
 }
 
+////////////////////////////////////////////////////////////////////////////
+// Emit colour attribute options for the stylesheet.
 function colourOptions() {
     const COLOURS = [
         "black",
