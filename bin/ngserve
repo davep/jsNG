@@ -259,7 +259,7 @@ function dumpMenu( res, guide ) {
         res.write( "<ul>\n" );
 
         for ( let option of menu.options() ) {
-            res.write( `<li><a href="/${option.offset}">${option.prompt}</a></li>\n` );
+            res.write( `<li><a href="${option.offset}">${option.prompt}</a></li>\n` );
         }
         res.write( "</ul>\n" );
     }
@@ -277,7 +277,7 @@ function dumpTopNav( res, guide, entry = false ) {
     const addJump = ( name, has, pos ) => {
         res.write( "<li>\n" );
         if ( has ) {
-            res.write( `<a href="../${pos}">${name}</a>\n`)
+            res.write( `<a href="${pos}">${name}</a>\n`)
         } else {
             res.write( name );
         }
@@ -369,7 +369,7 @@ function dumpEntry( res, guide, pos ) {
         res.write( '<article class="box">' );
         for ( let i = 0; i < entry.lineCount(); i++ ) {
             if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
-                res.write( `<a href="../${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
+                res.write( `<a href="${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
             } else {
                 res.write( `${toHTML( entry.lines()[ i ] )}\n`);
             }
@@ -379,7 +379,7 @@ function dumpEntry( res, guide, pos ) {
             res.write( '<nav class="seeAlso">\n' );
             res.write( "<ul>\n<li>See Also:</li>\n" );
             for ( let seeAlso of entry.seeAlso().options() ) {
-                res.write( `<li><a href="../${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
+                res.write( `<li><a href="${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
             }
             res.write( "</ul>\n" );
             res.write( "</nav>\n" );
