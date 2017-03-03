@@ -99,7 +99,7 @@ header nav ul li {
   margin-right: 1em;
 }
 
-section nav {
+section nav.menu {
   float: left;
   box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
   border: solid 1px lightgrey;
@@ -109,17 +109,40 @@ section nav {
   color: silver;
 }
 
-section nav ul {
+section nav.menu ul {
   list-style: none;
   padding-left: 1ex;
 }
 
-section nav > ul > li {
+section nav.menu > ul > li {
   color: white;
 }
 
-section nav a {
+section nav.menu a {
   display: block;
+}
+
+section nav.seeAlso {
+  overflow: hidden;
+  font-family: monospace;
+  padding: 0.5em;
+  border: solid 1px lightgrey;
+  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.5 );
+  background: navy;
+  color: silver;
+}
+
+section nav.seeAlso ul {
+  padding-left: 0.5em;
+}
+
+section nav.seeAlso ul li:first-child {
+  color: white;
+}
+
+section nav.seeAlso ul li {
+  display: inline-block;
+  margin-right: 1em;
 }
 
 section nav a:hover {
@@ -201,7 +224,7 @@ function dumpAbout( res, guide ) {
 // Dump a menu to the browser.
 function dumpMenu( res, guide ) {
 
-    res.write( "<nav>\n<ul>\n" );
+    res.write( '<nav class="menu""">\n<ul>\n' );
 
     for ( let menu of guide.menus() ) {
 
@@ -324,13 +347,13 @@ function dumpEntry( res, guide, pos ) {
         res.write( "</article>\n" );
 
         if ( entry.hasSeeAlso() ) {
-            res.write( "<article>\n" );
-            res.write( "<strong>See Also:</strong>\n<ul>\n" );
+            res.write( '<nav class="seeAlso""">\n' );
+            res.write( "<ul>\n<li>See Also:</li>\n" );
             for ( let seeAlso of entry.seeAlso().options() ) {
                 res.write( `<li><a href="../${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
             }
             res.write( "</ul>\n" );
-            res.write( "</article>\n" );
+            res.write( "</nav>\n" );
         }
 
         res.write( "</section>\n" );
