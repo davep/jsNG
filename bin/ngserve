@@ -213,7 +213,7 @@ section article a {
 
 ////////////////////////////////////////////////////////////////////////////
 // Escape problematic HTML characters.
-function unHTML( s) {
+function unHTML( s ) {
     return s
         .replace( /&/g, "&amp;"  )
         .replace( /</g, "&lt;"   )
