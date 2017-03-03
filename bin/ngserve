@@ -97,6 +97,7 @@ footer {
   clear: both;
   font-size: 70%;
   color: silver;
+  padding: 1ex;
 }
 
 .box {
