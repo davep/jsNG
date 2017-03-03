@@ -378,6 +378,9 @@ if ( ngserve.args.length > 0 ) {
         // Assume we're going to handle things.
         res.statusCode = 200;
 
+        // Set some default headers.
+        res.setHeader( "Server", `ngserve/jsNG/${NG.version}` );
+
         // Asking for the CSS?
         if ( path === "css" ) {
             dumpCSS( res );
