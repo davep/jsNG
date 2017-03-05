@@ -456,8 +456,8 @@ if ( ngserve.args.length > 0 ) {
         }
 
     } ).listen( ngserve.port, () => {
-        log( `Listening on http://localhost:${ngserve.port}` );
         log( `Serving ${ngserve.args[ 0 ]}` );
+        log( `Serving on http://localhost:${ngserve.port}` );
     } );
 
 }
