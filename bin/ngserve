@@ -8,9 +8,10 @@ ngserve
     .usage( "[options] <file>" )
     .version( NG.version )
     .description( "Simple HTTP server for serving a Norton Guide file" )
-    .option( "-a, --no-advert",  "Don't show the ngserve/jsNG advert" )
-    .option( "-g, --graph-text", "Preserve \"graphical\" characters in the output" )
-    .option( "-p, --port <n>",   "Port to serve on", parseInt )
+    .option( "-a, --no-advert",        "Don't show the ngserve/jsNG advert" )
+    .option( "-g, --graph-text",       "Preserve \"graphical\" characters in the output" )
+    .option( "-p, --port <n>",         "Port to serve on", parseInt )
+    .option( "-s, --stylesheet <url>", "Override the inbuilt stylesheet" )
     .parse( process.argv )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -29,7 +30,7 @@ function dumpHeader( res, guide ) {
     res.write( '<meta name="viewport" content="width=device-width, initial-scale=1">\n' );
     res.write( '<meta charset="utf-8">\n' );
     res.write( `<title>${guide.title()}</title>\n` );
-    res.write( '<link rel="stylesheet" type="text/css" href="/css" />\n' );
+    res.write( `<link rel="stylesheet" type="text/css" href="${ngserve.stylesheet}" />\n` );
     res.write( "</head>\n" );
     res.write( "<body>\n" );
 }
@@ -405,8 +406,9 @@ function dumpEntry( res, guide, pos ) {
 
 if ( ngserve.args.length > 0 ) {
 
-    // Default the port.
-    ngserve.port = ngserve.port || 8080;
+    // Set up defaults.
+    ngserve.port       = ngserve.port       || 8080;
+    ngserve.stylesheet = ngserve.stylesheet || "/css";
 
     const ng = new NG.Guide( ngserve.args[ 0 ] ).open( true );
 
