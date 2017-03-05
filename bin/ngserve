@@ -89,7 +89,7 @@ span.fg${i} {
 // Dump the stylesheet for the guide.
 function dumpCSS( res ) {
     res.setHeader( "Content-Type", "text/css" );
-    res.end( `
+    res.write( `
 body {
   font-family: sans-serif;
   background: dimgray;
