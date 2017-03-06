@@ -86,8 +86,8 @@ span.fg${i} {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// Dump the stylesheet for the guide.
-function dumpCSS( res ) {
+// Serve the stylesheet for the guide.
+function serveCSS( res ) {
     res.setHeader( "Content-Type", "text/css" );
     res.write( `
 body {
@@ -427,7 +427,7 @@ function InitGuidesToServe( list ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Serve a menu of guides.
-function dumpGuideList( req, res, guides ) {
+function serveGuideList( req, res, guides ) {
     dumper( res, null, () => {
         res.write( "<ul>\n" );
         for ( let [ id, ng ] of [ ...guides.entries() ]. sort( ( a, b ) => {
@@ -443,7 +443,7 @@ function dumpGuideList( req, res, guides ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Serve the given guide.
-function ServeGuide( req, res, guides, source, part ) {
+function serveGuide( req, res, guides, source, part ) {
 
     // Do we have the requested guide?
     if ( guides.has( source ) ) {
@@ -508,14 +508,14 @@ if ( ngserve.args.length > 0 ) {
                     // If it's the stylesheet...
                     if ( source === "css" ) {
                         // ...serve that.
-                        dumpCSS( res );
+                        serveCSS( res );
                     } else {
                         // ...all other things should be a guide.
-                        ServeGuide( req, res, guides, source, part );
+                        serveGuide( req, res, guides, source, part );
                     }
                 } else {
                     // Looks like we're being asked for the main guide list.
-                    dumpGuideList( req, res, guides );
+                    serveGuideList( req, res, guides );
                 }
 
             } catch ( e ) {
