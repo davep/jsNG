@@ -5,7 +5,7 @@ const NG      = require( "../lib/jsNG" );
 const ngserve = require( "commander" );
 
 ngserve
-    .usage( "[options] <file>" )
+    .usage( "[options] <file ...>" )
     .version( NG.version )
     .description( "Simple HTTP server for serving a Norton Guide file" )
     .option( "-a, --no-advert",        "Don't show the ngserve/jsNG advert" )
@@ -22,14 +22,14 @@ function log( s ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad header.
-function dumpHeader( res, guide ) {
+function dumpHeader( res, title ) {
     res.setHeader( "Content-Type", "text/html" );
     res.write( "<!DOCTYPE html>\n" );
     res.write( "<html>\n" );
     res.write( "<head>\n" );
     res.write( '<meta name="viewport" content="width=device-width, initial-scale=1">\n' );
     res.write( '<meta charset="utf-8">\n' );
-    res.write( `<title>${guide.title()}</title>\n` );
+    res.write( `<title>${title}</title>\n` );
     res.write( `<link rel="stylesheet" type="text/css" href="${ngserve.stylesheet}" />\n` );
     res.write( "</head>\n" );
     res.write( "<body>\n" );
@@ -231,9 +231,40 @@ function unDOSify( s ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Dump the top navigation section.
+function dumpTopNav( res, guide, entry = false ) {
+
+    res.write( '<header>\n<nav class="box">\n<ul>\n' );
+
+    const addJump = ( name, has, pos ) => {
+        res.write( "<li>\n" );
+        if ( has ) {
+            res.write( `<a href="${pos}">${name}</a>\n`)
+        } else {
+            res.write( name );
+        }
+        res.write( "</li>\n" );
+    };
+
+    addJump( "Guides", true, "/" );
+
+    if ( guide ) {
+        addJump( "About",  true, "about" );
+    }
+
+    if ( entry ) {
+        addJump( "Previous", entry.hasPrevious(), entry.previous() );
+        addJump( "Up",       entry.hasParent(),   entry.parent()   );
+        addJump( "Next",     entry.hasNext(),     entry.next()     );
+    }
+
+    res.write( "</ul>\n</nav>\n</header>\n" );
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Wrap a function call in the general head/foot code.
 function dumper( res, guide, f ) {
-    dumpHeader( res, guide );
+    dumpHeader( res, guide || "Available Guides" );
     dumpTopNav( res, guide );
     res.write( "<section>\n" );
     dumpMenu( res, guide );
@@ -265,7 +296,7 @@ function dumpError( res, guide, error ) {
 // Dump a menu to the browser.
 function dumpMenu( res, guide ) {
 
-    if ( guide.menus().length > 0 ) {
+    if ( guide && ( guide.menus().length > 0 ) ) {
         res.write( '<nav class="menu box">\n<ul>\n' );
 
         for ( let menu of guide.menus() ) {
@@ -282,33 +313,6 @@ function dumpMenu( res, guide ) {
         res.write( "</ul>\n</nav>\n" );
     }
 
-}
-
-////////////////////////////////////////////////////////////////////////////
-// Dump the top navigation section.
-function dumpTopNav( res, guide, entry = false ) {
-
-    res.write( '<header>\n<nav class="box">\n<ul>\n' );
-
-    const addJump = ( name, has, pos ) => {
-        res.write( "<li>\n" );
-        if ( has ) {
-            res.write( `<a href="${pos}">${name}</a>\n`)
-        } else {
-            res.write( name );
-        }
-        res.write( "</li>\n" );
-    };
-
-    addJump( "About", true, "about" );
-
-    if ( entry ) {
-        addJump( "Previous", entry.hasPrevious(), entry.previous() );
-        addJump( "Up",       entry.hasParent(),   entry.parent()   );
-        addJump( "Next",     entry.hasNext(),     entry.next()     );
-    }
-
-    res.write( "</ul>\n</nav>\n</header>\n" );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -406,7 +410,76 @@ function dumpEntry( res, guide, pos ) {
 
 }
 
+////////////////////////////////////////////////////////////////////////////
+// Load up the list of guides we want to serve.
+function InitGuidesToServe( list ) {
+
+    const path   = require( "path" );
+    const guides = new Map();
+
+    for ( let guide of list ) {
+        log( `Serving ${path.basename( guide )} from "${guide}"` );
+        guides.set( path.basename( guide ), new NG.Guide( guide ).open() );
+    }
+
+    return guides;
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Serve a menu of guides.
+function dumpGuideList( req, res, guides ) {
+    dumper( res, null, () => {
+        res.write( "<ul>\n" );
+        for ( let [ id, ng ] of [ ...guides.entries() ]. sort( ( a, b ) => {
+            if ( a[ 1 ].title() < b[ 1 ].title() ) return -1;
+            if ( a[ 1 ].title() > b[ 1 ].title() ) return 1;
+            return 0;
+        } ) ) {
+            res.write( `<li><a href="${id}/">${unHTML( unDOSify( ng.title() ) )}</a></li>\n` );
+        }
+        res.write( "</ul>\n" );
+    } );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Serve the given guide.
+function ServeGuide( req, res, guides, source, part ) {
+
+    // Do we have the requested guide?
+    if ( guides.has( source ) ) {
+
+        // It does. Pull it out.
+        const guide = guides.get( source );
+
+        // If what we're being asked for is empty, assume it's the first entry
+        // that we're after.
+        part = ( part === "" ? guide.firstEntry() : part );
+
+        // Set some default headers.
+        res.setHeader( "Server", `ngserve/jsNG/${NG.version}` );
+
+        // Asking for the about section?
+        if ( part === "about" ) {
+            dumpAbout( res, guide );
+        } else if ( guide.isEntryAt( parseInt( part ) ) ) {
+            // Asking for an entry.
+            dumpEntry( res, guide, part );
+        } else {
+            // Don't have it!
+            res.statusCode = 404;
+            dumpError( res, guide, `There is no such entry in ${source}.` );
+        }
+
+    } else {
+        res.statusCode = 404;
+        dumpError( res, null, `${source} is not an available guide.` );
+    }
+}
+
 if ( ngserve.args.length > 0 ) {
+
+    // Create the list of guides to serve.
+    const guides = InitGuidesToServe( ngserve.args );
 
     // Set up defaults.
     ngserve.port       = ngserve.port       || 8080;
@@ -423,31 +496,26 @@ if ( ngserve.args.length > 0 ) {
                 log( `${req.connection.remoteAddress} ${req.method} ${req.url}` );
 
                 // See what we're being asked for.
-                let path = req.url.split( "/" )[ 1 ];
-
-                // If what we're being asked for is empty, assume it's the first
-                // entry that we're after.
-                path = ( path === "" ? ng.firstEntry() : path );
+                const request = req.url.split( "/" );
+                const source  = request[ 1 ];
+                const part    = request[ 2 ];
 
                 // Assume we're going to handle things.
                 res.statusCode = 200;
 
-                // Set some default headers.
-                res.setHeader( "Server", `ngserve/jsNG/${NG.version}` );
-
-                // Asking for the CSS?
-                if ( path === "css" ) {
-                    dumpCSS( res );
-                } else if ( path === "about" ) {
-                    // Asking for the about section.
-                    dumpAbout( res, ng );
-                } else if ( ng.isEntryAt( parseInt( path ) ) ) {
-                    // Asking for an entry.
-                    dumpEntry( res, ng, path );
+                // If we're asking for a source of some description...
+                if ( source ) {
+                    // If it's the stylesheet...
+                    if ( source === "css" ) {
+                        // ...serve that.
+                        dumpCSS( res );
+                    } else {
+                        // ...all other things should be a guide.
+                        ServeGuide( req, res, guides, source, part );
+                    }
                 } else {
-                    // Don't have it!
-                    res.statusCode = 404;
-                    dumpError( res, ng, "Not found" );
+                    // Looks like we're being asked for the main guide list.
+                    dumpGuideList( req, res, guides );
                 }
 
             } catch ( e ) {
