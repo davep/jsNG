@@ -519,7 +519,6 @@ if ( ngserve.args.length > 0 ) {
             } else {
                 // Looks like we're being asked for the main guide list.
                 serveGuideList( req, res, guides );
-                throw new Error( "Test error" );
             }
 
         } catch ( e ) {
