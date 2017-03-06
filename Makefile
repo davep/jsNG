@@ -11,7 +11,7 @@ about:
 	bin/ngabout test/guides/gt_libng.ng
 
 serve:
-	bin/ngserve test/guides/gt_libng.ng
+	bin/ngserve test/guides/*.ng
 
 clean:
 	rm -f *~ lib/*~ bin/*~ npm-debug.log

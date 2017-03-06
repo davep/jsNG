@@ -425,7 +425,13 @@ function initGuidesToServe( list ) {
 
     for ( let guide of list ) {
         log( `Serving ${path.basename( guide )} from "${guide}"` );
-        guides.set( path.basename( guide ), new NG.Guide( guide ).open() );
+        try {
+            guides.set( path.basename( guide ), new NG.Guide( guide ).open() );
+        } catch ( e ) {
+            if ( e instanceof NG.Error ) {
+                log( `Ignoring ${guide} as it doesn't appear to be a Norton Guide file.` );
+            }
+        }
     }
 
     return guides;
