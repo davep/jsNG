@@ -436,7 +436,7 @@ function initGuidesToServe( list ) {
 function serveGuideList( req, res, guides ) {
     dumper( res, null, () => {
         res.write( "<ul>\n" );
-        for ( let [ id, ng ] of [ ...guides.entries() ]. sort( ( a, b ) => {
+        for ( let [ id, ng ] of [ ...guides.entries() ].sort( ( a, b ) => {
             if ( a[ 1 ].title() < b[ 1 ].title() ) return -1;
             if ( a[ 1 ].title() > b[ 1 ].title() ) return 1;
             return 0;
