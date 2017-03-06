@@ -418,7 +418,7 @@ function dumpEntry( res, guide, pos ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Load up the list of guides we want to serve.
-function InitGuidesToServe( list ) {
+function initGuidesToServe( list ) {
 
     const path   = require( "path" );
     const guides = new Map();
@@ -485,7 +485,7 @@ function serveGuide( req, res, guides, source, part ) {
 if ( ngserve.args.length > 0 ) {
 
     // Create the list of guides to serve.
-    const guides = InitGuidesToServe( ngserve.args );
+    const guides = initGuidesToServe( ngserve.args );
 
     // Set up defaults.
     ngserve.port       = ngserve.port       || 8080;
