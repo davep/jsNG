@@ -430,6 +430,8 @@ function initGuidesToServe( list ) {
         } catch ( e ) {
             if ( e instanceof NG.Error ) {
                 log( `Ignoring ${guide} as it doesn't appear to be a Norton Guide file.` );
+            } else {
+                throw e;
             }
         }
     }
