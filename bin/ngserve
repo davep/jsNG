@@ -490,39 +490,37 @@ if ( ngserve.args.length > 0 ) {
     HTTP.createServer( ( req, res ) => {
 
         try {
-            try {
 
-                // Log the request.
-                log( `${req.connection.remoteAddress} ${req.method} ${req.url}` );
+            // Log the request.
+            log( `${req.connection.remoteAddress} ${req.method} ${req.url}` );
 
-                // See what we're being asked for.
-                const request = req.url.split( "/" );
-                const source  = request[ 1 ];
-                const part    = request[ 2 ];
+            // See what we're being asked for.
+            const request = req.url.split( "/" );
+            const source  = request[ 1 ];
+            const part    = request[ 2 ];
 
-                // Assume we're going to handle things.
-                res.statusCode = 200;
+            // Assume we're going to handle things.
+            res.statusCode = 200;
 
-                // If we're asking for a source of some description...
-                if ( source ) {
-                    // If it's the stylesheet...
-                    if ( source === "css" ) {
-                        // ...serve that.
-                        serveCSS( res );
-                    } else {
-                        // ...all other things should be a guide.
-                        serveGuide( req, res, guides, source, part );
-                    }
+            // If we're asking for a source of some description...
+            if ( source ) {
+                // If it's the stylesheet...
+                if ( source === "css" ) {
+                    // ...serve that.
+                    serveCSS( res );
                 } else {
-                    // Looks like we're being asked for the main guide list.
-                    serveGuideList( req, res, guides );
+                    // ...all other things should be a guide.
+                    serveGuide( req, res, guides, source, part );
                 }
-
-            } catch ( e ) {
-                res.statusCode = 500;
-                log( "Internal error:\n\n" + e.message );
-                dumpError( res, ng, "Internal error:\n\n" + unHTML( e.message ) );
+            } else {
+                // Looks like we're being asked for the main guide list.
+                serveGuideList( req, res, guides );
             }
+
+        } catch ( e ) {
+            res.statusCode = 500;
+            log( "Internal error:\n\n" + e.message );
+            dumpError( res, null, "Internal error:\n\n" + unHTML( e.message ) );
         } finally {
             res.end();
         }
