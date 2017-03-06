@@ -491,8 +491,6 @@ if ( ngserve.args.length > 0 ) {
     ngserve.port       = ngserve.port       || 8080;
     ngserve.stylesheet = ngserve.stylesheet || "/css";
 
-    const ng = new NG.Guide( ngserve.args[ 0 ] ).open( true );
-
     HTTP.createServer( ( req, res ) => {
 
         try {
