@@ -195,6 +195,12 @@ section article h1 {
   margin-bottom: 0;
 }
 
+section article ul {
+  list-style: none;
+  padding-left: 1ex;
+  white-space: normal;
+}
+
 section article span.ngb {
   color: white;
 }
