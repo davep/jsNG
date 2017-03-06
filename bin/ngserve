@@ -519,12 +519,17 @@ if ( ngserve.args.length > 0 ) {
             } else {
                 // Looks like we're being asked for the main guide list.
                 serveGuideList( req, res, guides );
+                throw new Error( "Test error" );
             }
 
         } catch ( e ) {
-            res.statusCode = 500;
             log( "Internal error:\n\n" + e.message );
-            dumpError( res, null, "Internal error:\n\n" + unHTML( e.message ) );
+            if ( res.headersSent ) {
+                res.write( "Internal error:\n\n" + unHTML( e.message ) );
+            } else {
+                res.statusCode = 500;
+                dumpError( res, null, "Internal error:\n\n" + unHTML( e.message ) );
+            }
         } finally {
             res.end();
         }
