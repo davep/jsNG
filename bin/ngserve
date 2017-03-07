@@ -146,6 +146,11 @@ header nav a {
   padding-right: 1em;
 }
 
+header nav span {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
 section nav.menu {
   float: left;
   padding-right: 1ex;
@@ -253,7 +258,7 @@ function dumpTopNav( res, guide, entry = false ) {
         if ( has ) {
             res.write( `<a href="${pos}">${name}</a>`)
         } else {
-            res.write( name );
+            res.write( `<span>${name}</span>` );
         }
         res.write( "</li>\n" );
     };
