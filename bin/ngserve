@@ -136,7 +136,7 @@ header nav ul li {
 }
 
 header nav ul li::after {
-  content: "|";
+  content: " |";
   color: silver;
 }
 
