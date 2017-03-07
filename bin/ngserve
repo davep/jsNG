@@ -459,6 +459,15 @@ function guideBasename( guides, guide ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Given a guide ID, get its filename.
+function guideFilename( guides, guide ) {
+    if ( guides.has( guide ) ) {
+        return guides.get( guide ).filename();
+    }
+    return guide;
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Load up the list of guides we want to serve.
 function initGuidesToServe( list ) {
 
@@ -523,7 +532,7 @@ function serveGuide( res, guides, source, part ) {
         } else {
             // Don't have it!
             res.statusCode = 404;
-            log( `There is no such entry in ${guideBasename( guides, source )}.` );
+            log( `There is no such entry in ${guideFilename( guides, source )}.` );
             dumpError( res, guide, `There is no such entry in ${guideBasename( guides, source )}.` );
         }
 
