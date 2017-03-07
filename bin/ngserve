@@ -135,6 +135,11 @@ header nav ul li {
   color: dimgray;
 }
 
+header nav ul li::after {
+  content: "|";
+  color: silver;
+}
+
 header nav a {
   color: white;
   padding-left: 1em;
