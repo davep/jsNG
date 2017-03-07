@@ -295,8 +295,8 @@ function dumpTopNav( res, guide, entry = false ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Wrap a function call in the general head/foot code.
-function dumper( res, guide, f ) {
-    dumpHeader( res, guide || "Available Guides" );
+function dumper( res, title, guide, f ) {
+    dumpHeader( res, title );
     dumpTopNav( res, guide );
     res.write( "<section>\n" );
     dumpMenu( res, guide );
@@ -310,7 +310,7 @@ function dumper( res, guide, f ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the "About" of the guide.
 function dumpAbout( res, guide ) {
-    dumper( res, guide, () => {
+    dumper( res, `About ${unHTML( NG.Tool.makeDOSish( guide.title() ) )}`, guide, () => {
         res.write( `<h1>About "${unHTML( NG.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
         for ( let line of guide.credits() ) {
             res.write( unHTML( unDOSify( line ) ) + "\n" );
@@ -321,7 +321,7 @@ function dumpAbout( res, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump an error message.
 function dumpError( res, guide, error ) {
-    dumper( res, guide, () => res.write( error ) );
+    dumper( res, "Error", guide, () => res.write( error ) );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -497,7 +497,7 @@ function initGuidesToServe( list ) {
 ////////////////////////////////////////////////////////////////////////////
 // Serve a menu of guides.
 function serveGuideList( res, guides ) {
-    dumper( res, null, () => {
+    dumper( res, "Available Guides", null, () => {
         res.write( "<ul>\n" );
         for ( let [ id, ng ] of [ ...guides.entries() ].sort( ( a, b ) => {
             if ( a[ 1 ].title() < b[ 1 ].title() ) return -1;
