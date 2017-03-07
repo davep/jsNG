@@ -263,17 +263,11 @@ function dumpTopNav( res, guide, entry = false ) {
         res.write( "</li>\n" );
     };
 
-    addJump( "Guides", true, "/" );
-
-    if ( guide ) {
-        addJump( "About",  true, "about" );
-    }
-
-    if ( entry ) {
-        addJump( "Previous", entry.hasPrevious(), entry.previous() );
-        addJump( "Up",       entry.hasParent(),   entry.parent()   );
-        addJump( "Next",     entry.hasNext(),     entry.next()     );
-    }
+    addJump( "Guides",   true,                         "/" );
+    addJump( "About",    guide,                        "about" );
+    addJump( "Previous", entry && entry.hasPrevious(), entry && entry.previous() );
+    addJump( "Up",       entry && entry.hasParent(),   entry && entry.parent()   );
+    addJump( "Next",     entry && entry.hasNext(),     entry && entry.next()     );
 
     res.write( "</ul>\n</nav>\n</header>\n" );
 }
