@@ -443,6 +443,12 @@ function dumpEntry( res, guide, pos ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Generate a unique ID for the given guide.
+function guideKey( guide ) {
+    return require( "crypto" ).createHash( "md5" ).update( guide ).digest( "hex" );
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Load up the list of guides we want to serve.
 function initGuidesToServe( list ) {
 
@@ -452,7 +458,7 @@ function initGuidesToServe( list ) {
     for ( let guide of list ) {
         log( `Serving ${path.basename( guide )} from "${guide}"` );
         try {
-            guides.set( path.basename( guide ), new NG.Guide( guide ).open() );
+            guides.set( guideKey( guide ), new NG.Guide( guide ).open() );
         } catch ( e ) {
             if ( e instanceof NG.Error ) {
                 log( `Ignoring ${guide} as it doesn't appear to be a Norton Guide file.` );
