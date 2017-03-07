@@ -507,11 +507,13 @@ function serveGuide( res, guides, source, part ) {
         } else {
             // Don't have it!
             res.statusCode = 404;
+            log( `There is no such entry in ${source}.` );
             dumpError( res, guide, `There is no such entry in ${source}.` );
         }
 
     } else {
         res.statusCode = 404;
+        log( `${source} is not an available guide.` );
         dumpError( res, null, `${source} is not an available guide.` );
     }
 }
