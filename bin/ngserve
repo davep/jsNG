@@ -249,9 +249,9 @@ function dumpTopNav( res, guide, entry = false ) {
     res.write( '<header>\n<nav class="box">\n<ul>\n' );
 
     const addJump = ( name, has, pos ) => {
-        res.write( "<li>\n" );
+        res.write( "<li>" );
         if ( has ) {
-            res.write( `<a href="${pos}">${name}</a>\n`)
+            res.write( `<a href="${pos}">${name}</a>`)
         } else {
             res.write( name );
         }
