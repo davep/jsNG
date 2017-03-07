@@ -98,9 +98,11 @@ function colourOptions() {
 span.bg${i} {
   background: ${COLOURS[ i ]}
 }
+
 span.fg${i} {
   color: ${COLOURS[ i ]}
-}`
+}
+`
     }
 
     return s;
@@ -240,9 +242,7 @@ section article span.ngb {
 section article span.ngu {
   text-decoration: underline;
 }
-
 ${colourOptions()}
-
 section article a {
   width: 100%;
   display: inline-block;
