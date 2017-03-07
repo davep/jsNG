@@ -475,14 +475,18 @@ function initGuidesToServe( list ) {
     const guides = new Map();
 
     for ( let guide of list ) {
-        log( `Serving ${path.basename( guide )} from "${guide}"` );
-        try {
-            guides.set( guideKey( guide ), new NG.Guide( guide ).open() );
-        } catch ( e ) {
-            if ( e instanceof NG.Error ) {
-                log( `Ignoring ${guide} as it doesn't appear to be a Norton Guide file.` );
-            } else {
-                throw e;
+        if ( guides.has( guideKey( path.resolve( guide ) ) ) ) {
+            log( `Ignoring ${guide} as a duplicate.` );
+        } else {
+            log( `Serving ${path.basename( guide )} from "${path.resolve( guide )}"` );
+            try {
+                guides.set( guideKey( path.resolve( guide ) ), new NG.Guide( guide ).open() );
+            } catch ( e ) {
+                if ( e instanceof NG.Error ) {
+                    log( `Ignoring ${guide} as it doesn't appear to be a Norton Guide file.` );
+                } else {
+                    throw e;
+                }
             }
         }
     }
