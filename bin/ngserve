@@ -467,7 +467,7 @@ function initGuidesToServe( list ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Serve a menu of guides.
-function serveGuideList( req, res, guides ) {
+function serveGuideList( res, guides ) {
     dumper( res, null, () => {
         res.write( "<ul>\n" );
         for ( let [ id, ng ] of [ ...guides.entries() ].sort( ( a, b ) => {
@@ -483,7 +483,7 @@ function serveGuideList( req, res, guides ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Serve the given guide.
-function serveGuide( req, res, guides, source, part ) {
+function serveGuide( res, guides, source, part ) {
 
     // Do we have the requested guide?
     if ( guides.has( source ) ) {
@@ -548,11 +548,11 @@ if ( ngserve.args.length > 0 ) {
                     serveCSS( res );
                 } else {
                     // ...all other things should be a guide.
-                    serveGuide( req, res, guides, source, part );
+                    serveGuide( res, guides, source, part );
                 }
             } else {
                 // Looks like we're being asked for the main guide list.
-                serveGuideList( req, res, guides );
+                serveGuideList( res, guides );
             }
 
         } catch ( e ) {
