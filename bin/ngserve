@@ -251,8 +251,6 @@ function unDOSify( s ) {
 // Dump the top navigation section.
 function dumpTopNav( res, guide, entry = false ) {
 
-    res.write( '<header>\n<nav class="box">\n<ul>\n' );
-
     const addJump = ( name, has, pos ) => {
         res.write( "<li>" );
         if ( has ) {
@@ -262,6 +260,8 @@ function dumpTopNav( res, guide, entry = false ) {
         }
         res.write( "</li>\n" );
     };
+
+    res.write( '<header>\n<nav class="box">\n<ul>\n' );
 
     addJump( "Guides",   true,                         "/" );
     addJump( "About",    guide,                        "about" );
