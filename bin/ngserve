@@ -312,8 +312,8 @@ function dumper( res, title, guide, f ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the "About" of the guide.
 function dumpAbout( res, guide ) {
-    dumper( res, `About ${unHTML( NG.Tool.makeDOSish( guide.title() ) )}`, guide, () => {
-        res.write( `<h1>About "${unHTML( NG.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
+    dumper( res, `About ${unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}`, guide, () => {
+        res.write( `<h1>About "${unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
         for ( let line of guide.credits() ) {
             res.write( unHTML( unDOSify( line ) ) + "\n" );
         }
