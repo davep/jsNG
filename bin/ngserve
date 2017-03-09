@@ -24,6 +24,7 @@
 const HTTP     = require( "http" );
 const NG       = require( "../lib/jsNG" );
 const NGParser = require( "../lib/jsNGParser" );
+const NGError  = require( "../lib/jsNGError" );
 const ngserve  = require( "commander" );
 
 ngserve
@@ -483,7 +484,7 @@ function initGuidesToServe( list ) {
             try {
                 guides.set( guideKey( path.resolve( guide ) ), new NG.Guide( guide ).open() );
             } catch ( e ) {
-                if ( e instanceof NG.Error ) {
+                if ( e instanceof NGError ) {
                     log( `Ignoring ${guide} as it doesn't appear to be a Norton Guide file.` );
                 } else {
                     throw e;
