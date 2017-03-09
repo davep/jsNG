@@ -7,7 +7,8 @@ fs     = require( "fs" );
 
 describe( "NG", () => {
 
-    const NG = require( "../lib/jsNG" );
+    const NG      = require( "../lib/jsNG" );
+    const NGError = require( "../lib/jsNGError" );
 
     it( "Should have a verson number", () => {
         assert.ok( NG.version );
@@ -33,6 +34,12 @@ describe( "NG", () => {
             assert.throws( () => {
                 const guide = new NG.Guide( NON_GUIDE ).open();
             } );
+        } );
+
+        it( "Should throw an NGError when opening a non-NG file that exists", () => {
+            assert.throws( () => {
+                const guide = new NG.Guide( NON_GUIDE ).open();
+            }, NGError );
         } );
 
     } );
