@@ -21,9 +21,10 @@
 
 */
 
-const HTTP    = require( "http" );
-const NG      = require( "../lib/jsNG" );
-const ngserve = require( "commander" );
+const HTTP     = require( "http" );
+const NG       = require( "../lib/jsNG" );
+const NGParser = require( "../lib/jsNGParser" );
+const ngserve  = require( "commander" );
 
 ngserve
     .usage( "[options] <file ...>" )
@@ -265,7 +266,7 @@ function unHTML( s ) {
 ////////////////////////////////////////////////////////////////////////////
 // Convert text from DOS to DOS-a-like.
 function unDOSify( s ) {
-    return ( ngserve.graphText ? NG.Tool.makeDOSish : NG.Tool.makePlain )( s );
+    return ( ngserve.graphText ? NGParser.Tool.makeDOSish : NGParser.Tool.makePlain )( s );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -352,7 +353,7 @@ function dumpMenu( res, guide ) {
 function toHTML( line ) {
     const stack = [];
     let   s     = "";
-    ( new NG.Line.Parser( {
+    ( new NGParser.Line.Parser( {
 
         text: t => s += unHTML( unDOSify( t ) ),
 

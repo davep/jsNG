@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-const NG     = require( "../lib/jsNG" );
-const ngdump = require( "commander" );
+const NG       = require( "../lib/jsNG" );
+const NGParser = require( "../lib/jsNGParser" );
+const ngdump   = require( "commander" );
 
 ngdump
     .usage( "[options] <file ...>")
@@ -18,11 +19,11 @@ if ( ngdump.args.length > 0 ) {
 
         switch ( ngdump.output ) {
             case "plain":
-                output = NG.Line.toPlainText;
+                output = NGParser.Line.toPlainText;
                 break;
             case "color":
             case "colour":
-                output = NG.Line.toTerminalText;
+                output = NGParser.Line.toTerminalText;
                 break;
             default:
                 output = s => s;
