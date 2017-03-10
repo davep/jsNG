@@ -45,7 +45,7 @@ function log( s ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad header.
-function dumpHeader( res, title ) {
+function dumpHeader( res, title, extras = () => undefined ) {
     res.setHeader( "Content-Type", "text/html" );
     res.write( "<!DOCTYPE html>\n" );
     res.write( "<html>\n" );
@@ -54,6 +54,7 @@ function dumpHeader( res, title ) {
     res.write( '<meta charset="utf-8">\n' );
     res.write( `<title>${title}</title>\n` );
     res.write( `<link rel="stylesheet" type="text/css" href="${ngserve.stylesheet}" />\n` );
+    extras( res );
     res.write( "</head>\n" );
     res.write( "<body>\n" );
 }
