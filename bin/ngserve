@@ -460,7 +460,7 @@ function dumpEntry( res, guide, pos, source ) {
 
     const entry = guide.loadEntry( parseInt( pos ) );
 
-    dumpHeader( res, guide.title(), ( res ) => {
+    dumpHeader( res, unHTML( NGParser.Tool.makeDOSish( guide.title() ) ), ( res ) => {
         if ( entry.hasPrevious() ) res.write( `<link rel="prev" href="${entry.previous()}" title="Previous entry" />\n` );
         if ( entry.hasNext()     ) res.write( `<link rel="next" href="${entry.next()}" title="Next entry" />\n` );
         res.write( `<link rel="home" href="./" title="Home" />\n` );
