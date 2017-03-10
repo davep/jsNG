@@ -605,6 +605,8 @@ function serveGuide( res, guides, source, part, arg ) {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////
+// Main code. If we have guides to serve...
 if ( ngserve.args.length > 0 ) {
 
     // Create the list of guides to serve.
