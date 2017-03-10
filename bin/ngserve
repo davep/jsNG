@@ -251,6 +251,46 @@ section article a {
   display: inline-block;
 }
 
+@media screen and (max-width: 480px) {
+
+  section nav.menu {
+    float: none;
+    margin-right: 0;
+  }
+
+  section article {
+    clear: both;
+  }
+
+  header nav {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  header nav ul, header nav ul a, header nav ul span {
+    padding: 0;
+  }
+
+  header nav ul li {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    display: inline;
+  }
+
+  header nav ul li::after {
+    content: "";
+  }
+
+  header nav ul li:nth-child(2):after {
+    content: "\\A";
+    white-space: pre;
+  }
+
+  section article {
+    font-size: 80%;
+  }
+}
 `)
 }
 
