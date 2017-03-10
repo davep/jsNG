@@ -220,7 +220,7 @@ nav.seeAlso ul li {
 }
 
 section article {
-  overflow: hidden;
+  overflow: scroll;
   font-family: 'Roboto Mono', monospace;
   padding: 0.5em;
   margin-bottom: 1ex;
