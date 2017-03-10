@@ -312,8 +312,17 @@ function unDOSify( s ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Have a guide URL handle that we might have arguments in the URL.
+function url( url, arg ) {
+    if ( arg ) {
+        return `../${url}`;
+    }
+    return url;
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Dump the top navigation section.
-function dumpTopNav( res, guide, entry = false ) {
+function dumpTopNav( res, guide, entry = false, arg ) {
 
     const addJump = ( name, has, pos ) => {
         res.write( "<li>" );
@@ -328,10 +337,10 @@ function dumpTopNav( res, guide, entry = false ) {
     res.write( '<header>\n<nav class="box">\n<ul>\n' );
 
     addJump( "Guides",   true,                         "/" );
-    addJump( "About",    guide,                        "about" );
-    addJump( "Previous", entry && entry.hasPrevious(), entry && entry.previous() );
-    addJump( "Up",       entry && entry.hasParent(),   entry && entry.parent()   );
-    addJump( "Next",     entry && entry.hasNext(),     entry && entry.next()     );
+    addJump( "About",    guide,                        url( "about",                   arg ) );
+    addJump( "Previous", entry && entry.hasPrevious(), url( entry && entry.previous(), arg ) );
+    addJump( "Up",       entry && entry.hasParent(),   url( entry && entry.parent(),   arg ) );
+    addJump( "Next",     entry && entry.hasNext(),     url( entry && entry.next(),     arg ) );
 
     res.write( "</ul>\n</nav>\n</header>\n" );
 }
@@ -369,7 +378,7 @@ function dumpError( res, guide, error ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Dump a menu to the browser.
-function dumpMenu( res, guide ) {
+function dumpMenu( res, guide, arg ) {
 
     if ( guide && ( guide.menus().length > 0 ) ) {
         res.write( '<nav class="menu box">\n<ul>\n' );
@@ -380,7 +389,7 @@ function dumpMenu( res, guide ) {
             res.write( "<ul>\n" );
 
             for ( let option of menu.options() ) {
-                res.write( `<li><a href="${option.offset}">${option.prompt}</a></li>\n` );
+                res.write( `<li><a href="${url( option.offset, arg )}">${option.prompt}</a></li>\n` );
             }
             res.write( "</ul>\n" );
         }
@@ -447,7 +456,7 @@ function toHTML( line ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Dump an entry to the browser.
-function dumpEntry( res, guide, pos ) {
+function dumpEntry( res, guide, pos, source ) {
 
     const entry = guide.loadEntry( parseInt( pos ) );
 
@@ -457,18 +466,20 @@ function dumpEntry( res, guide, pos ) {
         res.write( `<link rel="home" href="./" title="Home" />\n` );
     } );
 
-    dumpTopNav( res, guide, entry );
+    dumpTopNav( res, guide, entry, source );
 
     res.write( "<section>\n" );
 
-    dumpMenu( res, guide );
+    dumpMenu( res, guide, source );
+
+    const converter = source ? unDOSify : toHTML;
 
     res.write( '<article class="box">' );
     for ( let i = 0; i < entry.lineCount(); i++ ) {
         if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
-            res.write( `<a href="${entry.offsets()[ i ]}">${toHTML( entry.lines()[ i ] )}</a>\n` );
+            res.write( `<a href="${url( entry.offsets()[ i ], source )}">${converter( entry.lines()[ i ] )}</a>\n` );
         } else {
-            res.write( `${toHTML( entry.lines()[ i ] )}\n`);
+            res.write( `${converter( entry.lines()[ i ] )}\n`);
         }
     }
 
@@ -476,7 +487,7 @@ function dumpEntry( res, guide, pos ) {
         res.write( '<nav class="seeAlso">\n' );
         res.write( "<ul>\n<li>See Also:</li>\n" );
         for ( let seeAlso of entry.seeAlso().options() ) {
-            res.write( `<li><a href="${seeAlso.offset}">${unHTML( seeAlso.prompt )}</a></li>\n` );
+            res.write( `<li><a href="${url( seeAlso.offset, source )}">${unHTML( seeAlso.prompt )}</a></li>\n` );
         }
         res.write( "</ul>\n" );
         res.write( "</nav>\n" );
@@ -559,7 +570,7 @@ function serveGuideList( res, guides ) {
 
 ////////////////////////////////////////////////////////////////////////////
 // Serve the given guide.
-function serveGuide( res, guides, source, part ) {
+function serveGuide( res, guides, source, part, arg ) {
 
     // Do we have the requested guide?
     if ( guides.has( source ) ) {
@@ -579,7 +590,7 @@ function serveGuide( res, guides, source, part ) {
             dumpAbout( res, guide );
         } else if ( guide.isEntryAt( parseInt( part ) ) ) {
             // Asking for an entry.
-            dumpEntry( res, guide, part );
+            dumpEntry( res, guide, part, arg === "source" );
         } else {
             // Don't have it!
             res.statusCode = 404;
@@ -614,6 +625,7 @@ if ( ngserve.args.length > 0 ) {
             const request = req.url.split( "/" );
             const source  = request[ 1 ];
             const part    = request[ 2 ];
+            const arg     = request[ 3 ];
 
             // Assume we're going to handle things.
             res.statusCode = 200;
@@ -626,7 +638,7 @@ if ( ngserve.args.length > 0 ) {
                     serveCSS( res );
                 } else {
                     // ...all other things should be a guide.
-                    serveGuide( res, guides, source, part );
+                    serveGuide( res, guides, source, part, arg );
                 }
             } else {
                 // Looks like we're being asked for the main guide list.
