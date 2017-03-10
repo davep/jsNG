@@ -563,7 +563,7 @@ if ( ngserve.args.length > 0 ) {
         try {
 
             // Log the request.
-            log( `${req.connection.remoteAddress} ${req.method} ${req.url}` );
+            log( `${req.connection.remoteAddress} ${req.method} ${req.url} ${req.headers[ 'user-agent' ]}` );
 
             // See what we're being asked for.
             const request = req.url.split( "/" );
