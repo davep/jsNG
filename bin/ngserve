@@ -455,12 +455,30 @@ function toHTML( line ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Return a title for the entry.
+function entryTitle( guide, entry ) {
+
+    const SEP = " » ";
+
+    let title = unHTML( NGParser.Tool.makeDOSish( guide.title() ) );
+
+    if ( entry.hasParentMenu() ) {
+        title += SEP + unHTML( guide.menus()[ entry.parentMenu() ].title() );
+        if ( entry.hasParentPrompt() ) {
+            title += SEP + unHTML( guide.menus()[ entry.parentMenu() ].prompts()[ entry.parentPrompt() ] );
+        }
+    }
+
+    return title;
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Dump an entry to the browser.
 function dumpEntry( res, guide, pos, source ) {
 
     const entry = guide.loadEntry( parseInt( pos ) );
 
-    dumpHeader( res, unHTML( NGParser.Tool.makeDOSish( guide.title() ) ), ( res ) => {
+    dumpHeader( res, entryTitle( guide, entry ), ( res ) => {
         if ( entry.hasPrevious() ) res.write( `<link rel="prev" href="${entry.previous()}" title="Previous entry" />\n` );
         if ( entry.hasNext()     ) res.write( `<link rel="next" href="${entry.next()}" title="Next entry" />\n` );
         res.write( `<link rel="home" href="./" title="Home" />\n` );
