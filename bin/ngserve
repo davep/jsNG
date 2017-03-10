@@ -414,6 +414,7 @@ function dumpEntry( res, guide, pos ) {
     dumpHeader( res, guide.title(), ( res ) => {
         if ( entry.hasPrevious() ) res.write( `<link rel="prev" href="${entry.previous()}" title="Previous entry" />\n` );
         if ( entry.hasNext()     ) res.write( `<link rel="next" href="${entry.next()}" title="Next entry" />\n` );
+        res.write( `<link rel="home" href="./" title="Home" />\n` );
     } );
 
     dumpTopNav( res, guide, entry );
