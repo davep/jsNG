@@ -1,6 +1,6 @@
 {
     "name": "jsng",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "Library and tools for working with Norton Guide database files",
     "main": "lib/jsNG.js",
     "scripts": {
@@ -23,7 +23,8 @@
     "bin": {
         "ngdir": "bin/ngdir",
         "ngdump": "bin/ngdump",
-        "ngabout": "bin/ngabout"
+        "ngabout": "bin/ngabout",
+        "ngserve": "bin/ngserve"
     },
     "scripts": {
         "test": "mocha"
@@ -33,6 +34,7 @@
     "bugs": {
         "url": "https://github.com/davep/jsNG/issues"
     },
+    "preferGlobal": true,
     "homepage": "https://github.com/davep/jsNG#readme",
     "engines": {
         "node": ">=6.4.0"
