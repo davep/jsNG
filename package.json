@@ -23,7 +23,8 @@
     "bin": {
         "ngdir": "bin/ngdir",
         "ngdump": "bin/ngdump",
-        "ngabout": "bin/ngabout"
+        "ngabout": "bin/ngabout",
+        "ngserve": "bin/ngserve"
     },
     "scripts": {
         "test": "mocha"
