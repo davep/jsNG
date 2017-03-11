@@ -34,6 +34,7 @@
     "bugs": {
         "url": "https://github.com/davep/jsNG/issues"
     },
+    "preferGlobal": true,
     "homepage": "https://github.com/davep/jsNG#readme",
     "engines": {
         "node": ">=6.4.0"
