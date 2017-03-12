@@ -4,7 +4,7 @@
     "description": "Library and tools for working with Norton Guide database files",
     "main": "lib/jsNG.js",
     "scripts": {
-        "test": "make"
+        "test": "mocha"
     },
     "repository": {
         "type": "git",
@@ -25,9 +25,6 @@
         "ngdump": "bin/ngdump",
         "ngabout": "bin/ngabout",
         "ngserve": "bin/ngserve"
-    },
-    "scripts": {
-        "test": "mocha"
     },
     "author": "Dave Pearson",
     "license": "GPL-2.0",
