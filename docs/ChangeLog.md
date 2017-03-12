@@ -1,4 +1,5 @@
 # jsNG ChangeLog
+Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
 ## 0.0.10
 - Added `hasParentMenu` and `hasParentPrompt` to `NGEntry`.
