@@ -33,10 +33,10 @@ ngserve
     .usage( "[options] <file ...>" )
     .version( NG.version )
     .description( "Simple HTTP server for serving a Norton Guide file" )
-    .option( "-a, --no-advert",        "Don't show the ngserve/jsNG advert" )
-    .option( "-g, --graph-text",       "Preserve \"graphical\" characters in the output" )
-    .option( "-p, --port <n>",         "Port to serve on", parseInt )
-    .option( "-s, --stylesheet <url>", "Override the inbuilt stylesheet" )
+    .option( "-a, --no-advert",              "Don't show the ngserve/jsNG advert" )
+    .option( "-g, --graph-text",             "Preserve \"graphical\" characters in the output" )
+    .option( "-p, --port <n>",               "Port to serve on", parseInt )
+    .option( "-s, --stylesheet <urlOrFile>", "Override the inbuilt stylesheet" )
     .parse( process.argv )
 
 // Globals.
