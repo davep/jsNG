@@ -1,6 +1,7 @@
 # jsNG ChangeLog
 
 ## 0.0.10
+- Added `hasParentMenu` and `hasParentPrompt` to `NGEntry`.
 - `ngserve` now sets the page title to something a little more informative (sets it to the guide title plus the menu options you're navigating through -- this is how `WEG` works).
 - Updated `ngserve` so that it can optionally serve a local file as the stylesheet.
 
