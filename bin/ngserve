@@ -21,12 +21,14 @@
 
 */
 
+// Things we require.
 const HTTP     = require( "http" );
 const NG       = require( "../lib/jsNG" );
 const NGParser = require( "../lib/jsNGParser" );
 const NGError  = require( "../lib/jsNGError" );
 const ngserve  = require( "commander" );
 
+// Set up the command line.
 ngserve
     .usage( "[options] <file ...>" )
     .version( NG.version )
