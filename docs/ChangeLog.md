@@ -1,5 +1,9 @@
 # jsNG ChangeLog
 
+## 0.0.10
+- `ngserve` now sets the page title to something a little more informative (sets it to the guide title plus the menu options you're navigating through -- this is how `WEG` works).
+- Updated `ngserve` so that it can optionally serve a local file as the stylesheet.
+
 ## 0.0.9
 Minor release to add `ngserve` to the list of files to install into `bin`. Also finally made this into a package that has a preference for global installation given that it's as much command line tools as anything else.
 
