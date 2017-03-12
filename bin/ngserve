@@ -39,6 +39,9 @@ ngserve
     .option( "-s, --stylesheet <url>", "Override the inbuilt stylesheet" )
     .parse( process.argv )
 
+// Globals.
+let css;
+
 ////////////////////////////////////////////////////////////////////////////
 // Log something.
 function log( s ) {
@@ -116,8 +119,16 @@ span.fg${i} {
 ////////////////////////////////////////////////////////////////////////////
 // Serve the stylesheet for the guide.
 function serveCSS( res ) {
+
     res.setHeader( "Content-Type", "text/css" );
-    res.write( `
+
+    // If we've got an alternative stylesheet to serve..
+    if ( css ) {
+        // ...serve that.
+        res.write( css );
+    } else {
+        // ...otherwise use our own.
+        res.write( `
 body {
   font-family: sans-serif;
   background: dimgray;
@@ -293,7 +304,8 @@ section article a {
     font-size: 80%;
   }
 }
-`)
+`);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -626,6 +638,37 @@ function serveGuide( res, guides, source, part, arg ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Figure out how we'll serve the stylesheet.
+function processCSS() {
+
+    const fs = require( "fs" );
+
+    // If we've been given a stylesheet and it appears to exist in the
+    // filesystem...
+    if ( ngserve.stylesheet && fs.existsSync( ngserve.stylesheet ) ) {
+
+        const size   = fs.statSync( ngserve.stylesheet ).size;
+        const buffer = new Buffer( size );
+        const f      = fs.openSync( ngserve.stylesheet, "r" );
+
+        log( `Serving stylesheet from ${ngserve.stylesheet}.` );
+
+        try {
+            if ( fs.readSync( f, buffer, 0, size, 0 ) === size ) {
+                // Having loaded the content of the file, we hold it locally
+                // and then go back to serving via the usual mechanism.
+                css                = buffer.toString();
+                ngserve.stylesheet = "/css";
+            } else {
+                throw new NGError( "Could not read the whole of the stylesheet." );
+            }
+        } finally {
+            fs.closeSync( f );
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Main code. If we have guides to serve...
 if ( ngserve.args.length > 0 ) {
 
@@ -635,6 +678,9 @@ if ( ngserve.args.length > 0 ) {
     // Set up defaults.
     ngserve.port       = ngserve.port       || 8080;
     ngserve.stylesheet = ngserve.stylesheet || "/css";
+
+    // Figure out how we're going to serve the stylesheet.
+    processCSS();
 
     HTTP.createServer( ( req, res ) => {
 
