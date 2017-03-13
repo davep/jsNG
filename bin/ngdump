@@ -29,7 +29,7 @@ ngdump
     .usage( "[options] <file ...>")
     .version( NG.version )
     .description( "Dump the contents of the given Norton Guide files" )
-    .option( "-o, --output <type>", "output type", /^(raw|plain|color|colour)$/i, "colour" )
+    .option( "-o, --output <type>", "output type (raw, plain, colour)", /^(raw|plain|color|colour)$/i, "colour" )
     .parse( process.argv );
 
 if ( ngdump.args.length > 0 ) {
