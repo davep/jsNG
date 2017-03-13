@@ -206,6 +206,10 @@ section nav.menu > ul > li {
   color: white;
 }
 
+section nav.menu > ul > li > ul > li {
+  color: silver;
+}
+
 section nav.menu a {
   display: block;
 }
@@ -417,13 +421,13 @@ function dumpMenu( res, guide, arg ) {
 
         for ( let menu of guide.menus() ) {
 
-            res.write( `<li>${menu.title()}</li>\n` );
+            res.write( `<li>${menu.title()}\n` );
             res.write( "<ul>\n" );
 
             for ( let option of menu.options() ) {
                 res.write( `<li><a href="${url( option.offset, arg )}">${option.prompt}</a></li>\n` );
             }
-            res.write( "</ul>\n" );
+            res.write( "</ul>\n</li>\n" );
         }
 
         res.write( "</ul>\n</nav>\n" );
