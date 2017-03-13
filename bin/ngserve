@@ -266,6 +266,10 @@ section article a {
 
 @media screen and (max-width: 480px) {
 
+  .box {
+    box-shadow: none;
+  }
+
   section nav.menu {
     float: none;
     margin-right: 0;
