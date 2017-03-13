@@ -308,7 +308,12 @@ section article a {
     display: inline-block;
   }
 
-  section nav.menu a::after {
+  section nav.menu a {
+    display: inline-block;
+    font-size: 80%;
+  }
+
+  section nav.menu ul ul li::after {
     content: " |";
     color: white;
   }
