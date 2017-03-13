@@ -30,9 +30,10 @@ if ( ngdump.args.length > 0 ) {
         }
 
         for ( file of ngdump.args ) {
-            const ng = new NG.Guide( file ).open();
-            if ( ng.isNG() ) {
 
+            const ng = new NG.Guide( file ).open();
+
+            if ( ng.isNG() ) {
                 for ( let entry of ng ) {
                     entry.lines().forEach( l => console.log( output( l ) ) );
                     if ( entry.hasSeeAlso() ) {
@@ -41,6 +42,7 @@ if ( ngdump.args.length > 0 ) {
                 }
             }
         }
+
     } catch ( e ) {
         console.log( "Error: " + e.message );
         process.exitCode = 1;
