@@ -304,6 +304,15 @@ section article a {
     white-space: pre;
   }
 
+  section nav.menu li {
+    display: inline-block;
+  }
+
+  section nav.menu a::after {
+    content: " |";
+    color: white;
+  }
+
   section article {
     font-size: 80%;
   }
