@@ -442,6 +442,31 @@ try {
 }
 ```
 
+##### `Symbol.iterator`
+
+Provides a handy iterator for working through the entries in the guide. For
+example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+
+    guide.open().goFirst();
+
+    let count = 0;
+    for ( let entry of guide ) {
+        count++;
+    }
+
+    console.log( `Entry count: ${count}` );
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 #### `version`
 
 Provides the version number of jsNG.
