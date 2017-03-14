@@ -262,6 +262,8 @@ Returns the location of the first entry in the guide.
 
 ##### `pos()`
 
+Returns our current position in the guide.
+
 ##### `size()`
 
 ##### `goFirst()`
