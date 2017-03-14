@@ -112,6 +112,10 @@ Queries if there is a parent menu for the entry.
 The parent menu for this entry. The return value form this relates to the
 position of the menu in the array returned from [`menus()`](jsNG.md#menus).
 
+### `hasParentPrompt()`
+
+Queries if there is a parent prompt for the entry.
+
 ### `parentPrompt()`
 
 The prompt on the menu that is the parent for this entry. The return value
@@ -123,8 +127,6 @@ from this relates to the position of the prompt in menu pointed at by
 ### `next()`
 
 ### `hasParent()`
-
-### `hasParentPrompt()`
 
 ### `hasPrevious()`
 
