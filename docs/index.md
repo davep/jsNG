@@ -275,6 +275,9 @@ in the guide.
 
 ##### `gotoEntry( pos )`
 
+Move the current read position (as reported by `pos()`) to the given
+position in the guide.
+
 ##### `loadEntry( pos )`
 
 ##### `nextEntry()`
