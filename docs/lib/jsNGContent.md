@@ -72,3 +72,44 @@ see-also. They are in the format:
 ```
 
 ## `NGEntry`
+
+This object holds the details of a Norton Guide entry. Available methods
+are:
+
+### `offset()`
+
+### `type()`
+
+### `lineCount()`
+
+### `hasSeeAlso()`
+
+### `parentLine()`
+
+### `parent()`
+
+### `parentPrompt()`
+
+### `previous()`
+
+### `next()`
+
+### `hasParent()`
+
+### `hasParentMenu()`
+
+### `hasParentPrompt()`
+
+### `hasPrevious()`
+
+### `hasNext()`
+
+### `lines()`
+
+### `offsets()`
+
+### `isShort()`
+
+### `isLong()`
+
+### `seeAlso()`
