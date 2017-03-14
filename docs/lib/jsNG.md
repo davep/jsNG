@@ -343,7 +343,7 @@ const guide = ( new NG.Guide( "test.ng" ) ).open().goFirst();
 
 let count = 0;
 for ( let entry of guide ) {
-    count++;
+  count++;
 }
 
 console.log( `Entry count: ${count}` );
