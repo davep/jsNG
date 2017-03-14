@@ -270,6 +270,9 @@ Returns the size of the guide in bytes.
 
 ##### `goFirst()`
 
+Move the current read position (as reported by `pos()`) to the first entry
+in the guide.
+
 ##### `gotoEntry( pos )`
 
 ##### `loadEntry( pos )`
