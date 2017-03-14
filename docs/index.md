@@ -35,7 +35,7 @@ of a Norton Guide. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = NG.Guide( "test.ng" );
+const guide = new NG.Guide( "test.ng" );
 ```
 
 Once an object has been created for a guide, the following methods can be
@@ -53,7 +53,7 @@ Example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = NG.Guide( "test.ng" );
+const guide = new NG.Guide( "test.ng" );
 
 try {
   guide.open();
@@ -72,7 +72,7 @@ Example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = NG.Guide( "test.ng" );
+const guide = new NG.Guide( "test.ng" );
 
 try {
 
@@ -102,7 +102,7 @@ Example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = NG.Guide( "test.ng" );
+const guide = new NG.Guide( "test.ng" );
 
 try {
 
@@ -132,7 +132,7 @@ Example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = NG.Guide( "test.ng" );
+const guide = new NG.Guide( "test.ng" );
 
 try {
 
@@ -155,7 +155,7 @@ Returns a count of the top-level menus for the guide. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = NG.Guide( "test.ng" );
+const guide = new NG.Guide( "test.ng" );
 
 try {
   guide.open();
@@ -171,7 +171,7 @@ Function to check if the guide has any top-level menus. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = NG.Guide( "test.ng" );
+const guide = new NG.Guide( "test.ng" );
 
 try {
   guide.open();
