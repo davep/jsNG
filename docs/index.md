@@ -306,6 +306,26 @@ try {
 
 ##### `nextEntry()`
 
+Moves the guide's `pos()` to the start of the next entry in the guide. For
+example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+
+  guide.open();
+
+  const entry = guide.goFirst().nextEntry().loadEntry();
+
+  console.log( `The second entry is of type ${entry.type()}.` );
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `currentEntryType()`
 
 ##### `lookingAtShort()`
