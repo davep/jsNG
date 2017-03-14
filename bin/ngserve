@@ -253,7 +253,6 @@ section article ul {
   list-style: none;
   padding-left: 1ex;
   white-space: normal;
-  color: red;
 }
 
 section article span.ngb {
