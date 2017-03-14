@@ -25,6 +25,6 @@ jsNG is developed by [Dave Pearson](http://www.davep.org/).
 At the heart of jsNG is a library that contains the following packages:
 
 - [`lib/jsNG.js`](lib/jsNG.md): Core guide object.
-- [`lib/nsNGContent.js`](lib/jsNGContent.md): Menu, see-also and entry
+- [`lib/jsNGContent.js`](lib/jsNGContent.md): Menu, see-also and entry
   objects.
 
