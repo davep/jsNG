@@ -90,6 +90,33 @@ try {
 
 ##### `type()`
 
+Returns the type of the open guide as a two-character string. Either `NG` if
+it's a guide that was built with Norton Guide, or `EH` if it's a guide that
+was built with Expert Help.
+
+See `Constants` below for the `MAGIC` values that relate to this.
+
+Example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = NG.Guide( "test.ng" );
+
+try {
+
+  guide.open( false );
+
+  if ( guide.isNG() ) {
+    console.log( `Yay! It's a ${guide.type()} file!` );
+  } else {
+    console.log( "That doesn't look like a NG/EH file." );
+  }
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `typeDesc()`
 
 ##### `menuCount()`
