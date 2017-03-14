@@ -226,6 +226,20 @@ try {
 
 ##### `filename()`
 
+Returns the filename for the guide. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+  guide.open();
+  console.log( `We opened: ${guide.filename()}.` );
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `credits()`
 
 ##### `firstEntry()`
