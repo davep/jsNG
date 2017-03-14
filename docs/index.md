@@ -328,6 +328,23 @@ try {
 
 ##### `currentEntryType()`
 
+Returns the type of the entry at the current position. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+
+  guide.open().goFirst();
+
+  console.log( `The first entry is of type ${guide.currentEntryType()}.` );
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `lookingAtShort()`
 
 ##### `lookingAtLong()`
