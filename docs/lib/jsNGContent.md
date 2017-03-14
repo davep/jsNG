@@ -99,6 +99,10 @@ Get the parent line number for this guide entry. This only makes sense if
 the current entry is a long -- it says which line in the parent short links
 to it.
 
+### `hasParent()`
+
+Queries if there is a parent entry.
+
 ### `parent()`
 
 Get the location of the parent entry in the guide.
@@ -125,8 +129,6 @@ from this relates to the position of the prompt in menu pointed at by
 ### `previous()`
 
 ### `next()`
-
-### `hasParent()`
 
 ### `hasPrevious()`
 
