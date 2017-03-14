@@ -417,6 +417,31 @@ try {
 
 ##### `eof()`
 
+Checks if we appear to be at the end of the guide. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+
+    guide.open().goFirst();
+
+    let count = 0;
+
+    while ( !guide.eof() ) {
+        const entry = guide.loadEntry();
+        count++;
+        guide.nextEntry();
+    }
+
+    console.log( `Entry count: ${count}` );
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 #### `version`
 
 Provides the version number of jsNG.
