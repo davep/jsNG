@@ -87,6 +87,8 @@ possible values.
 
 ### `lineCount()`
 
+Returns the count of lines in the entry.
+
 ### `hasSeeAlso()`
 
 ### `parentLine()`
