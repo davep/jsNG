@@ -101,6 +101,8 @@ to it.
 
 ### `parent()`
 
+Get the location of the parent entry in the guide.
+
 ### `parentPrompt()`
 
 ### `previous()`
