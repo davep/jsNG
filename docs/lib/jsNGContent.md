@@ -78,6 +78,8 @@ are:
 
 ### `offset()`
 
+Returns the position in the guide that this entry lives at.
+
 ### `type()`
 
 ### `lineCount()`
