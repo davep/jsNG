@@ -157,6 +157,8 @@ long there are no offsets.
 
 ### `isShort()`
 
+Query if the entry is a short style entry.
+
 ### `isLong()`
 
 ### `seeAlso()`
