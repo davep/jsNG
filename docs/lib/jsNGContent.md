@@ -82,6 +82,9 @@ Returns the position in the guide that this entry lives at.
 
 ### `type()`
 
+Returns the type ID of the entry. See [`ENTRY`](jsNG.md#entry) for the
+possible values.
+
 ### `lineCount()`
 
 ### `hasSeeAlso()`
