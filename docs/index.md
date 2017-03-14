@@ -370,6 +370,27 @@ try {
 
 ##### `lookingAtLong()`
 
+Checks if the current `pos()` is looking at a long type entry. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+
+  guide.open().goFirst();
+
+  if ( guide.lookingAtLong() ) {
+    console.log( "We're looking at a long entry." );
+  } else {
+    console.log( "We're looking at a short entry." );
+  }
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `isEntryAt()`
 
 ##### `eof()`
