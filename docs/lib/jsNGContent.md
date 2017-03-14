@@ -161,4 +161,6 @@ Query if the entry is a short style entry.
 
 ### `isLong()`
 
+Query if the entry is a long style entry.
+
 ### `seeAlso()`
