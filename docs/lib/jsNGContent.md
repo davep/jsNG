@@ -44,6 +44,8 @@ menu option. They are in the format:
 This object holds the details of a Norton Guide see-also. It is the type of
 object you'll find returned from `seeAlso()` in `NGEntry`.
 
+The following methods are available:
+
 ### `seeAlsoCount()`
 
 Returns the count of prompts within the see-also.
