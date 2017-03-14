@@ -253,6 +253,7 @@ section article ul {
   list-style: none;
   padding-left: 1ex;
   white-space: normal;
+  color: red;
 }
 
 section article span.ngb {
@@ -260,7 +261,7 @@ section article span.ngb {
 }
 
 section article span.ngu {
-  text-decoration: underline;
+  color: fuchsia;
 }
 ${colourOptions()}
 section article a {
