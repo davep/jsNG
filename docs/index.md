@@ -258,6 +258,8 @@ try {
 
 ##### `firstEntry()`
 
+Returns the location of the first entry in the guide.
+
 ##### `pos()`
 
 ##### `size()`
