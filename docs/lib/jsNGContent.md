@@ -146,6 +146,8 @@ Returns the position of the next entry in the guide, if there is one
 
 ### `lines()`
 
+Returns an array of strings that are the lines of text in the entry.
+
 ### `offsets()`
 
 ### `isShort()`
