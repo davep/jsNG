@@ -103,6 +103,10 @@ to it.
 
 Get the location of the parent entry in the guide.
 
+### `hasParentMenu()`
+
+Queries if there is a parent menu for the entry.
+
 ### `parentMenu()`
 
 The parent menu for this entry. The return value form this relates to the
@@ -119,8 +123,6 @@ from this relates to the position of the prompt in menu pointed at by
 ### `next()`
 
 ### `hasParent()`
-
-### `hasParentMenu()`
 
 ### `hasParentPrompt()`
 
