@@ -187,6 +187,27 @@ try {
 
 ##### `menus()`
 
+Returns the array of menus for the guide. Each item in the array is an
+instance of `NGMenu`.
+
+For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+  guide.open();
+  if ( guide.hasMenus() ) {
+    for ( let menu of guide.menus() ) {
+      console.log( `Menu: ${menu.title()}` );
+    }
+  }
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `title()`
 
 ##### `filename()`
