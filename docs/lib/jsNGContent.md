@@ -38,3 +38,32 @@ menu option. They are in the format:
   "offset": <prompt-offset>
 }
 ```
+
+## `NGSeeAlso`
+
+### `seeAlsoCount()`
+
+Returns the count of prompts within the see-also.
+
+### `prompts()`
+
+Returns an array of see-also prompts. Each is a string.
+
+### `offsets()`
+
+Returns an array of guide entry offsets that relate to the prompts. Each is
+an integer.
+
+### `options()`
+
+Returns a list of objects that contain the prompt and the offset for each
+see-also. They are in the format:
+
+```json
+{
+  "prompt": <prompt-string>,
+  "offset": <prompt-offset>
+}
+```
+
+## `NGEntry`
