@@ -266,6 +266,8 @@ Returns our current position in the guide.
 
 ##### `size()`
 
+Returns the size of the guide in bytes.
+
 ##### `goFirst()`
 
 ##### `gotoEntry( pos )`
