@@ -95,6 +95,10 @@ Query if the entry has any see-alsos.
 
 ### `parentLine()`
 
+Get the parent line number for this guide entry. This only makes sense if
+the current entry is a long -- it says which line in the parent short links
+to it.
+
 ### `parent()`
 
 ### `parentPrompt()`
