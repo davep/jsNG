@@ -150,6 +150,27 @@ try {
 
 ##### `menuCount()`
 
+Returns a count of the top-level menus for the guide. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = NG.Guide( "test.ng" );
+
+try {
+
+  guide.open( false );
+
+  if ( guide.isNG() ) {
+    console.log( `Menu count: ${guide.menuCount()}.` );
+  } else {
+    console.log( "That doesn't look like a NG/EH file." );
+  }
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `hasMenus()`
 
 ##### `menus()`
