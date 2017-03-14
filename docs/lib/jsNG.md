@@ -129,14 +129,9 @@ Returns a count of the top-level menus for the guide. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
 
-try {
-  guide.open();
-  console.log( `Menu count: ${guide.menuCount()}.` );
-} catch ( e ) {
-  console.log( "Error" + e.message );
-}
+console.log( `Menu count: ${guide.menuCount()}.` );
 ```
 
 ### `hasMenus()`
@@ -145,17 +140,12 @@ Function to check if the guide has any top-level menus. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
 
-try {
-  guide.open();
-  if ( guide.hasMenus() ) {
-    console.log( `Menu count: ${guide.menuCount()}.` );
-  } else {
-    console.log( "There are no menus for this guide." );
-  }
-} catch ( e ) {
-  console.log( "Error" + e.message );
+if ( guide.hasMenus() ) {
+  console.log( `Menu count: ${guide.menuCount()}.` );
+} else {
+  console.log( "There are no menus for this guide." );
 }
 ```
 
@@ -168,17 +158,12 @@ For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
 
-try {
-  guide.open();
-  if ( guide.hasMenus() ) {
-    for ( let menu of guide.menus() ) {
-      console.log( `Menu: ${menu.title()}` );
-    }
+if ( guide.hasMenus() ) {
+  for ( let menu of guide.menus() ) {
+    console.log( `Menu: ${menu.title()}` );
   }
-} catch ( e ) {
-  console.log( "Error" + e.message );
 }
 ```
 
@@ -188,14 +173,9 @@ Returns the title of the guide. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
 
-try {
-  guide.open();
-  console.log( `Title: ${guide.title()}.` );
-} catch ( e ) {
-  console.log( "Error" + e.message );
-}
+console.log( `Title: ${guide.title()}.` );
 ```
 
 ### `filename()`
@@ -204,14 +184,9 @@ Returns the filename for the guide. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
 
-try {
-  guide.open();
-  console.log( `We opened: ${guide.filename()}.` );
-} catch ( e ) {
-  console.log( "Error" + e.message );
-}
+console.log( `We opened: ${guide.filename()}.` );
 ```
 
 ### `credits()`
@@ -221,13 +196,9 @@ For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
 
-try {
-  guide.open().credits().forEach( ( line ) => console.log( line ) );
-} catch ( e ) {
-  console.log( "Error" + e.message );
-}
+guide.credits().forEach( ( line ) => console.log( line ) );
 ```
 
 ### `firstEntry()`
@@ -263,19 +234,11 @@ For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
 
-try {
+const entry = guide.goFirst().loadEntry();
 
-  guide.open();
-
-  const entry = guide.goFirst().loadEntry();
-
-  console.log( `The first entry is of type ${entry.type()}.` );
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
-}
+console.log( `The first entry is of type ${entry.type()}.` );
 ```
 
 ### `nextEntry()`
@@ -285,19 +248,10 @@ example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open();
+const entry = guide.goFirst().nextEntry().loadEntry();
 
-try {
-
-  guide.open();
-
-  const entry = guide.goFirst().nextEntry().loadEntry();
-
-  console.log( `The second entry is of type ${entry.type()}.` );
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
-}
+console.log( `The second entry is of type ${entry.type()}.` );
 ```
 
 ### `currentEntryType()`
@@ -306,17 +260,9 @@ Returns the type of the entry at the current position. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open().goFirst();
 
-try {
-
-  guide.open().goFirst();
-
-  console.log( `The first entry is of type ${guide.currentEntryType()}.` );
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
-}
+console.log( `The first entry is of type ${guide.currentEntryType()}.` );
 ```
 
 ### `lookingAtShort()`
@@ -325,20 +271,12 @@ Checks if the current `pos()` is looking at a short type entry. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open().goFirst();
 
-try {
-
-  guide.open().goFirst();
-
-  if ( guide.lookingAtShort() ) {
-    console.log( "We're looking at a short entry." );
-  } else {
-    console.log( "We're looking at a long entry." );
-  }
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
+if ( guide.lookingAtShort() ) {
+  console.log( "We're looking at a short entry." );
+} else {
+  console.log( "We're looking at a long entry." );
 }
 ```
 
@@ -348,20 +286,12 @@ Checks if the current `pos()` is looking at a long type entry. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open().goFirst();
 
-try {
-
-  guide.open().goFirst();
-
-  if ( guide.lookingAtLong() ) {
-    console.log( "We're looking at a long entry." );
-  } else {
-    console.log( "We're looking at a short entry." );
-  }
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
+if ( guide.lookingAtLong() ) {
+  console.log( "We're looking at a long entry." );
+} else {
+  console.log( "We're looking at a short entry." );
 }
 ```
 
@@ -374,18 +304,12 @@ entry at that location. For example:
 const NG    = require( "jsNG" );
 const guide = new NG.Guide( "test.ng" );
 
-try {
+guide.open();
 
-  guide.open();
-
-  if ( guide.isEntryAt( 1234 ) ) {
-    console.log( "By some odd coincidence, there is an entry there!" );
-  } else {
-    console.log( "No surprises: there's not a valid entry at that location." );
-  }
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
+if ( guide.isEntryAt( 1234 ) ) {
+  console.log( "By some odd coincidence, there is an entry there!" );
+} else {
+  console.log( "No surprises: there's not a valid entry at that location." );
 }
 ```
 
@@ -395,25 +319,17 @@ Checks if we appear to be at the end of the guide. For example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open().goFirst();
 
-try {
+let count = 0;
 
-    guide.open().goFirst();
-
-    let count = 0;
-
-    while ( !guide.eof() ) {
-        const entry = guide.loadEntry();
-        count++;
-        guide.nextEntry();
-    }
-
-    console.log( `Entry count: ${count}` );
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
+while ( !guide.eof() ) {
+  const entry = guide.loadEntry();
+  count++;
+  guide.nextEntry();
 }
+
+console.log( `Entry count: ${count}` );
 ```
 
 ### `Symbol.iterator`
@@ -423,22 +339,14 @@ example:
 
 ```js
 const NG    = require( "jsNG" );
-const guide = new NG.Guide( "test.ng" );
+const guide = ( new NG.Guide( "test.ng" ) ).open().goFirst();
 
-try {
-
-    guide.open().goFirst();
-
-    let count = 0;
-    for ( let entry of guide ) {
-        count++;
-    }
-
-    console.log( `Entry count: ${count}` );
-
-} catch ( e ) {
-  console.log( "Error" + e.message );
+let count = 0;
+for ( let entry of guide ) {
+    count++;
 }
+
+console.log( `Entry count: ${count}` );
 ```
 
 ## `version`
