@@ -166,6 +166,24 @@ try {
 
 ##### `hasMenus()`
 
+Function to check if the guide has any top-level menus. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = NG.Guide( "test.ng" );
+
+try {
+  guide.open();
+  if ( guide.hasMenus() ) {
+    console.log( `Menu count: ${guide.menuCount()}.` );
+  } else {
+    console.log( "There are no menus for this guide." );
+  }
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `menus()`
 
 ##### `title()`
