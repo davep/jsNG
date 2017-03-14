@@ -63,6 +63,31 @@ try {
 
 ##### `isNG()`
 
+Lets you check if the file actually is a Norton Guide or Expert Help file.
+This, of course, only makes sense if you've used `open` in its non-fatal
+mode.
+
+Example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = NG.Guide( "test.ng" );
+
+try {
+
+  guide.open( false );
+
+  if ( guide.isNG() ) {
+    console.log( "Yay! It's a NG/EH file!" );
+  } else {
+    console.log( "That doesn't look like a NG/EH file." );
+  }
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `type()`
 
 ##### `typeDesc()`
