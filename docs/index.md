@@ -242,6 +242,20 @@ try {
 
 ##### `credits()`
 
+Returns an array of the lines of text that are the credits for the guide.
+For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+  guide.open().credits().forEach( ( line ) => console.log( line ) );
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `firstEntry()`
 
 ##### `pos()`
