@@ -135,9 +135,11 @@ Queries if there is a previous entry.
 Returns the position of the previous entry in the guide, if there is one
 (otherwise returns `0`).
 
-### `next()`
-
 ### `hasNext()`
+
+Queries if there is a next entry.
+
+### `next()`
 
 ### `lines()`
 
