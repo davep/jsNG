@@ -210,6 +210,20 @@ try {
 
 ##### `title()`
 
+Returns the title of the guide. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+  guide.open();
+  console.log( `Title: ${guide.title()}.` );
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `filename()`
 
 ##### `credits()`
