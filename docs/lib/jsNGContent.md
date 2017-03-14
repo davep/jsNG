@@ -126,11 +126,13 @@ The prompt on the menu that is the parent for this entry. The return value
 from this relates to the position of the prompt in menu pointed at by
 `parentMenu()`.
 
+### `hasPrevious()`
+
+Queries if there is a previous entry.
+
 ### `previous()`
 
 ### `next()`
-
-### `hasPrevious()`
 
 ### `hasNext()`
 
