@@ -280,6 +280,30 @@ position in the guide.
 
 ##### `loadEntry( pos )`
 
+Loads and returns an `NGEntry` from the guide. If `pos` is given the entry
+is loaded from that position; if `pos` isn't given the entry is loaded from
+the current position. Note that `pos()` remains unchanged after calling
+`loadEntry()`.
+
+For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+
+  guide.open();
+
+  const entry = guide.goFirst().loadEntry();
+
+  console.log( `The first entry is of type ${entry.type()}.` );
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `nextEntry()`
 
 ##### `currentEntryType()`
