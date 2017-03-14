@@ -150,6 +150,11 @@ Returns an array of strings that are the lines of text in the entry.
 
 ### `offsets()`
 
+Returns an array of integers that are the locations of entries in the guide
+that should be linked to be the corresponding line of text in `lines()`.
+Note that this is only the case if `isShort()` is `true`. If a guide is a
+long there are no offsets.
+
 ### `isShort()`
 
 ### `isLong()`
