@@ -94,7 +94,8 @@ Returns the type of the open guide as a two-character string. Either `NG` if
 it's a guide that was built with Norton Guide, or `EH` if it's a guide that
 was built with Expert Help.
 
-See `Constants` below for the `MAGIC` values that relate to this.
+See [`Constants`](#constants) below for the `MAGIC` values that relate to
+this.
 
 Example:
 
@@ -123,7 +124,8 @@ Returns a description of the type of the open guide. Either `Norton Guide`
 if the guide with built with Norton Guide, or `Expert Help` if the guide was
 built with `Expert Help`.
 
-See `Constants` below for the `MAGIC` values that relate to this.
+See [`Constants`](#constants) below for the `MAGIC` values that relate to
+this.
 
 Example:
 
