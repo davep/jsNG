@@ -91,6 +91,8 @@ Returns the count of lines in the entry.
 
 ### `hasSeeAlso()`
 
+Query if the entry has any see-alsos.
+
 ### `parentLine()`
 
 ### `parent()`
