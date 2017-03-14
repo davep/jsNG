@@ -157,15 +157,8 @@ const NG    = require( "jsNG" );
 const guide = NG.Guide( "test.ng" );
 
 try {
-
-  guide.open( false );
-
-  if ( guide.isNG() ) {
-    console.log( `Menu count: ${guide.menuCount()}.` );
-  } else {
-    console.log( "That doesn't look like a NG/EH file." );
-  }
-
+  guide.open();
+  console.log( `Menu count: ${guide.menuCount()}.` );
 } catch ( e ) {
   console.log( "Error" + e.message );
 }
