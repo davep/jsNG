@@ -473,3 +473,27 @@ Provides the version number of jsNG.
 
 #### `Constants`
 
+##### `MAGIC`
+
+Object that contains the constants for the guide type "magic numbers". Looks
+like this:
+
+```js
+const MAGIC = {
+    EH: { Code: "EH", Name: "Expert Help"  },
+    NG: { Code: "NG", Name: "Norton Guide" }
+};
+```
+
+##### `ENTRY`
+
+Object that contains the values for the different types of guide entry.
+Looks like this:
+
+```js
+const ENTRY = {
+    SHORT: 0,
+    LONG:  1,
+    MENU:  2
+};
+```
