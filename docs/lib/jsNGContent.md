@@ -164,3 +164,5 @@ Query if the entry is a short style entry.
 Query if the entry is a long style entry.
 
 ### `seeAlso()`
+
+Returns an instance of [`NGSeeAlso`](#ngseealso) if the entry has see also links.
