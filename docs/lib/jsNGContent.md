@@ -110,6 +110,10 @@ position of the menu in the array returned from [`menus()`](jsNG.md#menus).
 
 ### `parentPrompt()`
 
+The prompt on the menu that is the parent for this entry. The return value
+from this relates to the position of the prompt in menu pointed at by
+`parentMenu()`.
+
 ### `previous()`
 
 ### `next()`
