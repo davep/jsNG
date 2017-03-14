@@ -141,6 +141,9 @@ Queries if there is a next entry.
 
 ### `next()`
 
+Returns the position of the next entry in the guide, if there is one
+(otherwise returns `0`).
+
 ### `lines()`
 
 ### `offsets()`
