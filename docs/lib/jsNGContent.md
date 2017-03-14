@@ -103,6 +103,11 @@ to it.
 
 Get the location of the parent entry in the guide.
 
+### `parentMenu()`
+
+The parent menu for this entry. The return value form this relates to the
+position of the menu in the array returned from [`menus()`](jsNG.md#menus).
+
 ### `parentPrompt()`
 
 ### `previous()`
