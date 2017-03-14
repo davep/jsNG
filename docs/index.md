@@ -391,7 +391,29 @@ try {
 }
 ```
 
-##### `isEntryAt()`
+##### `isEntryAt( pos )`
+
+Checks if `pos` is a valid location in the guide and if there is a valid
+entry at that location. For example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = new NG.Guide( "test.ng" );
+
+try {
+
+  guide.open();
+
+  if ( guide.isEntryAt( 1234 ) ) {
+    console.log( "By some odd coincidence, there is an entry there!" );
+  } else {
+    console.log( "No surprises: there's not a valid entry at that location." );
+  }
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
 
 ##### `eof()`
 
