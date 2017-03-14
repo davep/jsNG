@@ -119,6 +119,33 @@ try {
 
 ##### `typeDesc()`
 
+Returns a description of the type of the open guide. Either `Norton Guide`
+if the guide with built with Norton Guide, or `Expert Help` if the guide was
+built with `Expert Help`.
+
+See `Constants` below for the `MAGIC` values that relate to this.
+
+Example:
+
+```js
+const NG    = require( "jsNG" );
+const guide = NG.Guide( "test.ng" );
+
+try {
+
+  guide.open( false );
+
+  if ( guide.isNG() ) {
+    console.log( `Yay! It's a ${guide.typeDesc()} file!` );
+  } else {
+    console.log( "That doesn't look like a NG/EH file." );
+  }
+
+} catch ( e ) {
+  console.log( "Error" + e.message );
+}
+```
+
 ##### `menuCount()`
 
 ##### `hasMenus()`
