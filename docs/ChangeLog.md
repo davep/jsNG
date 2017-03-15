@@ -6,6 +6,7 @@ Also see [the release history on GitHub](https://github.com/davep/jsNG/releases)
 - Made the output of `ngserve` valid HTML5.
 - Tweaked default underline style so that it looks more like the old Norton
   Guide way of doing things (a colour rather than an actual underline).
+- Started documentation.
 
 ## 0.0.10
 - Added `hasParentMenu` and `hasParentPrompt` to `NGEntry`.
