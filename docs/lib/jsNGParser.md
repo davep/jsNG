@@ -34,7 +34,8 @@ Called any time the following text should be bold. Bold should be stopped if
 
 ### `unbold`
 
-Called if `bold` should be stopped.
+Called if `bold` should be stopped. Defaults to calling `normal` if not
+provided.
 
 ### `reverse`
 
@@ -43,7 +44,8 @@ be stopped if `unreverse` or `normal` are called.
 
 ### `unreverse`
 
-Called if `reverse` should be stopped.
+Called if `reverse` should be stopped. Defaults to calling `normal` if not
+provided.
 
 ### `underline`
 
@@ -52,7 +54,8 @@ should be stopped if `ununderline` or `normal` are called.
 
 ### `ununderline`
 
-Called if `underline` should be stopped.
+Called if `underline` should be stopped. Defaults to calling `normal` if not
+provided.
 
 ### `charval( char )`
 
