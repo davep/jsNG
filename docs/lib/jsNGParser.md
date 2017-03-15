@@ -64,6 +64,60 @@ given will generally be one that
 represents
 [a character in code page 447](https://en.wikipedia.org/wiki/Code_page_437).
 
+Using the above, it should be possible to create any form of output based on
+the text in a guide entry. Here's an example where `Line.Parser` is used to
+strip all markup from the text:
+
+```js
+const NGParser = require( "jsNGParser" );
+let   s        = "";
+
+// Assume line has come from a guide.
+
+( new NGParser.Line.Parser( {
+  text:    t => s += t,
+  charVal: c => s += String.fromCharCode( c )
+} ) ).parse( line );
+
+console.log( s );
+}
+```
+
+As a slightly more involved example,
+here's
+[the code of `toTerminalText`](https://github.com/davep/jsNG/blob/v0.0.10/lib/jsNGParser.js#L417-L444):
+
+```js
+// Parse a NG line into text that's terminal-friendly.
+function NGLine2TerminalText( line ) {
+    "use strict";
+
+    const FG_MAP = [
+        "0;30", "0;34", "0;32", "0;36", "0;31", "0;35", "0;33", "0;37",
+        "1;30", "1;34", "1;32", "1;36", "1;31", "1;35", "1;33", "1;37"
+    ];
+    const BG_MAP = [
+        "40", "44", "42", "46", "41", "45", "43", "47",
+        "40", "44", "42", "46", "41", "45", "43", "47"
+    ];
+
+    const esc = ( s ) => "\u001b[" + s;
+    let   s   = "";
+
+    ( new NGLineParser( {
+        text:      t  => s += MakeDOSish( t ),
+        colour:    c  => s += esc( FG_MAP[ c & 0xF ] + ";" + BG_MAP[ c >> 4 ] + "m" ),
+        normal:    () => s += esc( "0m" ),
+        bold:      () => s += esc( "1m" ),
+        reverse:   () => s += esc( "7m" ),
+        underline: () => s += esc( "4m" ),
+        charVal:   c  => s += MakeDOSish( String.fromCharCode( c ) )
+    } ) ).parse( line );
+
+    return s + esc( "0m" );
+}
+```
+
 ## `Line.toPlainText( line )`
 
 Utility function that takes a line of NG marked-up text and converts it to
@@ -97,6 +151,9 @@ const entry    = ( new NG.Guide( "test.ng" ).open().goFirst().loadEntry();
 
 entry.lines().forEach( ( line ) => console.log( NGParser.Line.toTerminalText( line ) ) );
 ```
+
+The `jsNGParser` module also exports a couple of handy utility functions
+that should help with converting from CP437 text to something more useful:
 
 ## `Tool.makePlain( s )`
 
