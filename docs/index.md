@@ -27,4 +27,5 @@ At the heart of jsNG is a library that contains the following packages:
 - [`lib/jsNG.js`](lib/jsNG.md): Core guide object.
 - [`lib/jsNGContent.js`](lib/jsNGContent.md): Menu, see-also and entry
   objects.
-
+- [`lib/jsNGParser.js`](lib/jsNGParser.md): Functions for working with the
+  formatting codes of a Norton Guide.
