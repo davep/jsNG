@@ -63,7 +63,7 @@ represents
 
 ## `Line.toPlainText( line )`
 
-Utility function that takes a line of NG marked up text and converts it to
+Utility function that takes a line of NG marked-up text and converts it to
 plain text. All attributes are dropped and all text is, where possible,
 turned into "pure ASCII" text. This can be handy if you want to quickly
 generate some text from the guide.
@@ -78,7 +78,22 @@ const entry    = ( new NG.Guide( "test.ng" ).open().goFirst().loadEntry();
 entry.lines().forEach( ( line ) => console.log( NGParser.Line.toPlainText( line ) ) );
 ```
 
-## `Line.toTerminalText`
+## `Line.toTerminalText( line ))`
+
+Utility function that takes a long of NG marked-up text and converts it to
+coloured text, complete with CP437 to utf-8 character conversions, such that
+it should be suitable for display in an ANSI terminal. This can be handy if
+you quickly want to render an entry in a terminal display.
+
+For example:
+
+```js
+const NG       = require( "jsNG" );
+const NGParser = require( "jsNGParser" );
+const entry    = ( new NG.Guide( "test.ng" ).open().goFirst().loadEntry();
+
+entry.lines().forEach( ( line ) => console.log( NGParser.Line.toTerminalText( line ) ) );
+```
 
 ## `Tool.makePlain`
 
