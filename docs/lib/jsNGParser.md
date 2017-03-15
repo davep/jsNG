@@ -107,7 +107,7 @@ close to making sense (things like "|", "-" and "+").
 
 ## `Tool.makeDOSish( s )`
 
-Utility function that takes a body of CP437 text and turns it into CP437
-text that should look more or less the same. Handy if you want to try and
-make the output of a guide look similar to how it would have in the original
+Utility function that takes a body of CP437 text and turns it into utf8 text
+that should look more or less the same. Handy if you want to try and make
+the output of a guide look similar to how it would have in the original
 Norton Guide reader on a DOS machine.
