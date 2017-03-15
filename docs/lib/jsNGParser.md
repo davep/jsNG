@@ -98,7 +98,7 @@ const entry    = ( new NG.Guide( "test.ng" ).open().goFirst().loadEntry();
 entry.lines().forEach( ( line ) => console.log( NGParser.Line.toTerminalText( line ) ) );
 ```
 
-## `Tool.makePlain( s ))`
+## `Tool.makePlain( s )`
 
 Utility function that takes a body CP437 text and turns it into "plain"
 text. All lower and most upper characters are turned into a "." and most
