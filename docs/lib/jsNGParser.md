@@ -61,7 +61,22 @@ given will generally be one that
 represents
 [a character in code page 447](https://en.wikipedia.org/wiki/Code_page_437).
 
-## `Line.toPlainText`
+## `Line.toPlainText( line )`
+
+Utility function that takes a line of NG marked up text and converts it to
+plain text. All attributes are dropped and all text is, where possible,
+turned into "pure ASCII" text. This can be handy if you want to quickly
+generate some text from the guide.
+
+For example:
+
+```js
+const NG       = require( "jsNG" );
+const NGParser = require( "jsNGParser" );
+const entry    = ( new NG.Guide( "test.ng" ).open().goFirst().loadEntry();
+
+entry.lines().forEach( ( line ) => console.log( NGParser.Line.toPlainText( line ) ) );
+```
 
 ## `Line.toTerminalText`
 
