@@ -29,3 +29,16 @@ At the heart of jsNG is a library that contains the following packages:
   objects.
 - [`lib/jsNGParser.js`](lib/jsNGParser.md): Functions for working with the
   formatting codes of a Norton Guide.
+
+## The command line tools
+
+jsNG comes with a handful of command line tools for working with Norton
+Guide database files. They include:
+
+- `bin/ngabout` - Display the credits for one or more guides.
+- `bin/ngdir` - Display the name and title for one or more guides.
+- `bin/ngdump` - Simple tool for dumping the content of a guide as something
+  that can be read as a single file.
+- `bin/ngserve` - Simple self-contained web server that serves Norton Guide
+  files as a website.
+
