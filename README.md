@@ -34,6 +34,8 @@ find
 
 `bin/ngserve` -- Simple Norton Guide database server. By default it serves all of the guides named on the command line on [localhost:8080](http://localhost:8080/).
 
+`bin/ng2html` -- Simple tool for turning a Norton Guide file into a collection of HTML files.
+
 # Make targets
 
 The top level directory contains a `Makefile`. The most useful targets are:
