@@ -41,4 +41,5 @@ Guide database files. They include:
   that can be read as a single file.
 - `bin/ngserve` - Simple self-contained web server that serves Norton Guide
   files as a website.
-
+- `bin/ng2html` - Simple tool that turns a Norton Guide file into a serious
+  of HTML files.
