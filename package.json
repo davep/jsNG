@@ -24,7 +24,8 @@
         "ngdir": "bin/ngdir",
         "ngdump": "bin/ngdump",
         "ngabout": "bin/ngabout",
-        "ngserve": "bin/ngserve"
+        "ngserve": "bin/ngserve",
+        "ng2html": "bin/ng2html"
     },
     "author": "Dave Pearson",
     "license": "GPL-2.0",
