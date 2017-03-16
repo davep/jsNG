@@ -21,8 +21,9 @@
 
 */
 
-const NG      = require( "../lib/jsNG" );
-const ngabout = require( "commander" );
+const NG       = require( "../lib/jsNG" );
+const NGParser = require( "../lib/jsNGParser" );
+const ngabout  = require( "commander" );
 
 ngabout
     .usage( "[options] <file ...>")
@@ -42,11 +43,11 @@ if ( ngabout.args.length > 0 ) {
                 console.log( "Name\t: "    + ng.filename()     );
                 console.log( "Title\t: "   + ng.title()        );
                 console.log( "Type\t: "    + ng.typeDesc()     );
-                console.log( "Credits\t: " + ng.credits()[ 0 ] );
-                console.log( "\t: "        + ng.credits()[ 1 ] );
-                console.log( "\t: "        + ng.credits()[ 2 ] );
-                console.log( "\t: "        + ng.credits()[ 3 ] );
-                console.log( "\t: "        + ng.credits()[ 4 ] );
+                console.log( "Credits\t: " + NGParser.Tool.makePlain( ng.credits()[ 0 ] ) );
+                console.log( "\t: "        + NGParser.Tool.makePlain( ng.credits()[ 1 ] ) );
+                console.log( "\t: "        + NGParser.Tool.makePlain( ng.credits()[ 2 ] ) );
+                console.log( "\t: "        + NGParser.Tool.makePlain( ng.credits()[ 3 ] ) );
+                console.log( "\t: "        + NGParser.Tool.makePlain( ng.credits()[ 4 ] ) );
             } else if ( !ngabout.ignoreNonNg ) {
                 console.log( "Name\t: " + ng.filename() );
                 console.log( "Type\t: Not an NG" );
