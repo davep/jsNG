@@ -5,7 +5,9 @@
 
 # Introduction
 
-jsNG is a small JavaScript library for reading Norton GUide database files. It also contains a handful of command line utility tools for looking inside guides, including `ngserve`, a simple Norton Guide web server.
+jsNG is a small JavaScript library for reading Norton GUide database files.
+It also contains a handful of command line utility tools for looking inside
+guides, including `ngserve`, a simple Norton Guide web server.
 
 This is still a bit of a work-in-progress. It is, in part, my "Hello, World"
 for getting to know ES6-ish ways of coding, and also seeing what's possible
@@ -26,21 +28,27 @@ find
 
 # Contents
 
-`lib/jsNG*.js` - The main jsNG library code. More documentation for this will follow.
+`lib/jsNG*.js` - The main jsNG library code. More documentation for this
+will follow.
 
 `bin/ngabout` -- Tool to get the credits for one or more Norton Guide files.
 
-`bin/ngdir` -- Simple tool to show a directory of Norton Guide files. Shows the name, the type and the title of each guide.
+`bin/ngdir` -- Simple tool to show a directory of Norton Guide files. Shows
+the name, the type and the title of each guide.
 
-`bin/ngserve` -- Simple Norton Guide database server. By default it serves all of the guides named on the command line on [localhost:8080](http://localhost:8080/).
+`bin/ngserve` -- Simple Norton Guide database server. By default it serves
+all of the guides named on the command line
+on [localhost:8080](http://localhost:8080/).
 
-`bin/ng2html` -- Simple tool for turning a Norton Guide file into a collection of HTML files.
+`bin/ng2html` -- Simple tool for turning a Norton Guide file into a
+collection of HTML files.
 
 # Make targets
 
 The top level directory contains a `Makefile`. The most useful targets are:
 
-`make tests` -- Runs a simple test (found in `test/`) to ensure some of the core functions of jsNG are working fine.
+`make tests` -- Runs a simple test (found in `test/`) to ensure some of the
+core functions of jsNG are working fine.
 
 `make dump` -- Runs `bin/ngdump` on a test guide.
 
