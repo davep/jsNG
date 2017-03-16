@@ -1,6 +1,9 @@
 # jsNG ChangeLog
 Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
+## 0.0.12
+- `ngabout` now ensures that the credits are displayed in "plain" text.
+
 ## 0.0.11
 - More mobile-friendly tweaks to the output of `ngserve`.
 - Made the output of `ngserve` valid HTML5.
