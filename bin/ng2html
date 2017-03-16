@@ -1,0 +1,593 @@
+#!/usr/bin/env node
+
+/*
+
+     ng2html - Simple tool for generated HTML files from a Norton Guide.
+     Copyright (C) 2017 David A Pearson
+
+     This program is free software; you can redistribute it and/or modify it
+     under the terms of the GNU General Public License as published by the
+     Free Software Foundation; either version 2 of the license, or (at your
+     option) any later version.
+
+     This program is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+     General Public License for more details.
+
+     You should have received a copy of the GNU General Public License along
+     with this program; if not, write to the Free Software Foundation, Inc.,
+     675 Mass Ave, Cambridge, MA 02139, USA.
+
+*/
+
+const fs       = require( "fs" );
+const path     = require( "path" );
+const NG       = require( "../lib/jsNG" );
+const NGParser = require( "../lib/jsNGParser" );
+const NGError  = require( "../lib/jsNGError" );
+const ng2html  = require( "commander" );
+
+// Set up the command line.
+ng2html
+    .usage( "[options] <file>" )
+    .version( NG.version )
+    .description( "Convert a Norton Guide file into a set of HTML files" )
+    .option( "-a, --no-advert",        "Don't show the ngserve/jsNG advert" )
+    .option( "-g, --graph-text",       "Preserve \"graphical\" characters in the output" )
+    .option( "-s, --stylesheet <url>", "Override the inbuilt stylesheet" )
+    .parse( process.argv )
+
+////////////////////////////////////////////////////////////////////////////
+// Return the name of a file that'll be the page for the given guide entry.
+function pageName( guide, entry ) {
+
+    const offset = typeof( entry ) === "number" ? entry : entry.offset();
+
+    if ( offset === guide.firstEntry() ) {
+        return "index.html";
+    }
+
+    return `${ path.basename( guide.filename(), ".ng" ) }-${ offset.toString( 16 ) }.html`;
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Return the name of the about file for the guide.
+function aboutName( guide ) {
+    return `${ path.basename( guide.filename(), ".ng" ) }-about.html`;
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Return the stylesheet name.
+function styleSheet( guide ) {
+    return ng2html.stylesheet || `${ path.basename( guide.filename(), ".ng" ) }.css`;
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Escape problematic HTML characters.
+function unHTML( s ) {
+    return s
+        .replace( /&/g, "&amp;"  )
+        .replace( /</g, "&lt;"   )
+        .replace( />/g, "&gt;"   )
+        .replace( /"/g, "&quot;" )
+        .replace( /'/g, "&#039;" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Convert text from DOS to DOS-a-like.
+function unDOSify( s ) {
+    return ( ng2html.graphText ? NGParser.Tool.makeDOSish : NGParser.Tool.makePlain )( s );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Convert an NG line to HTML.
+function toHTML( line ) {
+    const stack = [];
+    let   s     = "";
+    ( new NGParser.Line.Parser( {
+
+        text: t => s += unHTML( unDOSify( t ) ),
+
+        colour: c => {
+            s += `<span class="fg${ c & 0xF } bg${ c >> 4 }">`;
+            stack.push( "</span>" );
+        },
+
+        normal: t => {
+            s += stack.reverse().join( "" );
+            stack.length = 0;
+        },
+
+        bold: () => {
+            s += '<span class="ngb">';
+            stack.push( "</span>" );
+        },
+
+        unbold: () => {
+            s += "</span>";
+            stack.pop();
+        },
+
+        reverse: () => {
+            s += '<span class="ngr">';
+            stack.push( "</span>" );
+        },
+
+        unreverse: () => {
+            s += "</span>";
+            stack.pop();
+        },
+
+        underline: () => {
+            s += '<span class="ngu">';
+            stack.push( "</span>" );
+        },
+
+        ununderline: () => {
+            s += "</span>",
+            stack.pop();
+        },
+
+        charVal: c => s += unHTML( unDOSify( String.fromCharCode( c ) ) )
+
+    } ) ).parse( line );
+    return s + stack.reverse().join( "" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Emit the standad header.
+function dumpHeader( f, guide, title, extras = () => undefined ) {
+    f.write( "<!DOCTYPE html>\n" );
+    f.write( "<html>\n" );
+    f.write( "<head>\n" );
+    f.write( '<meta name="viewport" content="width=device-width, initial-scale=1">\n' );
+    f.write( '<meta charset="utf-8">\n' );
+    f.write( `<title>${title}</title>\n` );
+    f.write( `<link rel="stylesheet" type="text/css" href="${ styleSheet( guide )}" />\n` );
+    extras( f );
+    f.write( "</head>\n" );
+    f.write( "<body>\n" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Emit the standad footer.
+function dumpFooter( f, guide ) {
+
+    if ( ng2html.advert ) {
+        f.write( '<footer class="box">\n' );
+        f.write( `Generated by <a href="https://github.com/davep/jsNG">jsNG/ng2html v${NG.version}</a>\n` );
+        f.write( "</footer>\n" );
+    }
+
+    f.write( "</body>\n" );
+    f.write( "</html>\n" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump the top navigation section.
+function dumpTopNav( f, guide, entry = false ) {
+
+    const addJump = ( name, has, page ) => {
+        f.write( "<li>" );
+        if ( has ) {
+            f.write( `<a href="${page}">${name}</a>`)
+        } else {
+            f.write( `<span>${name}</span>` );
+        }
+        f.write( "</li>\n" );
+    };
+
+    f.write( '<header>\n<nav class="box">\n<ul>\n' );
+
+    addJump( "About",    guide,                        aboutName( guide )                  );
+    addJump( "Previous", entry && entry.hasPrevious(), entry && pageName( guide, entry.previous() ) );
+    addJump( "Up",       entry && entry.hasParent(),   entry && pageName( guide, entry.parent()   ) );
+    addJump( "Next",     entry && entry.hasNext(),     entry && pageName( guide, entry.next()     ) );
+
+    f.write( "</ul>\n</nav>\n</header>\n" );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump a menu to the stream.
+function dumpMenu( f, guide ) {
+
+    if ( guide && ( guide.menus().length > 0 ) ) {
+        f.write( '<nav class="menu box">\n<ul>\n' );
+
+        for ( let menu of guide.menus() ) {
+
+            f.write( `<li>${menu.title()}\n` );
+            f.write( "<ul>\n" );
+
+            for ( let option of menu.options() ) {
+                f.write( `<li><a href="${pageName( guide, option.offset )}">${option.prompt}</a></li>\n` );
+            }
+            f.write( "</ul>\n</li>\n" );
+        }
+
+        f.write( "</ul>\n</nav>\n" );
+    }
+
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump the "About" of the guide.
+function dumpAbout( f, guide ) {
+
+    dumpHeader( f, guide, `About ${unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}` );
+    dumpTopNav( f, guide );
+    f.write( "<section>\n" );
+    dumpMenu( f, guide );
+
+    f.write( '<article class="box">' );
+    f.write( `<h1>About "${unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
+    for ( let line of guide.credits() ) {
+        f.write( unHTML( unDOSify( line ) ) + "\n" );
+    }
+
+    f.write( "</article>\n" );
+    f.write( "</section>\n" );
+    dumpFooter( f, guide );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Return a title for the entry.
+function entryTitle( guide, entry ) {
+
+    const SEP = " » ";
+
+    let title = unHTML( NGParser.Tool.makeDOSish( guide.title() ) );
+
+    if ( entry.hasParentMenu() ) {
+        title += SEP + unHTML( guide.menus()[ entry.parentMenu() ].title() );
+        if ( entry.hasParentPrompt() ) {
+            title += SEP + unHTML( guide.menus()[ entry.parentMenu() ].prompts()[ entry.parentPrompt() ] );
+        }
+    }
+
+    return title;
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Dump the entry to the given stream.
+function dumpEntry( f, guide, entry ) {
+
+    dumpHeader( f, guide, entryTitle( guide, entry ), ( res ) => {
+        if ( entry.hasPrevious() ) f.write( `<link rel="prev" href="${pageName( guide, entry.previous() )}" title="Previous entry" />\n` );
+        if ( entry.hasNext()     ) f.write( `<link rel="next" href="${pageName( guide, entry.next() )}" title="Next entry" />\n` );
+        f.write( `<link rel="home" href="./" title="Home" />\n` );
+    } );
+
+    dumpTopNav( f, guide, entry );
+
+    f.write( "<section>\n" );
+
+    dumpMenu( f, guide );
+
+    f.write( '<article class="box">' );
+    for ( let i = 0; i < entry.lineCount(); i++ ) {
+        if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
+            f.write( `<a href="${pageName( guide, entry.offsets()[ i ] )}">${toHTML( entry.lines()[ i ] )}</a>\n` );
+        } else {
+            f.write( `${toHTML( entry.lines()[ i ] )}\n`);
+        }
+    }
+
+    if ( entry.hasSeeAlso() ) {
+        f.write( '<nav class="seeAlso">\n' );
+        f.write( "<ul>\n<li>See Also:</li>\n" );
+        for ( let seeAlso of entry.seeAlso().options() ) {
+            f.write( `<li><a href="${pageName( guide, seeAlso.offset )}">${unHTML( seeAlso.prompt )}</a></li>\n` );
+        }
+        f.write( "</ul>\n" );
+        f.write( "</nav>\n" );
+    }
+
+    f.write( "</article>\n" );
+    f.write( "</section>\n" );
+
+    dumpFooter( f, guide );
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Emit colour attribute options for the stylesheet.
+function colourOptions() {
+    const COLOURS = [
+        "black",
+        "navy",
+        "green",
+        "teal",
+        "maroon",
+        "purple",
+        "olive",
+        "silver",
+        "gray",
+        "blue",
+        "lime",
+        "aqua",
+        "red",
+        "fuchsia",
+        "yellow",
+        "white"
+    ];
+    let s = "";
+
+    for ( let i = 0; i < COLOURS.length; i++ ) {
+        s += `
+span.bg${i} {
+  background: ${COLOURS[ i ]}
+}
+
+span.fg${i} {
+  color: ${COLOURS[ i ]}
+}
+`
+    }
+
+    return s;
+}
+
+function writeCSS( guide ) {
+
+    const f = fs.createWriteStream( styleSheet( guide ) );
+
+    try {
+        f.write( `
+body {
+  font-family: sans-serif;
+  background: dimgray;
+}
+
+footer {
+  clear: both;
+  font-size: 70%;
+  color: silver;
+  padding: 1ex;
+}
+
+.box {
+  border: solid 1px silver;
+  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.2 );
+  background: navy;
+  color: silver;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+nav a:hover, nav a:hover *, article a:hover, article a:hover * {
+  background: red;
+  color: white;
+}
+
+header nav {
+  padding: 0;
+  margin-bottom: 1ex;
+}
+
+header nav ul {
+  padding-left: 1ex;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+header nav ul li {
+  display: inline-block;
+  color: dimgray;
+}
+
+header nav ul li::after {
+  content: " |";
+  color: silver;
+}
+
+header nav a {
+  color: white;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+header nav span {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+section nav.menu {
+  float: left;
+  padding-right: 1ex;
+  margin-right: 1ex;
+  margin-bottom: 1ex;
+}
+
+section nav.menu ul {
+  list-style: none;
+  padding-left: 1ex;
+}
+
+section nav.menu > ul > li {
+  color: white;
+}
+
+section nav.menu > ul > li > ul > li {
+  color: silver;
+}
+
+section nav.menu a {
+  display: block;
+}
+
+nav.seeAlso {
+  border-top: solid 1px silver;
+  white-space: normal;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+nav.seeAlso ul {
+  padding-left: 0.5em;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+nav.seeAlso ul li:first-child {
+  color: white;
+}
+
+nav.seeAlso ul li {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+section article {
+  overflow: scroll;
+  font-family: 'Roboto Mono', monospace;
+  padding: 0.5em;
+  margin-bottom: 1ex;
+  white-space: pre;
+}
+
+section article h1 {
+  color: white;
+  margin-bottom: 0;
+}
+
+section article ul {
+  list-style: none;
+  padding-left: 1ex;
+  white-space: normal;
+}
+
+section article span.ngb {
+  color: white;
+}
+
+section article span.ngu {
+  color: fuchsia;
+}
+${colourOptions()}
+section article a {
+  width: 100%;
+  display: inline-block;
+}
+
+@media screen and (max-width: 480px) {
+
+  .box {
+    box-shadow: none;
+  }
+
+  section nav.menu {
+    float: none;
+    margin: 0;
+  }
+
+  section article {
+    clear: both;
+  }
+
+  header nav {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  header nav ul, header nav ul a, header nav ul span {
+    padding: 0;
+  }
+
+  header nav ul li {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    display: inline;
+  }
+
+  header nav ul li::after {
+    content: "";
+  }
+
+  header nav ul li:nth-child(2):after {
+    content: "\\A";
+    white-space: pre;
+  }
+
+  section nav.menu li {
+    display: inline-block;
+  }
+
+  section nav.menu a {
+    display: inline-block;
+    font-size: 80%;
+  }
+
+  section nav.menu ul ul li::after {
+    content: " |";
+    color: white;
+  }
+
+  section article {
+    font-size: 80%;
+  }
+}
+`);
+    } finally {
+        f.end();
+    }
+
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Write the about page for the given guide.
+function writeAbout( guide ) {
+
+    const page = aboutName( guide );
+
+    console.log( `Creating ${page}.` );
+
+    const f = fs.createWriteStream( page );
+
+    try {
+        dumpAbout( f, guide );
+    } finally {
+        f.end();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Write the given entry from the given guide.
+function writeEntry( guide, entry ) {
+
+    const page = pageName( guide, entry );
+
+    console.log( `Creating ${page}.` );
+
+    const f = fs.createWriteStream( page );
+
+    try {
+        dumpEntry( f, guide, entry );
+    } finally {
+        f.end();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////
+// Main code. If we have a guide to convert...
+if ( ng2html.args.length > 0 ) {
+
+    const guide = ( new NG.Guide( ng2html.args[ 0 ] ) ).open();
+
+    // Write the stylesheet.
+    if ( !ng2html.stylesheet ) {
+        writeCSS( guide );
+    }
+
+    // Write the about page.
+    writeAbout( guide );
+
+    // Write all the entries.
+    for ( let entry of guide ) {
+        writeEntry( guide, entry );
+    }
+}
