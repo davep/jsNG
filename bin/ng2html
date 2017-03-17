@@ -49,13 +49,13 @@ function pageName( guide, entry ) {
         return "index.html";
     }
 
-    return `${ path.basename( guide.filename(), ".ng" ) }-${ offset.toString( 16 ) }.html`;
+    return `${ path.basename( guide.filename(), path.extname( guide.filename() ) )  }-${ offset.toString( 16 ) }.html`;
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // Return the name of the about file for the guide.
 function aboutName( guide ) {
-    return `${ path.basename( guide.filename(), ".ng" ) }-about.html`;
+    return `${ path.basename( guide.filename(), path.extname( guide.filename() ) ) }-about.html`;
 }
 
 ////////////////////////////////////////////////////////////////////////////
