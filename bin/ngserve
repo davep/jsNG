@@ -113,47 +113,9 @@ function dumpMenu( res, guide, arg ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump an entry to the browser.
 function dumpEntry( res, guide, pos, source ) {
-
-    const entry = guide.loadEntry( parseInt( pos ) );
-
-    dumpHeader( res, NGHTML.entryTitle( guide, entry ), ( res ) => {
-        if ( entry.hasPrevious() ) res.write( `<link rel="prev" href="${entry.previous()}" title="Previous entry" />\n` );
-        if ( entry.hasNext()     ) res.write( `<link rel="next" href="${entry.next()}" title="Next entry" />\n` );
-        res.write( `<link rel="home" href="./" title="Home" />\n` );
-    } );
-
-    dumpTopNav( res, guide, entry, source );
-
-    res.write( "<section>\n" );
-
-    dumpMenu( res, guide, source );
-
-    const converter = source ? NGHTML.unDOSify : NGHTML.toHTML;
-
-    res.write( '<article class="box">' );
-    for ( let i = 0; i < entry.lineCount(); i++ ) {
-        if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
-            res.write( `<a href="${url( entry.offsets()[ i ], source )}">${converter( entry.lines()[ i ], ngserve.graphText )}</a>\n` );
-        } else {
-            res.write( `${converter( entry.lines()[ i ], ngserve.graphText )}\n`);
-        }
-    }
-
-    if ( entry.hasSeeAlso() ) {
-        res.write( '<nav class="seeAlso">\n' );
-        res.write( "<ul>\n<li>See Also:</li>\n" );
-        for ( let seeAlso of entry.seeAlso().options() ) {
-            res.write( `<li><a href="${url( seeAlso.offset, source )}">${NGHTML.unHTML( seeAlso.prompt )}</a></li>\n` );
-        }
-        res.write( "</ul>\n" );
-        res.write( "</nav>\n" );
-    }
-
-    res.write( "</article>\n" );
-    res.write( "</section>\n" );
-
-    dumpFooter( res, guide );
-
+    NGHTML.dumpEntry( res, guide, guide.loadEntry( parseInt( pos ) ),
+                      dumpHeader, dumpTopNav, dumpMenu, dumpFooter, ngserve.graphText,
+                      s => url( s, source ), source ? NGHTML.unDOSify : NGHTML.toHTML );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -338,6 +300,7 @@ if ( ngserve.args.length > 0 ) {
             }
 
         } catch ( e ) {
+            throw e;
             log( "Internal error:\n\n" + e.message );
             if ( res.headersSent ) {
                 res.write( "Internal error:\n\n" + NGHTML.unHTML( e.message ) );

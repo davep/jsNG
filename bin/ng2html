@@ -91,42 +91,9 @@ function dumpAbout( f, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the entry to the given stream.
 function dumpEntry( f, guide, entry ) {
-
-    NGHTML.dumpHeader( f, NGHTML.entryTitle( guide, entry ), ng2html.stylesheet, ( res ) => {
-        if ( entry.hasPrevious() ) f.write( `<link rel="prev" href="${pageName( guide, entry.previous() )}" title="Previous entry" />\n` );
-        if ( entry.hasNext()     ) f.write( `<link rel="next" href="${pageName( guide, entry.next() )}" title="Next entry" />\n` );
-        f.write( `<link rel="home" href="./" title="Home" />\n` );
-    } );
-
-    dumpTopNav( f, guide, entry );
-
-    f.write( "<section>\n" );
-
-    dumpMenu( f, guide );
-
-    f.write( '<article class="box">' );
-    for ( let i = 0; i < entry.lineCount(); i++ ) {
-        if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
-            f.write( `<a href="${pageName( guide, entry.offsets()[ i ] )}">${NGHTML.toHTML( entry.lines()[ i ] )}</a>\n` );
-        } else {
-            f.write( `${NGHTML.toHTML( entry.lines()[ i ] )}\n`);
-        }
-    }
-
-    if ( entry.hasSeeAlso() ) {
-        f.write( '<nav class="seeAlso">\n' );
-        f.write( "<ul>\n<li>See Also:</li>\n" );
-        for ( let seeAlso of entry.seeAlso().options() ) {
-            f.write( `<li><a href="${pageName( guide, seeAlso.offset )}">${NGHTML.unHTML( seeAlso.prompt )}</a></li>\n` );
-        }
-        f.write( "</ul>\n" );
-        f.write( "</nav>\n" );
-    }
-
-    f.write( "</article>\n" );
-    f.write( "</section>\n" );
-
-    dumpFooter( f, guide );
+    NGHTML.dumpEntry( f, guide, entry,
+                      dumpHeader, dumpTopNav, dumpMenu, dumpFooter, ng2html.graphText,
+                      l => pageName( guide, l ), NGHTML.toHTML );
 }
 
 ////////////////////////////////////////////////////////////////////////////
