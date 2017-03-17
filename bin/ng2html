@@ -73,7 +73,7 @@ function dumpFooter( f, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the top navigation section.
 function dumpTopNav( f, guide, entry = false ) {
-    NGHTML.dumpTopNav( f, guide, entry, aboutName( guide ), s => pageName( guide, s ) );
+    NGHTML.dumpTopNav( f, guide, entry, aboutName( guide ), l => pageName( guide, l ) );
 }
 
 ////////////////////////////////////////////////////////////////////////////
