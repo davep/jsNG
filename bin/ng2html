@@ -40,6 +40,12 @@ ng2html
     .parse( process.argv )
 
 ////////////////////////////////////////////////////////////////////////////
+// Return the base name of the guide (minus extension too).
+function basename( guide ) {
+    return path.basename( guide.filename(), path.extname( guide.filename() ) );
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Return the name of a file that'll be the page for the given guide entry.
 function pageName( guide, entry ) {
 
@@ -49,13 +55,13 @@ function pageName( guide, entry ) {
         return "index.html";
     }
 
-    return `${ path.basename( guide.filename(), path.extname( guide.filename() ) )  }-${ offset.toString( 16 ) }.html`;
+    return `${ basename( guide ) }-${ offset.toString( 16 ) }.html`;
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // Return the name of the about file for the guide.
 function aboutName( guide ) {
-    return `${ path.basename( guide.filename(), path.extname( guide.filename() ) ) }-about.html`;
+    return `${ basename( guide ) }-about.html`;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -147,7 +153,7 @@ if ( ng2html.args.length > 0 ) {
     if ( !ng2html.stylesheet ) {
 
         // ...decide what we're going to call it...
-        ng2html.stylesheet = `${ path.basename( guide.filename(), path.extname( guide.filename() ) ) }.css`
+        ng2html.stylesheet = `${ basename( guide ) }.css`
 
         // ...and then write our own.
         writeCSS( guide );
