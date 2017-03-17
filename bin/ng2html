@@ -147,7 +147,7 @@ if ( ng2html.args.length > 0 ) {
     if ( !ng2html.stylesheet ) {
 
         // ...decide what we're going to call it...
-        ng2html.stylesheet = `${ path.basename( guide.filename(), ".ng" ) }.css`
+        ng2html.stylesheet = `${ path.basename( guide.filename(), path.extname( guide.filename() ) ) }.css`
 
         // ...and then write our own.
         writeCSS( guide );
