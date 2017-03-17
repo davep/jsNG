@@ -99,14 +99,8 @@ function dumpEntry( f, guide, entry ) {
 ////////////////////////////////////////////////////////////////////////////
 // Write the stylesheet for the guide.
 function writeCSS( guide ) {
-
-    const f = fs.createWriteStream( ng2html.stylesheet );
-
-    try {
-        f.write( NGHTML.css() );
-    } finally {
-        f.end();
-    }
+    console.log( `Creating ${ng2html.stylesheet}.` );
+    fs.createWriteStream( ng2html.stylesheet ).end( NGHTML.css() );
 }
 
 ////////////////////////////////////////////////////////////////////////////
