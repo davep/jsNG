@@ -315,4 +315,6 @@ if ( ngserve.args.length > 0 ) {
         log( `Serving on http://localhost:${ngserve.port}` );
     } );
 
+} else {
+    ngserve.help();
 }
