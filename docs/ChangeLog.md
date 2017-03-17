@@ -3,6 +3,9 @@ Also see [the release history on GitHub](https://github.com/davep/jsNG/releases)
 
 ## 0.0.12
 - `ngabout` now ensures that the credits are displayed in "plain" text.
+- Added `jsNGHTML.js` as a core library for HTML/NG-based tools
+- Added `ng2html` (using `jsNGHTML.js` as the core).
+- Re-worked `ngserve` so it's based around `jsNGHTML.js`.
 
 ## 0.0.11
 - More mobile-friendly tweaks to the output of `ngserve`.
