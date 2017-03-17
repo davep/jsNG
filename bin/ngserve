@@ -83,26 +83,7 @@ function url( url, arg ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the top navigation section.
 function dumpTopNav( res, guide, entry = false, arg ) {
-
-    const addJump = ( name, has, pos ) => {
-        res.write( "<li>" );
-        if ( has ) {
-            res.write( `<a href="${pos}">${name}</a>`)
-        } else {
-            res.write( `<span>${name}</span>` );
-        }
-        res.write( "</li>\n" );
-    };
-
-    res.write( '<header>\n<nav class="box">\n<ul>\n' );
-
-    addJump( "Guides",   true,                         "/" );
-    addJump( "About",    guide,                        url( "about",                   arg ) );
-    addJump( "Previous", entry && entry.hasPrevious(), url( entry && entry.previous(), arg ) );
-    addJump( "Up",       entry && entry.hasParent(),   url( entry && entry.parent(),   arg ) );
-    addJump( "Next",     entry && entry.hasNext(),     url( entry && entry.next(),     arg ) );
-
-    res.write( "</ul>\n</nav>\n</header>\n" );
+    NGHTML.dumpTopNav( res, guide, entry, url( "about", arg ), l => url( l, arg ), "Guides" );
 }
 
 ////////////////////////////////////////////////////////////////////////////

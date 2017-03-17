@@ -73,25 +73,7 @@ function dumpFooter( f, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the top navigation section.
 function dumpTopNav( f, guide, entry = false ) {
-
-    const addJump = ( name, has, page ) => {
-        f.write( "<li>" );
-        if ( has ) {
-            f.write( `<a href="${page}">${name}</a>`)
-        } else {
-            f.write( `<span>${name}</span>` );
-        }
-        f.write( "</li>\n" );
-    };
-
-    f.write( '<header>\n<nav class="box">\n<ul>\n' );
-
-    addJump( "About",    guide,                        aboutName( guide )                  );
-    addJump( "Previous", entry && entry.hasPrevious(), entry && pageName( guide, entry.previous() ) );
-    addJump( "Up",       entry && entry.hasParent(),   entry && pageName( guide, entry.parent()   ) );
-    addJump( "Next",     entry && entry.hasNext(),     entry && pageName( guide, entry.next()     ) );
-
-    f.write( "</ul>\n</nav>\n</header>\n" );
+    NGHTML.dumpTopNav( f, guide, entry, aboutName( guide ), ( s ) => pageName( guide, s ) );
 }
 
 ////////////////////////////////////////////////////////////////////////////
