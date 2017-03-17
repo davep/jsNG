@@ -300,7 +300,6 @@ if ( ngserve.args.length > 0 ) {
             }
 
         } catch ( e ) {
-            throw e;
             log( "Internal error:\n\n" + e.message );
             if ( res.headersSent ) {
                 res.write( "Internal error:\n\n" + NGHTML.unHTML( e.message ) );
