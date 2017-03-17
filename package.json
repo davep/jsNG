@@ -1,6 +1,6 @@
 {
     "name": "jsng",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "description": "Library and tools for working with Norton Guide database files",
     "main": "lib/jsNG.js",
     "scripts": {
@@ -24,7 +24,8 @@
         "ngdir": "bin/ngdir",
         "ngdump": "bin/ngdump",
         "ngabout": "bin/ngabout",
-        "ngserve": "bin/ngserve"
+        "ngserve": "bin/ngserve",
+        "ng2html": "bin/ng2html"
     },
     "author": "Dave Pearson",
     "license": "GPL-2.0",
