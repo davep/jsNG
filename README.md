@@ -28,8 +28,8 @@ find
 
 # Contents
 
-`lib/jsNG*.js` - The main jsNG library code. More documentation for this
-will follow.
+`lib/jsNG*.js` - The main jsNG library code.
+See [the docs](http://blog.davep.org/jsNG/) for details on how to use it.
 
 `bin/ngabout` -- Tool to get the credits for one or more Norton Guide files.
 
