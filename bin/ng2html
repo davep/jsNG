@@ -166,4 +166,7 @@ if ( ng2html.args.length > 0 ) {
     for ( let entry of guide ) {
         writeEntry( guide, entry );
     }
+
+} else {
+    ng2html.help();
 }
