@@ -26,6 +26,7 @@ const HTTP     = require( "http" );
 const NG       = require( "../lib/jsNG" );
 const NGParser = require( "../lib/jsNGParser" );
 const NGError  = require( "../lib/jsNGError" );
+const NGHTML   = require( "../lib/jsNGHTML" );
 const ngserve  = require( "commander" );
 
 // Set up the command line.
@@ -49,71 +50,9 @@ function log( s ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// Emit the standad header.
-function dumpHeader( res, title, extras = () => undefined ) {
-    res.setHeader( "Content-Type", "text/html" );
-    res.write( "<!DOCTYPE html>\n" );
-    res.write( "<html>\n" );
-    res.write( "<head>\n" );
-    res.write( '<meta name="viewport" content="width=device-width, initial-scale=1">\n' );
-    res.write( '<meta charset="utf-8">\n' );
-    res.write( `<title>${title}</title>\n` );
-    res.write( `<link rel="stylesheet" type="text/css" href="${ngserve.stylesheet}" />\n` );
-    extras( res );
-    res.write( "</head>\n" );
-    res.write( "<body>\n" );
-}
-
-////////////////////////////////////////////////////////////////////////////
 // Emit the standad footer.
 function dumpFooter( res, guide ) {
-
-    if ( ngserve.advert ) {
-        res.write( '<footer class="box">\n' );
-        res.write( `Served by <a href="https://github.com/davep/jsNG">jsNG/ngserve v${NG.version}</a>\n` );
-        res.write( "</footer>\n" );
-    }
-
-    res.write( "</body>\n" );
-    res.write( "</html>\n" );
-}
-
-////////////////////////////////////////////////////////////////////////////
-// Emit colour attribute options for the stylesheet.
-function colourOptions() {
-    const COLOURS = [
-        "black",
-        "navy",
-        "green",
-        "teal",
-        "maroon",
-        "purple",
-        "olive",
-        "silver",
-        "gray",
-        "blue",
-        "lime",
-        "aqua",
-        "red",
-        "fuchsia",
-        "yellow",
-        "white"
-    ];
-    let s = "";
-
-    for ( let i = 0; i < COLOURS.length; i++ ) {
-        s += `
-span.bg${i} {
-  background: ${COLOURS[ i ]}
-}
-
-span.fg${i} {
-  color: ${COLOURS[ i ]}
-}
-`
-    }
-
-    return s;
+    NGHTML.dumpFooter( res, guide, ngserve.advert ? `Served by <a href="https://github.com/davep/jsNG">jsNG/ngserve v${NG.version}</a>\n` : null );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -128,223 +67,8 @@ function serveCSS( res ) {
         res.write( css );
     } else {
         // ...otherwise use our own.
-        res.write( `
-body {
-  font-family: sans-serif;
-  background: dimgray;
-}
-
-footer {
-  clear: both;
-  font-size: 70%;
-  color: silver;
-  padding: 1ex;
-}
-
-.box {
-  border: solid 1px silver;
-  box-shadow: 4px 4px 7px 0px rgba( 0, 0, 0, 0.2 );
-  background: navy;
-  color: silver;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-nav a:hover, nav a:hover *, article a:hover, article a:hover * {
-  background: red;
-  color: white;
-}
-
-header nav {
-  padding: 0;
-  margin-bottom: 1ex;
-}
-
-header nav ul {
-  padding-left: 1ex;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-header nav ul li {
-  display: inline-block;
-  color: dimgray;
-}
-
-header nav ul li::after {
-  content: " |";
-  color: silver;
-}
-
-header nav a {
-  color: white;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-header nav span {
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-section nav.menu {
-  float: left;
-  padding-right: 1ex;
-  margin-right: 1ex;
-  margin-bottom: 1ex;
-}
-
-section nav.menu ul {
-  list-style: none;
-  padding-left: 1ex;
-}
-
-section nav.menu > ul > li {
-  color: white;
-}
-
-section nav.menu > ul > li > ul > li {
-  color: silver;
-}
-
-section nav.menu a {
-  display: block;
-}
-
-nav.seeAlso {
-  border-top: solid 1px silver;
-  white-space: normal;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-nav.seeAlso ul {
-  padding-left: 0.5em;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-nav.seeAlso ul li:first-child {
-  color: white;
-}
-
-nav.seeAlso ul li {
-  display: inline-block;
-  margin-right: 1em;
-}
-
-section article {
-  overflow: scroll;
-  font-family: 'Roboto Mono', monospace;
-  padding: 0.5em;
-  margin-bottom: 1ex;
-  white-space: pre;
-}
-
-section article h1 {
-  color: white;
-  margin-bottom: 0;
-}
-
-section article ul {
-  list-style: none;
-  padding-left: 1ex;
-  white-space: normal;
-}
-
-section article span.ngb {
-  color: white;
-}
-
-section article span.ngu {
-  color: fuchsia;
-}
-${colourOptions()}
-section article a {
-  width: 100%;
-  display: inline-block;
-}
-
-@media screen and (max-width: 480px) {
-
-  .box {
-    box-shadow: none;
-  }
-
-  section nav.menu {
-    float: none;
-    margin: 0;
-  }
-
-  section article {
-    clear: both;
-  }
-
-  header nav {
-    padding: 0;
-    margin: 0;
-    text-align: center;
-  }
-
-  header nav ul, header nav ul a, header nav ul span {
-    padding: 0;
-  }
-
-  header nav ul li {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    display: inline;
-  }
-
-  header nav ul li::after {
-    content: "";
-  }
-
-  header nav ul li:nth-child(2):after {
-    content: "\\A";
-    white-space: pre;
-  }
-
-  section nav.menu li {
-    display: inline-block;
-  }
-
-  section nav.menu a {
-    display: inline-block;
-    font-size: 80%;
-  }
-
-  section nav.menu ul ul li::after {
-    content: " |";
-    color: white;
-  }
-
-  section article {
-    font-size: 80%;
-  }
-}
-`);
+        res.write( NGHTML.css() );
     }
-}
-
-////////////////////////////////////////////////////////////////////////////
-// Escape problematic HTML characters.
-function unHTML( s ) {
-    return s
-        .replace( /&/g, "&amp;"  )
-        .replace( /</g, "&lt;"   )
-        .replace( />/g, "&gt;"   )
-        .replace( /"/g, "&quot;" )
-        .replace( /'/g, "&#039;" );
-}
-
-////////////////////////////////////////////////////////////////////////////
-// Convert text from DOS to DOS-a-like.
-function unDOSify( s ) {
-    return ( ngserve.graphText ? NGParser.Tool.makeDOSish : NGParser.Tool.makePlain )( s );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -384,7 +108,7 @@ function dumpTopNav( res, guide, entry = false, arg ) {
 ////////////////////////////////////////////////////////////////////////////
 // Wrap a function call in the general head/foot code.
 function dumper( res, title, guide, f ) {
-    dumpHeader( res, title );
+    NGHTML.dumpHeader( res, title, ngserve.stylesheet );
     dumpTopNav( res, guide );
     res.write( "<section>\n" );
     dumpMenu( res, guide );
@@ -398,10 +122,10 @@ function dumper( res, title, guide, f ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the "About" of the guide.
 function dumpAbout( res, guide ) {
-    dumper( res, `About ${unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}`, guide, () => {
-        res.write( `<h1>About "${unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
+    dumper( res, `About ${NGHTML.unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}`, guide, () => {
+        res.write( `<h1>About "${NGHTML.unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
         for ( let line of guide.credits() ) {
-            res.write( unHTML( unDOSify( line ) ) + "\n" );
+            res.write( NGHTML.unHTML( NGHTML.unDOSify( line, ngserve.graphText ) ) + "\n" );
         }
     } );
 }
@@ -436,85 +160,12 @@ function dumpMenu( res, guide, arg ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// Convert an NG line to HTML.
-function toHTML( line ) {
-    const stack = [];
-    let   s     = "";
-    ( new NGParser.Line.Parser( {
-
-        text: t => s += unHTML( unDOSify( t ) ),
-
-        colour: c => {
-            s += `<span class="fg${ c & 0xF } bg${ c >> 4 }">`;
-            stack.push( "</span>" );
-        },
-
-        normal: t => {
-            s += stack.reverse().join( "" );
-            stack.length = 0;
-        },
-
-        bold: () => {
-            s += '<span class="ngb">';
-            stack.push( "</span>" );
-        },
-
-        unbold: () => {
-            s += "</span>";
-            stack.pop();
-        },
-
-        reverse: () => {
-            s += '<span class="ngr">';
-            stack.push( "</span>" );
-        },
-
-        unreverse: () => {
-            s += "</span>";
-            stack.pop();
-        },
-
-        underline: () => {
-            s += '<span class="ngu">';
-            stack.push( "</span>" );
-        },
-
-        ununderline: () => {
-            s += "</span>",
-            stack.pop();
-        },
-
-        charVal: c => s += unHTML( unDOSify( String.fromCharCode( c ) ) )
-
-    } ) ).parse( line );
-    return s + stack.reverse().join( "" );
-}
-
-////////////////////////////////////////////////////////////////////////////
-// Return a title for the entry.
-function entryTitle( guide, entry ) {
-
-    const SEP = " » ";
-
-    let title = unHTML( NGParser.Tool.makeDOSish( guide.title() ) );
-
-    if ( entry.hasParentMenu() ) {
-        title += SEP + unHTML( guide.menus()[ entry.parentMenu() ].title() );
-        if ( entry.hasParentPrompt() ) {
-            title += SEP + unHTML( guide.menus()[ entry.parentMenu() ].prompts()[ entry.parentPrompt() ] );
-        }
-    }
-
-    return title;
-}
-
-////////////////////////////////////////////////////////////////////////////
 // Dump an entry to the browser.
 function dumpEntry( res, guide, pos, source ) {
 
     const entry = guide.loadEntry( parseInt( pos ) );
 
-    dumpHeader( res, entryTitle( guide, entry ), ( res ) => {
+    NGHTML.dumpHeader( res, NGHTML.entryTitle( guide, entry ), ngserve.stylesheet, ( res ) => {
         if ( entry.hasPrevious() ) res.write( `<link rel="prev" href="${entry.previous()}" title="Previous entry" />\n` );
         if ( entry.hasNext()     ) res.write( `<link rel="next" href="${entry.next()}" title="Next entry" />\n` );
         res.write( `<link rel="home" href="./" title="Home" />\n` );
@@ -526,14 +177,14 @@ function dumpEntry( res, guide, pos, source ) {
 
     dumpMenu( res, guide, source );
 
-    const converter = source ? unDOSify : toHTML;
+    const converter = source ? NGHTML.unDOSify : NGHTML.toHTML;
 
     res.write( '<article class="box">' );
     for ( let i = 0; i < entry.lineCount(); i++ ) {
         if ( entry.isShort() && guide.isEntryAt( entry.offsets()[ i ] ) ) {
-            res.write( `<a href="${url( entry.offsets()[ i ], source )}">${converter( entry.lines()[ i ] )}</a>\n` );
+            res.write( `<a href="${url( entry.offsets()[ i ], source )}">${converter( entry.lines()[ i ], ngserve.graphText )}</a>\n` );
         } else {
-            res.write( `${converter( entry.lines()[ i ] )}\n`);
+            res.write( `${converter( entry.lines()[ i ], ngserve.graphText )}\n`);
         }
     }
 
@@ -541,7 +192,7 @@ function dumpEntry( res, guide, pos, source ) {
         res.write( '<nav class="seeAlso">\n' );
         res.write( "<ul>\n<li>See Also:</li>\n" );
         for ( let seeAlso of entry.seeAlso().options() ) {
-            res.write( `<li><a href="${url( seeAlso.offset, source )}">${unHTML( seeAlso.prompt )}</a></li>\n` );
+            res.write( `<li><a href="${url( seeAlso.offset, source )}">${NGHTML.unHTML( seeAlso.prompt )}</a></li>\n` );
         }
         res.write( "</ul>\n" );
         res.write( "</nav>\n" );
@@ -616,7 +267,7 @@ function serveGuideList( res, guides ) {
             if ( a[ 1 ].title() > b[ 1 ].title() ) return 1;
             return 0;
         } ) ) {
-            res.write( `<li><a href="${id}/">${unHTML( unDOSify( ng.title() ) )}</a></li>\n` );
+            res.write( `<li><a href="${id}/">${NGHTML.unHTML( NGHTML.unDOSify( ng.title(), ngserve.graphText ) )}</a></li>\n` );
         }
         res.write( "</ul>\n" );
     } );
@@ -738,10 +389,10 @@ if ( ngserve.args.length > 0 ) {
         } catch ( e ) {
             log( "Internal error:\n\n" + e.message );
             if ( res.headersSent ) {
-                res.write( "Internal error:\n\n" + unHTML( e.message ) );
+                res.write( "Internal error:\n\n" + NGHTML.unHTML( e.message ) );
             } else {
                 res.statusCode = 500;
-                dumpError( res, null, "Internal error:\n\n" + unHTML( e.message ) );
+                dumpError( res, null, "Internal error:\n\n" + NGHTML.unHTML( e.message ) );
             }
         } finally {
             res.end();
