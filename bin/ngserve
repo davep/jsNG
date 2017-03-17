@@ -115,7 +115,7 @@ function dumpMenu( res, guide, arg ) {
 function dumpEntry( res, guide, pos, source ) {
     NGHTML.dumpEntry( res, guide, guide.loadEntry( parseInt( pos ) ),
                       dumpHeader, dumpTopNav, dumpMenu, dumpFooter, ngserve.graphText,
-                      s => url( s, source ), source ? NGHTML.unDOSify : NGHTML.toHTML );
+                      l => url( l, source ), source ? NGHTML.unDOSify : NGHTML.toHTML );
 }
 
 ////////////////////////////////////////////////////////////////////////////
