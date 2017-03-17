@@ -50,6 +50,12 @@ function log( s ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// Emit the standad header.
+function dumpHeader( res, title, extras ) {
+    NGHTML.dumpHeader( res, title, ngserve.stylesheet, extras );
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Emit the standad footer.
 function dumpFooter( res, guide ) {
     NGHTML.dumpFooter( res, guide, ngserve.advert ? `Served by <a href="https://github.com/davep/jsNG">jsNG/ngserve v${NG.version}</a>\n` : null );
@@ -87,23 +93,16 @@ function dumpTopNav( res, guide, entry = false, arg ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// Wrap a function call in the general head/foot code.
-function dumper( res, title, guide, f ) {
-    NGHTML.dumpHeader( res, title, ngserve.stylesheet );
-    dumpTopNav( res, guide );
-    res.write( "<section>\n" );
-    dumpMenu( res, guide );
-    res.write( '<article class="box">' );
-    f( res, guide );
-    res.write( "</article>\n" );
-    res.write( "</section>\n" );
-    dumpFooter( res, guide );
-}
-
-////////////////////////////////////////////////////////////////////////////
 // Dump the "About" of the guide.
 function dumpAbout( res, guide ) {
-    dumper( res, `About ${NGHTML.unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}`, guide, () => {
+    NGHTML.dumpPage( res,
+                     `About ${NGHTML.unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}`,
+                     guide,
+                     dumpHeader,
+                     dumpTopNav,
+                     dumpMenu,
+                     dumpFooter,
+                     () => {
         res.write( `<h1>About "${NGHTML.unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
         for ( let line of guide.credits() ) {
             res.write( NGHTML.unHTML( NGHTML.unDOSify( line, ngserve.graphText ) ) + "\n" );
@@ -114,7 +113,7 @@ function dumpAbout( res, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump an error message.
 function dumpError( res, guide, error ) {
-    dumper( res, "Error", guide, () => res.write( error ) );
+    NGHTML.dumpPage( res, "Error", guide, dumpHeader, dumpTopNav, dumpMenu, dumpFooter, () => res.write( error ) );
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -129,7 +128,7 @@ function dumpEntry( res, guide, pos, source ) {
 
     const entry = guide.loadEntry( parseInt( pos ) );
 
-    NGHTML.dumpHeader( res, NGHTML.entryTitle( guide, entry ), ngserve.stylesheet, ( res ) => {
+    dumpHeader( res, NGHTML.entryTitle( guide, entry ), ( res ) => {
         if ( entry.hasPrevious() ) res.write( `<link rel="prev" href="${entry.previous()}" title="Previous entry" />\n` );
         if ( entry.hasNext()     ) res.write( `<link rel="next" href="${entry.next()}" title="Next entry" />\n` );
         res.write( `<link rel="home" href="./" title="Home" />\n` );
@@ -224,7 +223,7 @@ function initGuidesToServe( list ) {
 ////////////////////////////////////////////////////////////////////////////
 // Serve a menu of guides.
 function serveGuideList( res, guides ) {
-    dumper( res, "Available Guides", null, () => {
+    NGHTML.dumpPage( res, "Available Guides", null, dumpHeader, dumpTopNav, dumpMenu, dumpFooter, () => {
         res.write( "<ul>\n" );
         for ( let [ id, ng ] of [ ...guides.entries() ].sort( ( a, b ) => {
             if ( a[ 1 ].title() < b[ 1 ].title() ) return -1;
