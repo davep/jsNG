@@ -85,19 +85,7 @@ function dumpMenu( f, guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump the "About" of the guide.
 function dumpAbout( f, guide ) {
-    NGHTML.dumpPage( f,
-                     `About ${NGHTML.unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}`,
-                     guide,
-                     dumpHeader,
-                     dumpTopNav,
-                     dumpMenu,
-                     dumpFooter,
-                     () => {
-        f.write( `<h1>About "${NGHTML.unHTML( NGParser.Tool.makeDOSish( guide.title() ) )}".</h1><hr />\n` );
-        for ( let line of guide.credits() ) {
-            f.write( NGHTML.unHTML( NGHTML.unDOSify( line, ng2html.graphText ) ) + "\n" );
-        }
-    } );
+    NGHTML.dumpAbout( f, guide, dumpHeader, dumpTopNav, dumpMenu, dumpFooter, ng2html.graphText );
 }
 
 ////////////////////////////////////////////////////////////////////////////
