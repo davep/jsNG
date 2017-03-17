@@ -79,24 +79,7 @@ function dumpTopNav( f, guide, entry = false ) {
 ////////////////////////////////////////////////////////////////////////////
 // Dump a menu to the stream.
 function dumpMenu( f, guide ) {
-
-    if ( guide && ( guide.menus().length > 0 ) ) {
-        f.write( '<nav class="menu box">\n<ul>\n' );
-
-        for ( let menu of guide.menus() ) {
-
-            f.write( `<li>${menu.title()}\n` );
-            f.write( "<ul>\n" );
-
-            for ( let option of menu.options() ) {
-                f.write( `<li><a href="${pageName( guide, option.offset )}">${option.prompt}</a></li>\n` );
-            }
-            f.write( "</ul>\n</li>\n" );
-        }
-
-        f.write( "</ul>\n</nav>\n" );
-    }
-
+    NGHTML.dumpMenu( f, guide, l => pageName( guide, l ) );
 }
 
 ////////////////////////////////////////////////////////////////////////////
