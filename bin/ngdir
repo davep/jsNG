@@ -35,20 +35,26 @@ const basename = ( s )      => s.split( "/" ).pop();
 const padr     = ( s, len ) => ( s + new Array( len + 1 ).join( " " ) ).slice( 0, len );
 const list     = ( file, type, desc ) => console.log( padr( basename( file ), 15 ) + "\t" + type + "\t" + desc );
 
-try {
+if ( ngdir.args.length > 0 ) {
 
-    for ( let file of ngdir.args ) {
+    try {
 
-        const ng = new NG.Guide( file ).open( false );
+        for ( let file of ngdir.args ) {
 
-        if ( ng.isNG() ) {
-            list( file, ng.type(), ng.title() );
-        } else if ( !ngdir.ignoreNonNg ) {
-            list( file, "Not an NG", "" );
+            const ng = new NG.Guide( file ).open( false );
+
+            if ( ng.isNG() ) {
+                list( file, ng.type(), ng.title() );
+            } else if ( !ngdir.ignoreNonNg ) {
+                list( file, "Not an NG", "" );
+            }
         }
+
+    } catch ( e ) {
+        console.log( "Error: " + e.message );
+        process.exitCode = 1;
     }
 
-} catch ( e ) {
-    console.log( "Error: " + e.message );
-    process.exitCode = 1;
+} else {
+    ngdir.help();
 }
