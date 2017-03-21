@@ -38,7 +38,9 @@
         "node": ">=6.4.0"
     },
     "dependencies": {
-        "commander": "2.9.0",
+        "commander": "2.9.0"
+    },
+    "devDependencies": {
         "mocha": "^3.2.0"
     }
 }
