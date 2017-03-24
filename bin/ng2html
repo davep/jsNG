@@ -67,7 +67,7 @@ function aboutName( guide ) {
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad header.
 function dumpHeader( res, title, extras ) {
-    NGHTML.dumpHeader( res, title, ng2html.stylesheet, extras );
+    NGHTML.dumpHeader( res, title, ng2html.stylesheet, `jsNG/ng2html v${NG.version}`, extras );
 }
 
 ////////////////////////////////////////////////////////////////////////////
