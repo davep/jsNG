@@ -1,6 +1,9 @@
 # jsNG ChangeLog
 Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
+## 0.0.14
+Various internal tweaks.
+
 ## 0.0.13
 - Ensured ngserve sends a type header for HTML output.
 - Modified the HTML of an article so it better works with text browsers.
