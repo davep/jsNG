@@ -1,6 +1,6 @@
 {
     "name": "jsng",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "Library and tools for working with Norton Guide database files",
     "main": "lib/jsNG.js",
     "scripts": {
@@ -38,7 +38,9 @@
         "node": ">=6.4.0"
     },
     "dependencies": {
-        "commander": "2.9.0",
+        "commander": "2.9.0"
+    },
+    "devDependencies": {
         "mocha": "^3.2.0"
     }
 }

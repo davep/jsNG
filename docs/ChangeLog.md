@@ -1,6 +1,14 @@
 # jsNG ChangeLog
 Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
+## 0.0.14
+- Various internal tweaks.
+- Added generator headers to the output of `ng2html` and `ngserve`.
+
+## 0.0.13
+- Ensured ngserve sends a type header for HTML output.
+- Modified the HTML of an article so it better works with text browsers.
+
 ## 0.0.12
 - `ngabout` now ensures that the credits are displayed in "plain" text.
 - Added `jsNGHTML.js` as a core library for HTML/NG-based tools

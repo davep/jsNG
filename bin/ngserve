@@ -53,7 +53,7 @@ function log( s ) {
 // Emit the standad header.
 function dumpHeader( res, title, extras ) {
     res.setHeader( "Content-Type", "text/html" );
-    NGHTML.dumpHeader( res, title, ngserve.stylesheet, extras );
+    NGHTML.dumpHeader( res, title, ngserve.stylesheet, `jsNG/ngserve v${NG.version}`, extras );
 }
 
 ////////////////////////////////////////////////////////////////////////////
