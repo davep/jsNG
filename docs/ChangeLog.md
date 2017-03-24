@@ -2,7 +2,8 @@
 Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
 ## 0.0.14
-Various internal tweaks.
+- Various internal tweaks.
+- Added generator headers to the output of `ng2html` and `ngserve`.
 
 ## 0.0.13
 - Ensured ngserve sends a type header for HTML output.
