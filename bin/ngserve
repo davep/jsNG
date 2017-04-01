@@ -44,6 +44,12 @@ ngserve
 let css;
 
 ////////////////////////////////////////////////////////////////////////////
+// Return the base name of the guide (minus extension too).
+function appID() {
+    return `jsNG/ngserve v${NG.version}`;
+}
+
+////////////////////////////////////////////////////////////////////////////
 // Log something.
 function log( s ) {
     console.log( ( new Date() ).toISOString() + " " + s );
@@ -53,13 +59,13 @@ function log( s ) {
 // Emit the standad header.
 function dumpHeader( res, title, extras ) {
     res.setHeader( "Content-Type", "text/html" );
-    NGHTML.dumpHeader( res, title, ngserve.stylesheet, `jsNG/ngserve v${NG.version}`, extras );
+    NGHTML.dumpHeader( res, title, ngserve.stylesheet, appID(), extras );
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // Emit the standad footer.
 function dumpFooter( res, guide ) {
-    NGHTML.dumpFooter( res, guide, ngserve.advert ? `Served by <a href="https://github.com/davep/jsNG">jsNG/ngserve v${NG.version}</a>\n` : null );
+    NGHTML.dumpFooter( res, guide, ngserve.advert ? `Served by <a href="https://github.com/davep/jsNG">${appID()}</a>\n` : null );
 }
 
 ////////////////////////////////////////////////////////////////////////////
