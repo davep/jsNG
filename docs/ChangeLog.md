@@ -1,6 +1,16 @@
 # jsNG ChangeLog
 Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
+## 1.0.1
+- Fix a bug with how source is shown by `ngserve`.
+
+## 1.0.0
+- First stable release.
+
+## 0.0.15
+- Various internal tweaks.
+- Improved the handling of malformed menu prompts.
+
 ## 0.0.14
 - Various internal tweaks.
 - Added generator headers to the output of `ng2html` and `ngserve`.
