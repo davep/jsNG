@@ -28,7 +28,7 @@
         "ng2html": "bin/ng2html"
     },
     "author": "Dave Pearson",
-    "license": "GPL-2.0",
+    "license": "GPL-3.0",
     "bugs": {
         "url": "https://github.com/davep/jsNG/issues"
     },
