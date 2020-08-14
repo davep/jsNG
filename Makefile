@@ -1,5 +1,9 @@
 .DEFAULT_GOAL := help
 
+.PHONY: setup
+setup:				# Set up the environment.
+	npm install
+
 .PHONY: tests
 tests:				# Run all the unit tests.
 	npm test
