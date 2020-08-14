@@ -80,3 +80,5 @@ utilities.
 Very early take on the code. Got to the point where it can load and dump a
 whole guide. Not really that useful for anything else, but a good starting
 point for other things.
+
+[//]: # (ChangeLog.md ends here)
