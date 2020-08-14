@@ -57,3 +57,5 @@ core functions of jsNG are working fine.
 `make about` -- Runs `bin/ngabout` on a test guide.
 
 `make serve` -- Runs `bin/ngserve` on the test guides.
+
+[//]: # (README.md ends here)
