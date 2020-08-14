@@ -1,6 +1,9 @@
 # jsNG ChangeLog
 Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
+## 1.0.2
+- Bumped the licence to GPL-3+.
+
 ## 1.0.1
 - Fix a bug with how source is shown by `ngserve`.
 
