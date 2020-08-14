@@ -18,3 +18,5 @@ clean:
 
 publish:
 	npm publish
+
+### Makefile ends here
