@@ -1,6 +1,10 @@
 # jsNG ChangeLog
 Also see [the release history on GitHub](https://github.com/davep/jsNG/releases).
 
+## 1.0.3
+- General tidying after being left alone for a couple or so years. Noting
+  obviously external-facing should have changed.
+
 ## 1.0.2
 - Bumped the licence to GPL-3+.
 
