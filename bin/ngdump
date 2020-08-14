@@ -70,3 +70,5 @@ if ( ngdump.args.length > 0 ) {
 } else {
     ngdump.help();
 }
+
+/* ngdump ends here */

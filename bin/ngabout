@@ -60,3 +60,5 @@ if ( ngabout.args.length > 0 ) {
 } else {
     ngabout.help();
 }
+
+/* ngabout ends here */

@@ -175,3 +175,5 @@ if ( ng2html.args.length > 0 ) {
 } else {
     ng2html.help();
 }
+
+/* ng2html ends here */
